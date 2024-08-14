@@ -1,0 +1,102 @@
+************************** création app nuxt ******************************************
+npx nuxi@latest init nom_projet
+
+on créer le .env (si nécessaire)
+
+on modifie nuxt.config.ts
+runtimeConfig: {
+    public: {
+      omdbApiKey: process.env.OMDB_API_KEY,
+    },
+  },
+
+********************************************************************
+On créer le dossier pages
+puis le vichier index.vue dans ce répertoire
+
+on lance le serveur
+npx nuxi dev
+
+************************** Installation de vuetify ******************************************
+On intall vuetify (cf site vuetify)
+yarn add -D vuetify vite-plugin-vuetify
+yarn add @mdi/font
+
+pnpm i -D vuetify vite-plugin-vuetify
+pnpm i @mdi/font
+
+On modifie nuxt.config.ts
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+export default defineNuxtConfig({
+  //...
+  build: {
+    transpile: ['vuetify'],
+  },
+  modules: [
+    (_options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', (config) => {
+        // @ts-expect-error
+        config.plugins.push(vuetify({ autoImport: true }))
+      })
+    },
+    //...
+  ],
+  vite: {
+    vue: {
+      template: {
+        transformAssetUrls,
+      },
+    },
+  },
+})
+
+On créer le répertoire plugins
+dedans on créer le fichier vuetify.ts
+// import this after install `@mdi/font` package
+import '@mdi/font/css/materialdesignicons.css'
+
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+
+export default defineNuxtPlugin((app) => {
+  const vuetify = createVuetify({
+    // ... your configuration
+  })
+  app.vueApp.use(vuetify)
+})
+
+*********************************************************************
+on rajoute firebase
+ yarn add firebase
+
+ 
+********************************************************************
+On créer le répertoire components
+puis le répertoire App dans components
+et là le fichier Header.vue dans App
+
+
+********************************************************************
+On créer le répertoire composables
+on copi useAPIFetch.js depuis l'application de mardi
+
+************************** installation pinia *****************************************
+yarn add pinia @pinia/nuxt
+
+on ajoute dans le fichier nuxt.config.ts partie modules
+ '@pinia/nuxt',
+
+************************* creation des stores ********************************
+On créer le répertoire stores
+On créer le store movies.js
+
+********************* on installe  persistedstate
+yarn add -D @pinia-plugin-persistedstate/nuxt
+on rajoute dans le fichier module après nuxt
+'@pinia-plugin-persistedstate/nuxt',
+
+on rajoute la clé
+persist : true,
+dans movies.js
+
+
