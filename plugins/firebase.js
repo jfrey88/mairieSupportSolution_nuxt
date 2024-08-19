@@ -3,6 +3,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 export default defineNuxtPlugin((nuxtApp) => {
+    console.log(process.env);
     const firebaseApp = initializeApp({
 
         apiKey: process.env.API_KEY,
