@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 // import { useCollection }  from 'vuefire';
 // import { collection, addDoc  } from 'firebase/firestore';
- //import { auth, db  } from '~/plugins/firebase';
- 
 import { createUserWithEmailAndPassword, updateEmail, signOut, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
  import { setDoc, doc, getDoc,updateDoc,deleteDoc } from "firebase/firestore";
@@ -95,6 +93,7 @@ const useUtilisateurStore = defineStore('utilisateur',{
         async logIn(email,password){
             const auth = getAuth();
             try {
+            console.log('email',email, 'password',password);
             const request = await signInWithEmailAndPassword(auth, email, password)
            
             return request.user;
