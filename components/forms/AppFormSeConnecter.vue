@@ -58,8 +58,8 @@ const props = defineProps({
   }
 });
 const user = ref({
-  email: "a@a.com",
-  password: "",
+  email: "contact@djeffrey.fr",
+  password: "123456789",
 });
 
 

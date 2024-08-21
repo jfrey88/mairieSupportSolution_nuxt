@@ -37,7 +37,7 @@
             <template v-slot:default="{ isActive }">
               <v-card title="Se connecter">
                   <v-card-text>
-                     <!-- <AppFormSeConnecter :userData="user" /> -->
+                      <AppFormSeConnecter :userData="user" /> 
                   </v-card-text>
 
                   <v-card-actions>

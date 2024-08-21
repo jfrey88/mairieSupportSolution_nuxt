@@ -3,9 +3,9 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
-  runtimeConfig: {
-    public: {
-     
+  vuefire: {
+    auth:{enabled : true, sessionCookie:true},
+    config: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTHDOMAIN,
       projectId: process.env.PROJECTID,

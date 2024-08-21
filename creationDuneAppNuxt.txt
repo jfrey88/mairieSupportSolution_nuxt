@@ -12,7 +12,7 @@ runtimeConfig: {
 
 ********************************************************************
 On créer le dossier pages
-puis le vichier index.vue dans ce répertoire
+puis le fichier index.vue dans ce répertoire
 
 on lance le serveur
 npx nuxi dev
@@ -22,8 +22,7 @@ On intall vuetify (cf site vuetify)
 yarn add -D vuetify vite-plugin-vuetify
 yarn add @mdi/font
 
-pnpm i -D vuetify vite-plugin-vuetify
-pnpm i @mdi/font
+
 
 On modifie nuxt.config.ts
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 // import { useCollection }  from 'vuefire';
 // import { collection, addDoc  } from 'firebase/firestore';
- import { auth, db  } from '~/plugins/firebase';
+ //import { auth, db  } from '~/plugins/firebase';
  
 import { createUserWithEmailAndPassword, updateEmail, signOut, getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
@@ -27,7 +27,7 @@ const useUtilisateurStore = defineStore('utilisateur',{
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array
             // containing all the records
-           
+           /*
             const { user } = await createUserWithEmailAndPassword(auth, userData.email, userData.password)
             const uid = user.uid;
        
@@ -46,7 +46,7 @@ const useUtilisateurStore = defineStore('utilisateur',{
             //     })
             // })
 
-
+*/
             
         },
         //Read
