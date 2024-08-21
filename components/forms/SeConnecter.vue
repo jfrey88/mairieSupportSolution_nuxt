@@ -7,7 +7,7 @@
           <p>Connectez vous</p>
         </v-col>
         
-
+        {{ user }}
         <v-col cols="12" md="6">
           <v-text-field
             v-model="user.email"
@@ -101,8 +101,8 @@ const submitConnect = async () => {
 
 onMounted(async () => {
 
-  user.value.email = props.userData.email;
-  user.value.password = props.userData.password;
+  // user.value.email = props.userData.email;
+  // user.value.password = props.userData.password;
   
 });
 

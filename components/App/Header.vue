@@ -1,6 +1,4 @@
-<script setup lang="ts">
 
-</script>
 
 <template>
 
@@ -15,13 +13,16 @@
         src="~/assets/img/logoRond.png"
       ></v-img>
     </nuxt-link>
-
+    
+   
      
       <v-app-bar-title>MAIRIE SUPPORT SOLUTION</v-app-bar-title>
 
       <v-spacer></v-spacer>
 
-
+      <div v-if="isUserLoaded">
+      {{ user.email }}
+    </div>
       <!-- ********************* BOITE DE DIALOGUE ET BOUTON SE CONNECTER **************************-->
       <v-dialog max-width="800">
           <template v-slot:activator="{ props: activatorProps }">
@@ -37,7 +38,7 @@
             <template v-slot:default="{ isActive }">
               <v-card title="Se connecter">
                   <v-card-text>
-                     <!-- <AppFormSeConnecter :userData="user" /> -->
+                     <FormsSeConnecter :userData="user" />
                   </v-card-text>
 
                   <v-card-actions>
@@ -64,8 +65,10 @@
     </v-app-bar>
 </template>
 <script setup>
-  
-  const user = ref({});
+  import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
+  const isUserLoaded = useIsCurrentUserLoaded()
+const user = useCurrentUser()
+console.log(user, isUserLoaded.value)
   const utilisateurStore = useUtilisateurStore();
 
   console.log(utilisateurStore);
