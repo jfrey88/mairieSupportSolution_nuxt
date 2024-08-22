@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, query, getDocs,  where, orderBy } from "firebase/firestore";
-import {  db } from '../plugins/firebase';
+// import {  db } from '../plugins/firebase';
 const useOrdresDuJourStore = defineStore('ordresDuJour',{
     state:() => {
 

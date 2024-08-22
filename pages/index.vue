@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div v-if="user">
+    <Mairie :user="user"/>
+  </div>
+  <div v-else>
     <div class="d-flex justify-center mb-6">
       <img alt="Vue logo" src="../assets/img/logo.png" style="height: 20vh" />*
     </div>
@@ -20,14 +23,14 @@
     <div class="d-flex justify-center mb-6">
       <v-carousel cycle hide-delimiters show-arrows="hover" style="max-width: 1024px;">
         <v-carousel-item
-          :key="i"
+          
           src="../assets/img/pub/pub1.jpg"
           transition="fade-transition"
           reverse-transition="fade-transition"
           cover
         ></v-carousel-item>
         <v-carousel-item
-          :key="i"
+          
           src="../assets/img/pub/pub2.jpg"
           transition="fade-transition"
           reverse-transition="fade-transition"
@@ -38,4 +41,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
+  const isUserLoaded = useIsCurrentUserLoaded()
+  const user = ref(null)
+  watch(isUserLoaded, () => {
+    if (isUserLoaded.value) {
+      user.value = useCurrentUser()
+    }
+  })
+
+</script>

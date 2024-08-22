@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, query, getDocs,  where, deleteDoc, doc } from "firebase/firestore";
-import {  db } from '../plugins/firebase';
+// import {  db } from '../plugins/firebase';
 const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
     state:() => {
         return {

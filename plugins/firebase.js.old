@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-
+const db=getFirestore(firebaseApp);
 export default defineNuxtPlugin((nuxtApp) => {
     console.log(process.env);
     const firebaseApp = initializeApp({

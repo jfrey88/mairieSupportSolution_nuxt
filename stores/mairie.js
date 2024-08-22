@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, getDocs, query, where ,updateDoc, } from "firebase/firestore";
-import {  db } from '../plugins/firebase';
-
+import { addDoc, collection, getDocs, query, where ,updateDoc } from "firebase/firestore";
+// import {  db } from '../plugins/firebase';
+import { useDatabaseList, useDatabaseObject, useDatabase } from 'vuefire'
+const db=useDatabase();
 
 
 const useMairieStore = defineStore('mairie',{

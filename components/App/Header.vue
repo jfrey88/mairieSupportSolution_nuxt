@@ -38,7 +38,7 @@
             <template v-slot:default="{ isActive }">
               <v-card title="Se connecter">
                   <v-card-text>
-                     <FormsSeConnecter :userData="user" />
+                     <FormSeConnecter :userData="user" />
                   </v-card-text>
 
                   <v-card-actions>
@@ -67,8 +67,8 @@
 <script setup>
   import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
   const isUserLoaded = useIsCurrentUserLoaded()
-const user = useCurrentUser()
-console.log(user, isUserLoaded.value)
+  const user = useCurrentUser()
+  console.log(user, isUserLoaded.value)
   const utilisateurStore = useUtilisateurStore();
 
   console.log(utilisateurStore);
