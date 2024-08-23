@@ -36,7 +36,9 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
         // CRUD | Create, Read, Update, Delete
         //Create
         async create(conseiller){
-            
+            const db=useFirestore();
+            console.log('---------------- conseiller dans create conseiller ------------')
+            console.log(conseiller)
             await addDoc(collection(db,"conseillers"),conseiller);
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array
@@ -79,6 +81,7 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
         },
         //Delete
         async delete(conseiller){
+            const db=useFirestore();
             //besoin de recuperer representant_uid pour pouvoir faire un fetch apres la suppression
             const uid=conseiller.representant_uid;
             const docRef = doc(db,"conseillers",conseiller.id);

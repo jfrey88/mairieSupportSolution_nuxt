@@ -31,7 +31,7 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="conseiller in conseillers"
+                      v-for="conseiller in conseillerMunicipalStore.conseillers"
                       :key="conseiller.nom"
                     >
                       <!--  boucle sur les conseillers-->
@@ -70,5 +70,14 @@
                 </v-table>
 </template>
 <script setup>
+  import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
+
 defineProps(["conseillers", "user"]);
+
+const conseillerMunicipalStore = useConseillerMunicipalStore();
+  // function pour supprimer un conseiller municipal
+  const deleteConseiller = async (conseiller) => {
+    conseillerMunicipalStore.delete(conseiller);
+    
+  };
 </script>

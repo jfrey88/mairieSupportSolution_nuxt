@@ -158,6 +158,7 @@ const conseiller = ref({
   role: "",
   ville: "",
   adresse: "",
+  representant_uid : "",
 });
 
 
@@ -183,7 +184,8 @@ const submitConseiller = async () => {
   if (!valid) return; // si ce n'est pas valide on quitte le submit
 
 
-  conseiller.value.representant_uid=props.mairieData.uid;
+  
+  conseiller.value.representant_uid=props.mairieData.value.uid
   
 
 // on récupère l'auth depuis Firebase
@@ -201,7 +203,8 @@ const submitConseiller = async () => {
     const id=conseiller.value.id;
 
     delete conseiller.value.id
-
+    conseiller.value.representant_uid=props.mairieData.value.uid
+  
     await conseillerMunicipalStore.update(conseiller.value,id);
 
     //------------------ rechargement de la page ou astuce pour voir les mises à jour
@@ -226,10 +229,6 @@ onMounted(async () => {
   // si ce n'est pas une création je charge les valeurs du conseiller
 } else {
 
-
-
-  
- 
     conseiller.value.codePostal = props.conseillerData.codePostal;
     conseiller.value.nom = props.conseillerData.nom,
       conseiller.value.prenom = props.conseillerData.prenom,
@@ -241,6 +240,7 @@ onMounted(async () => {
       conseiller.value.id = props.conseillerData.id;
       conseiller.value.representant_uid = props.mairieData.value.uid;
 
+      
       console.log("props.mairieData.value.uid",props.mairieData.value.uid)
       console.log("------------------- conseiller dans creation conseiller -------------------")
       console.log(conseiller.value)

@@ -221,11 +221,7 @@
     reunions.value = reunionConseilMunicipal.withId;
   };
   
-  // function pour supprimer un conseiller municipal
-  const deleteConseiller = async (conseiller) => {
-    conseillerMunicipal.delete(conseiller);
-    conseillers.value = conseillerMunicipal.withId;
-  };
+
   
 /******************* ON CHERCHE LES INFOS DE LA PERSONNE ****************************** */
 const fetchUtilisateur = async (user) => {
