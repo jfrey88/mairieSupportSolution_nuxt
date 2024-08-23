@@ -13,7 +13,9 @@
       <v-card title="Ajout d'un conseiller">
         <v-card-text>
           <FormCreationConseiller 
-          :mairieData="props.userData" />
+          :mairieData="props.userData" 
+          @update:modelValue = "isActive.value = false"
+          />
         </v-card-text>
 
         <v-card-actions>

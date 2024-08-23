@@ -21,17 +21,23 @@
       <v-spacer></v-spacer>
 
       <div v-if="isUserLoaded">
-      {{ user.email }}
+     
     </div>
       <!-- ********************* BOITE DE DIALOGUE ET BOUTON SE CONNECTER **************************-->
       <v-dialog max-width="800">
           <template v-slot:activator="{ props: activatorProps }">
-              <v-btn
-              
+              <v-btn v-if="!isUserLoaded"
                   v-bind="activatorProps"
                   
                   prepend-icon="mdi-account"
                   text=" Se connecter"
+              
+              ></v-btn>
+              <v-btn v-else
+                  v-bind="activatorProps"
+                  
+                  prepend-icon="mdi-account"
+                  text=" Se déconnecter"
               
               ></v-btn>
             </template>

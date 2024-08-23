@@ -160,7 +160,7 @@ const conseiller = ref({
   adresse: "",
   representant_uid : "",
 });
-
+const emit = defineEmits(["update:modelValue"])
 
 // ********************* règles pour les différens champs ************************ 
 const rules = {
@@ -210,7 +210,7 @@ const submitConseiller = async () => {
     //------------------ rechargement de la page ou astuce pour voir les mises à jour
    // window.location.reload();
   }
-  
+  emit("update:modelValue");
 };
 
 //------------------- une fois la page chargée

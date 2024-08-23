@@ -15,7 +15,7 @@
         <FormCreationConseiller
           :mairieData="props.mairieData"
           :conseillerData="props.conseillerData"
-          
+           @update:modelValue = "isActive.value = false"
           
         />
       </v-card-text>
