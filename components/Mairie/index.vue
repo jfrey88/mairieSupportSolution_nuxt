@@ -11,30 +11,30 @@
             <h2 class="text-uppercase">informations</h2>
             <p>
               texte département <br />
-              {{ mairie.textDepartement }}
+              {{ mairieStore.mairie.textDepartement }}
             </p>
             <p>
               code postal <br />
-              {{ mairie.codePostal }}
+              {{ mairieStore.mairie.codePostal }}
             </p>
             <p class="mt-2">
               adresse <br />
-              {{ mairie.adresse }}
+              {{ mairieStore.mairie.adresse }}
             </p>
             <p class="mt-2">
               téléphone <br />
-              {{ mairie.telephone }}
+              {{ mairieStore.mairie.telephone }}
             </p>
             <p class="mt-2">
               email <br />
-              {{ mairie.email }}
+              {{ mairieStore.mairie.email }}
             </p>
             <p class="mt-2" v-if="mairie.texteOuverture" v-html="formatText"></p>
   
             <!-- ---------------- BOITE DE DIALOGUE MODIF MAIRIE  --------------------------->
             <DialogModificationMairie
               :userData="user"
-              :mairieData="mairie"
+              :mairieData="mairieStore.mairie"
               :userInfoData="utilisateurStore.utilisateur"
             />
           </v-col>
@@ -52,7 +52,10 @@
               <v-col cols="12" md="12">
                 <!--  --------------------------- TABLE POUR AFFICHER LES CONSEILLERS --------------------------------->
   
-                <MairieConseillers :conseillers="conseillers" />
+                <MairieConseillers 
+                  :conseillers="conseillers" 
+                  :user="user"
+                  />
               </v-col>
             </v-row>
           </v-col>
@@ -228,8 +231,7 @@
 const fetchUtilisateur = async (user) => {
   
   userInfo.value = await utilisateurStore.fetchOne(user.value.uid);
-  console.log("userInfo.value",userInfo.value)
-  console.log("utilisateurStore.utilisateur",utilisateurStore.utilisateur)
+
 }
 
 await fetchUtilisateur(props.user);

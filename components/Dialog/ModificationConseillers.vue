@@ -44,7 +44,6 @@ const props = defineProps({
   }
 });
 
-//------------------- une fois la page chargée
 
 
 </script>

@@ -140,10 +140,11 @@ const props = defineProps({
   }
 });
 
+
 const mairie = ref({});
 
 const mairieStore = useMairieStore();
-const conseillerMunicipal = useConseillerMunicipalStore();
+const conseillerMunicipalStore = useConseillerMunicipalStore();
 const formConseiller = ref(null);
 
 
@@ -181,7 +182,7 @@ const submitConseiller = async () => {
   const { valid } = await formConseiller.value.validate();
   if (!valid) return; // si ce n'est pas valide on quitte le submit
 
-  // on récupère l'uid du user et on le mets dans le l'objet conseiller 
+
   conseiller.value.representant_uid=props.mairieData.uid;
   
 
@@ -190,20 +191,21 @@ const submitConseiller = async () => {
   //----------------- Si c'est une création de conseiller ---------------------------
   if (!props.conseillerData || !props.conseillerData.nom) {
     delete conseiller.value.id;
-    await conseillerMunicipal.create(conseiller.value);
-    window.location.reload();
+    await conseillerMunicipalStore.create(conseiller.value);
+   // window.location.reload();
 
   //---------------- Si c'est une modification de conseiller ------------------------
   } else {
   
 
     const id=conseiller.value.id;
+
     delete conseiller.value.id
 
-    await conseillerMunicipal.update(conseiller.value,id);
+    await conseillerMunicipalStore.update(conseiller.value,id);
 
     //------------------ rechargement de la page ou astuce pour voir les mises à jour
-    window.location.reload();
+   // window.location.reload();
   }
   
 };
@@ -223,15 +225,26 @@ onMounted(async () => {
 
   // si ce n'est pas une création je charge les valeurs du conseiller
 } else {
+
+
+
+  
+ 
     conseiller.value.codePostal = props.conseillerData.codePostal;
-    (conseiller.value.nom = props.conseillerData.nom),
-      (conseiller.value.prenom = props.conseillerData.prenom),
-      (conseiller.value.email = props.conseillerData.email),
-      (conseiller.value.telephone = props.conseillerData.telephone),
-      (conseiller.value.role = props.conseillerData.role),
-      (conseiller.value.ville = props.conseillerData.ville),
-      (conseiller.value.adresse = props.conseillerData.adresse);
-      (conseiller.value.id = props.conseillerData.id);
+    conseiller.value.nom = props.conseillerData.nom,
+      conseiller.value.prenom = props.conseillerData.prenom,
+      conseiller.value.email = props.conseillerData.email,
+      conseiller.value.telephone = props.conseillerData.telephone,
+      conseiller.value.role = props.conseillerData.role,
+      conseiller.value.ville = props.conseillerData.ville,
+      conseiller.value.adresse = props.conseillerData.adresse;
+      conseiller.value.id = props.conseillerData.id;
+      conseiller.value.representant_uid = props.mairieData.value.uid;
+
+      console.log("props.mairieData.value.uid",props.mairieData.value.uid)
+      console.log("------------------- conseiller dans creation conseiller -------------------")
+      console.log(conseiller.value)
+      
   }
 });
 //mairieStore.create(mairieTest);

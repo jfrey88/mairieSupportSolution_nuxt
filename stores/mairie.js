@@ -55,7 +55,8 @@ const useMairieStore = defineStore('mairie',{
             
              await updateDoc(docRef,mairieData);
 
-            this.mairie = mairieData.data;
+            this.mairie = mairieData;
+            
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records

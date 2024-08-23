@@ -263,7 +263,6 @@ const submitMairie = async () => {
 
   const auth = getAuth();
 
-  console.log(auth)
   if (props.userData) {
     // Si c'est un utilisateur déjà connecté
     // on effectue la mise à jour de l'utilisateur
@@ -307,7 +306,7 @@ onMounted(async () => {
   if (props.userInfoData) {
     userInfos.value = { ...props.userInfoData };
   }
-  console.log("user dans CrteationMairie ---->",user.value.email)
+  
 });
 
 //mairieStore.create(mairieTest);

@@ -50,7 +50,7 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
             const data=await getDocs(query(conseillersCollections, where(params[0],"==",params[1])));
 
 
-            const conseillersData=data.docs.map((doc) => doc.data());
+            const conseillersData=data.docs.map((doc) => ({...doc.data(),id : doc.id}));
 
           //  const tabConseiller=[];
            // const conseillerData=data.docs;
@@ -65,8 +65,11 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
         
         async update(conseiller,id){
             const db=useFirestore();
+           // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
+           
             const docRef = doc(db,"conseillers",id);
             
+        
             await updateDoc(docRef,conseiller);
             
             // receive one object as parameter and will perform,

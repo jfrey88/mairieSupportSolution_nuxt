@@ -59,19 +59,16 @@ const useUtilisateurStore = defineStore('utilisateur',{
             const docRef = doc(db,"accounts",uid);
            
             const docSnap = await getDoc(docRef);
-            console.log("docSnap",docSnap)
+       
             this.utilisateur=docSnap.data();
-            console.log("this.utilisateur",this.utilisateur)
+           
            return docSnap.data();
         },
 
         //Update
         
         async update(uid,userData,userInfoData,auth){
-            console.log("userInfoData",userInfoData,auth)
-            console.log("uid",uid)
-            console.log("auth",auth)
-            console.log("userData",userData)
+           
 
             // onfait la sauvegarde dans la partie authentification
             updateEmail(auth.currentUser,userData.email)
@@ -79,7 +76,7 @@ const useUtilisateurStore = defineStore('utilisateur',{
             const db=useFirestore();
             // on fait la sauvegarde du reste de l'utilisateur
             const docRef = doc(db,"accounts",uid);
-            console.log("docRef",docRef)
+           
             
             updateDoc(docRef,userInfoData);
            
