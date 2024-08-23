@@ -28,7 +28,7 @@
             v-model="conseiller.email"
             :counter="50"
             :rules="[rules.emailValid]"
-            label="Email du conseiller"
+            label="Email du conseiller "
           ></v-text-field>
         </v-col>
 
@@ -135,6 +135,9 @@ const props = defineProps({
   mairieData: {
     default: {},
   },
+  userData:{
+    default:{}
+  },
   conseillerData: {
     default: {},
   }
@@ -185,7 +188,7 @@ const submitConseiller = async () => {
 
 
   
-  conseiller.value.representant_uid=props.mairieData.value.uid
+  conseiller.value.representant_uid=props.mairieData.representant_uid
   
 
 // on récupère l'auth depuis Firebase
@@ -193,6 +196,7 @@ const submitConseiller = async () => {
   //----------------- Si c'est une création de conseiller ---------------------------
   if (!props.conseillerData || !props.conseillerData.nom) {
     delete conseiller.value.id;
+
     await conseillerMunicipalStore.create(conseiller.value);
    // window.location.reload();
 
@@ -204,7 +208,8 @@ const submitConseiller = async () => {
 
     delete conseiller.value.id
     conseiller.value.representant_uid=props.mairieData.value.uid
-  
+    
+
     await conseillerMunicipalStore.update(conseiller.value,id);
 
     //------------------ rechargement de la page ou astuce pour voir les mises à jour
@@ -216,34 +221,51 @@ const submitConseiller = async () => {
 //------------------- une fois la page chargée
 onMounted(async () => {
 
-  // si c'est une création je charge les valeurs de la commune
-  if (!props.conseillerData) {
+  console.log('props.conseillerData ',props.conseillerData);
+  console.log('props.userData ',props.userData);
+  console.log('props.mairieData ',props.mairieData);
+
+    // si c'est une création je charge les valeurs de la commune
+  if (Object.keys(props.conseillerData).length==0) {
+    console.log('je passe là');
     mairie.value = await mairieStore.fetch([
       "representant_uid",
-      props.mairieData.uid,
+      props.mairieData.representant_uid,
     ]);
     
-    conseiller.value.codePostal = mairie.value.codePostal;
-    conseiller.value.ville = mairie.value.ville;
+    conseiller.value.codePostal = props.mairieData.codePostal;
+    conseiller.value.ville = props.mairieData.ville;
+    
+    
+      conseiller.value.nom = "";
+      conseiller.value.prenom = "";
+      conseiller.value.email ="";
+      conseiller.value.telephone = "";
+      conseiller.value.role = "";
+
+      conseiller.value.adresse = "";
+      conseiller.value.id = "";
+      console.log('---------------- conseiller dans creation conseiller on Mounted ------------')
+    console.log(conseiller)
+
 
   // si ce n'est pas une création je charge les valeurs du conseiller
 } else {
+  console.log('je passe plutot là');
 
     conseiller.value.codePostal = props.conseillerData.codePostal;
-    conseiller.value.nom = props.conseillerData.nom,
-      conseiller.value.prenom = props.conseillerData.prenom,
-      conseiller.value.email = props.conseillerData.email,
-      conseiller.value.telephone = props.conseillerData.telephone,
-      conseiller.value.role = props.conseillerData.role,
-      conseiller.value.ville = props.conseillerData.ville,
+    conseiller.value.nom = props.conseillerData.nom;
+      conseiller.value.prenom = props.conseillerData.prenom;
+      conseiller.value.email = props.conseillerData.email;
+      conseiller.value.telephone = props.conseillerData.telephone;
+      conseiller.value.role = props.conseillerData.role;
+      conseiller.value.ville = props.conseillerData.ville;
       conseiller.value.adresse = props.conseillerData.adresse;
       conseiller.value.id = props.conseillerData.id;
       conseiller.value.representant_uid = props.mairieData.value.uid;
 
       
-      console.log("props.mairieData.value.uid",props.mairieData.value.uid)
-      console.log("------------------- conseiller dans creation conseiller -------------------")
-      console.log(conseiller.value)
+    
       
   }
 });

@@ -13,7 +13,8 @@
       <v-card title="Ajout d'un conseiller">
         <v-card-text>
           <FormCreationConseiller 
-          :mairieData="props.userData" 
+          :mairieData="props.mairieData"
+          :userData="props.userData" 
           @update:modelValue = "isActive.value = false"
           />
         </v-card-text>
@@ -34,6 +35,9 @@ const props = defineProps({
   userData: {
     default: {},
   },
+  mairieData:{
+    default:{},
+  }
 
 });
 

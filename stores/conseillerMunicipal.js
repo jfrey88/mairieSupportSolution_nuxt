@@ -37,12 +37,12 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
         //Create
         async create(conseiller){
             const db=useFirestore();
-            console.log('---------------- conseiller dans create conseiller ------------')
-            console.log(conseiller)
+
             await addDoc(collection(db,"conseillers"),conseiller);
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array
             // containing all the records
+            this.conseillers.push(conseiller);
         },
         //Read
         async fetch(params){ 
@@ -70,10 +70,10 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
            // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
            
             const docRef = doc(db,"conseillers",id);
+            const uid=conseiller.representant_uid;
             
-        
             await updateDoc(docRef,conseiller);
-            
+            this.fetch(["representant_uid", uid]);
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records

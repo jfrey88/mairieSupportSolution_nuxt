@@ -47,7 +47,9 @@
               </v-col>
               <v-col cols="12" md="6">
                 <!-- ---------------- BOITE DE DIALOGUE AJOUTER CONSEILLER  --------------------------->
-                <DialogConseillers :userData="user" />
+                <DialogConseillers 
+                  :userData="user"
+                  :mairieData="mairie" />
               </v-col>
               <v-col cols="12" md="12">
                 <!--  --------------------------- TABLE POUR AFFICHER LES CONSEILLERS --------------------------------->
