@@ -8,7 +8,7 @@ import { createUserWithEmailAndPassword, updateEmail, signOut, getAuth, signInWi
 
 const useUtilisateurStore = defineStore('utilisateur',{
     state:() => {
-       
+       utilisateur :{}
     },
     getters : {
 
@@ -55,22 +55,31 @@ const useUtilisateurStore = defineStore('utilisateur',{
             
         },
         async fetchOne(uid){
+            const db=useFirestore();
             const docRef = doc(db,"accounts",uid);
+           
             const docSnap = await getDoc(docRef);
-        
+            console.log("docSnap",docSnap)
+            this.utilisateur=docSnap.data();
+            console.log("this.utilisateur",this.utilisateur)
            return docSnap.data();
         },
 
         //Update
         
         async update(uid,userData,userInfoData,auth){
+            console.log("userInfoData",userInfoData,auth)
+            console.log("uid",uid)
+            console.log("auth",auth)
+            console.log("userData",userData)
 
             // onfait la sauvegarde dans la partie authentification
             updateEmail(auth.currentUser,userData.email)
            
-
+            const db=useFirestore();
             // on fait la sauvegarde du reste de l'utilisateur
             const docRef = doc(db,"accounts",uid);
+            console.log("docRef",docRef)
             
             updateDoc(docRef,userInfoData);
            
@@ -93,7 +102,7 @@ const useUtilisateurStore = defineStore('utilisateur',{
         async logIn(email,password){
             const auth = getAuth();
             try {
-            console.log('email',email, 'password',password);
+           
             const request = await signInWithEmailAndPassword(auth, email, password)
            
             return request.user;

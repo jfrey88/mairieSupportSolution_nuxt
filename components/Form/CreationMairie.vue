@@ -118,7 +118,7 @@
       </v-row>
 
       <!-- ---------------- Si c'est une création de mairie ----------------    -->
-      <v-row v-if="!userData || !userData.uid">
+      <v-row v-if="!props.userData">
         <v-col cols="12" md="6"><!--      champ password    -->
           <v-text-field
             v-model="user.password"
@@ -176,7 +176,7 @@
            
           >
             {{
-              userData.uid
+              props.userData
                 ? "Enregistrer les modifications"
                 : "inscrire ma mairie"
             }}</v-btn
@@ -262,19 +262,21 @@ const submitMairie = async () => {
   if (!valid) return; // si ce n'est pas valide on quitte le submit
 
   const auth = getAuth();
-  if (props.userData.uid) {
+
+  console.log(auth)
+  if (props.userData) {
     // Si c'est un utilisateur déjà connecté
     // on effectue la mise à jour de l'utilisateur
     await utilisateurStore.update(
-      props.userData.uid,
+      props.userData.value.uid,
       user.value,
       userInfos.value,
       auth
     );
     
-    nouvelleMairie.value.representant_uid = props.userData.uid;
+    nouvelleMairie.value.representant_uid = props.userData.value.uid;
     // on effectue la mise à jour de la mairie
-    await mairieStore.update(nouvelleMairie.value,props.userData.uid);
+    await mairieStore.update(nouvelleMairie.value,props.userData.value.uid);
 
     
     
@@ -293,15 +295,19 @@ const submitMairie = async () => {
 };
 
 onMounted(async () => {
-
-  user.value.email = props.userData.email;
-  user.value.password = props.userData.password;
+  
+  user.value.email = props.userData.value.email;
+  user.value.password = props.userData.value.password;
+  
   if (props.mairieData.representant_uid  ) {
     nouvelleMairie.value = { ...props.mairieData }; // copie par référence
   }
+
+  
   if (props.userInfoData) {
     userInfos.value = { ...props.userInfoData };
   }
+  console.log("user dans CrteationMairie ---->",user.value.email)
 });
 
 //mairieStore.create(mairieTest);

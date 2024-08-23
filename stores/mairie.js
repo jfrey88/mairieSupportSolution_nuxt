@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, getDocs, query, where ,updateDoc } from "firebase/firestore";
 // import {  db } from '../plugins/firebase';
-import { useDatabaseList, useDatabaseObject, useDatabase } from 'vuefire'
-const db=useDatabase();
 
 
 const useMairieStore = defineStore('mairie',{
@@ -35,10 +33,11 @@ const useMairieStore = defineStore('mairie',{
         async fetch(params){ 
       
             // will perform the action of fetching all the records
-            // from the database / cache / array containing all the records
         
-            const q=query(collection(db,"mairies"), where (params[0],"==",params[1]));
-           const data=await getDocs(q);
+            const db=useFirestore();
+            const mairiesCollections=collection(db, 'mairies')
+            const data=await getDocs(query(mairiesCollections, where(params[0],"==",params[1])));
+
            const mairieData=data.docs[0];
             this.mairie = mairieData.data();
        
@@ -47,7 +46,7 @@ const useMairieStore = defineStore('mairie',{
 
         //Update
         async update(mairieData,uid){
-            
+            const db=useFirestore();
             const q=query(collection(db,"mairies"), where ("representant_uid", "==",uid));
             const data=await getDocs(q);
             

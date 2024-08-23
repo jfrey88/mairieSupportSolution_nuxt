@@ -68,10 +68,10 @@
   import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
   const isUserLoaded = useIsCurrentUserLoaded()
   const user = useCurrentUser()
-  console.log(user, isUserLoaded.value)
+ 
   const utilisateurStore = useUtilisateurStore();
 
-  console.log(utilisateurStore);
+ 
 
 
 </script>

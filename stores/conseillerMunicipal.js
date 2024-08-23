@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, query, getDocs, doc, deleteDoc, where, updateDoc  } from "firebase/firestore";
+import { da } from "vuetify/locale";
 // import {  db } from '../plugins/firebase';
 
 const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
@@ -44,11 +45,18 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
         //Read
         async fetch(params){ 
          
+            const db=useFirestore();
+            const conseillersCollections=collection(db, 'conseillers')
+            const data=await getDocs(query(conseillersCollections, where(params[0],"==",params[1])));
+
+
+            const conseillersData=data.docs.map((doc) => doc.data());
+
+          //  const tabConseiller=[];
+           // const conseillerData=data.docs;
+             this.conseillers = conseillersData;
            
-           const queryDocs = query(collection(db,"conseillers"), where (params[0],"==",params[1]));
-           let querySnapShot = await getDocs(queryDocs);
-          this.conseillers=querySnapShot;
-           return querySnapShot;
+            return conseillersData;
             // will perform the action of fetching all the records
             // from the database / cache / array containing all the records
         },
@@ -56,7 +64,7 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
         //Update
         
         async update(conseiller,id){
-     
+            const db=useFirestore();
             const docRef = doc(db,"conseillers",id);
             
             await updateDoc(docRef,conseiller);

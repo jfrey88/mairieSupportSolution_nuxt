@@ -44,6 +44,22 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         },
         //Read
         async fetch(params){ 
+
+            const db=useFirestore();
+            const reunionsCollections=collection(db, 'reunions')
+            const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1])));
+        
+
+            const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
+       
+          //  const tabConseiller=[];
+           // const conseillerData=data.docs;
+             this.reunions = reunionsData;
+           
+            return reunionsData;
+
+
+
             const queryDocs = await query(collection(db,"reunions"), where (params[0],"==",params[1]));
             let querySnapShot = await getDocs(queryDocs);
            

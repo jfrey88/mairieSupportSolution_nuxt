@@ -3,7 +3,7 @@ import { addDoc, collection, query, getDocs,  where, orderBy } from "firebase/fi
 // import {  db } from '../plugins/firebase';
 const useOrdresDuJourStore = defineStore('ordresDuJour',{
     state:() => {
-
+        ordres:[]
     },
     getters : {
 
@@ -25,12 +25,22 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
         },
         //Read
         async fetch(params){ 
+
+            const db=useFirestore();
+            const ordresDuJourCollections=collection(db, 'ordres')
+          
+            const data=await getDocs(query(ordresDuJourCollections, where(params[0],"==",params[1]),orderBy("numero")));
+          
+
+            const ordresData=data.docs.map((doc) => ({...doc.data(),id : doc.id}));
+          
+          //  const tabConseiller=[];
+           // const conseillerData=data.docs;
+             this.ordres = ordresData;
            
-            const queryDocs = query(collection(db,"ordres"), where (params[0],"==",params[1]),orderBy("numero"));
-            console.log("queryDocs",queryDocs);
-            let querySnapShot = await getDocs(queryDocs);
+            return ordresData;
            
-            return querySnapShot
+         
         },
 
         //Update
