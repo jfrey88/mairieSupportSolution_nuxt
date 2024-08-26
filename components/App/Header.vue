@@ -14,7 +14,7 @@
 
     <v-spacer></v-spacer>
 
-    <div v-if="isUserLoaded.value">
+    <div v-if="isUserLoaded">
       <!-- *********************  BOUTON SE DECONNECTER **************************-->
 
       <v-btn

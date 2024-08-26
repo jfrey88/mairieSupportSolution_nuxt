@@ -97,7 +97,7 @@ const useUtilisateurStore = defineStore('utilisateur',{
            await signOut(auth);
         },
         async logIn(email,password){
-            console.log("dans login email : ",email," password : ",password);
+            
             const auth = getAuth();
             try {
            

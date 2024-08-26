@@ -19,6 +19,7 @@
 import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
   const isUserLoaded = useIsCurrentUserLoaded()
   const user = useCurrentUser()
+  console.log('je passe par app.vue');
 </script>
 <style>
 #app {

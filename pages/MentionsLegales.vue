@@ -55,14 +55,10 @@ judiciaires telles que prévues par la règlementation en vigueur.
 
 <div class="text-center m-2">
   <v-btn 
-       @click="home"
+       to="/"
       >retour </v-btn>
     </div>
   </div>    
 </template>
 
-<script setup>
-const home = ()=>{
-  navigateTo('/');
-}
-</script>
+

@@ -220,6 +220,10 @@
       .replace(/\\n/g, "<br />");
   });
   
+      console.log('*********************************************************');
+      console.log('*                  Mairie index.vue                     *');
+      console.log('*********************************************************');
+      console.log('user->',props);
   // function pour supprimer une reunion
   const deleteReunion = async (reunion) => {
     reunionConseilMunicipal.delete(reunion);

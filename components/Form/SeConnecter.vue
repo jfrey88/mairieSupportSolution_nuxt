@@ -85,7 +85,7 @@ const submitConnect = async () => {
   const { valid } = await formConnect.value.validate();
   if (!valid) return; // si ce n'est pas valide on quitte le submit
   const result = await utilisateurStore.logIn(user.value.email, user.value.password)
-  console.log("result login ",result);
+;
   if (result.error){
     const hasError = result.error
   if (hasError) {

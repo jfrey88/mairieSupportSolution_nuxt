@@ -107,9 +107,7 @@ const reunion = ref({
 
 //************************** SUBMIT DU FORMULAIRE ******************************************* */
 const submitReunion = async () => {
-  console.log(
-    "----------------- je suis dans le submit reunion ----------------------------"
-  );
+
   // on valide les réponses données
   // const { valid } = await formConseiller.value.validate();
   // if (!valid) return; // si ce n'est pas valide on quitte le submit
@@ -146,9 +144,7 @@ const submitReunion = async () => {
 
 //------------------- une fois la page chargée
 onMounted(async () => {
-  console.log(
-    "----------------- je suis dans le on mounted reunion ----------------------------"
-  );
+
   // si c'est une création je charge les valeurs de la commune
   if (!props.reunionData) {
     mairie.value = await mairieStore.fetch([

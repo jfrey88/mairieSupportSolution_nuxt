@@ -16,7 +16,7 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
         //Create
         async create(ordreDuJour){
             const db=useFirestore();
-            console.log("ordre du jour dans create ordre du jour ",ordreDuJour)
+         
             const result = await addDoc(collection(db,"ordres"),ordreDuJour);
 
             // receive one object as parameter and will perform,
