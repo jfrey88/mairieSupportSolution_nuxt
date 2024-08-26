@@ -10,9 +10,15 @@
       </p>
       <v-spacer></v-spacer>
       <v-btn 
+        @click="MentionsLegales"
         
       > Informations légales </v-btn>
       <!-- -->
     </v-footer>
 </template>
 
+<script setup>
+  const MentionsLegales = ()=>{
+    navigateTo('/MentionsLegales');
+  }
+</script>

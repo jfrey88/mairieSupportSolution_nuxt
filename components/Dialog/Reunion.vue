@@ -6,7 +6,7 @@
                     color="orange-darken-4"
                     prepend-icon="mdi-plus"
                     text="Ajouter une réunion"
-                    @click="isActive.value = false"
+                    
                     class="mt-6"
                   ></v-btn>
                 </template>
@@ -15,7 +15,9 @@
                   <v-card title="Ajout d'une réunion">
                     <v-card-text>
                       <FormCreationReunion 
-                      :mairieData="props.mairieData" />
+                      :userData="props.userData" 
+                      
+                      />
                     </v-card-text>
 
                     <v-card-actions>
@@ -23,7 +25,7 @@
 
                       <v-btn
                         text="Annuler"
-                        @click="isActive.value = false"
+                        
                       ></v-btn>
                     </v-card-actions>
                   </v-card>
@@ -33,7 +35,7 @@
 <script setup>
 import { defineProps} from "vue";
 const props = defineProps({
-  mairieData: {
+  userData: {
     default: {},
   },
   reunionData: {

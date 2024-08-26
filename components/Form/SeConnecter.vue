@@ -7,7 +7,7 @@
           <p>Connectez vous</p>
         </v-col>
         
-        {{ user }}
+       
         <v-col cols="12" md="6">
           <v-text-field
             v-model="user.email"
@@ -46,7 +46,7 @@
   </v-form>
 </template>
 <script setup>
-import { ref, defineProps, onMounted } from "vue";
+import { ref, defineProps } from "vue";
 import { useUtilisateurStore } from '@/stores/utilisateur';
 
 //************************** INITILISATION******************************************* */
@@ -58,8 +58,8 @@ const props = defineProps({
   }
 });
 const user = ref({
-  email: "contact@djeffrey.fr",
-  password: "123456789",
+  email: "",
+  password: "",
 });
 
 
@@ -85,7 +85,7 @@ const submitConnect = async () => {
   const { valid } = await formConnect.value.validate();
   if (!valid) return; // si ce n'est pas valide on quitte le submit
   const result = await utilisateurStore.logIn(user.value.email, user.value.password)
-
+  console.log("result login ",result);
   if (result.error){
     const hasError = result.error
   if (hasError) {
@@ -93,17 +93,14 @@ const submitConnect = async () => {
     errorMessages.value.push("Email ou mot de passe incorrect")
     return
   }
+  }else{
+    
   }
 
 
 };
 
 
-onMounted(async () => {
 
-  // user.value.email = props.userData.email;
-  // user.value.password = props.userData.password;
-  
-});
 
 </script>

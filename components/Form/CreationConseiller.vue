@@ -221,13 +221,11 @@ const submitConseiller = async () => {
 //------------------- une fois la page chargée
 onMounted(async () => {
 
-  console.log('props.conseillerData ',props.conseillerData);
-  console.log('props.userData ',props.userData);
-  console.log('props.mairieData ',props.mairieData);
+
 
     // si c'est une création je charge les valeurs de la commune
   if (Object.keys(props.conseillerData).length==0) {
-    console.log('je passe là');
+    
     mairie.value = await mairieStore.fetch([
       "representant_uid",
       props.mairieData.representant_uid,
@@ -245,13 +243,12 @@ onMounted(async () => {
 
       conseiller.value.adresse = "";
       conseiller.value.id = "";
-      console.log('---------------- conseiller dans creation conseiller on Mounted ------------')
-    console.log(conseiller)
+    
 
 
   // si ce n'est pas une création je charge les valeurs du conseiller
 } else {
-  console.log('je passe plutot là');
+
 
     conseiller.value.codePostal = props.conseillerData.codePostal;
     conseiller.value.nom = props.conseillerData.nom;

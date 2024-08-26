@@ -34,9 +34,11 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         // CRUD | Create, Read, Update, Delete
         //Create
         async create(reunion){
-   
+            const db=useFirestore();
+            console.log('----------------- je suis dans create reunion ----------------------------');
+            console.log('reunion : ',reunion);
             const result = await addDoc(collection(db,"reunions"),reunion);
-
+            this.reunions.push(reunion)
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array
             // containing all the records

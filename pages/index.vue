@@ -1,9 +1,11 @@
 <template>
-  <div v-if="user">
-    <Mairie :user="user"/>
+  <div v-if="isUserLoaded.value">
+    <h2>JE  SUIS  CONNECTE</h2>
+    <!--<Mairie :user="user"/>-->
   </div>
   <div v-else>
-    <div class="d-flex justify-center mb-6">
+    <h2>JE NE SUIS PAS CONNECTE</h2>
+   <!-- <div class="d-flex justify-center mb-6">
       <img alt="Vue logo" src="../assets/img/logo.png" style="height: 20vh" />*
     </div>
     <div class="d-flex justify-center mb-6">
@@ -37,7 +39,7 @@
           cover
         ></v-carousel-item>
       </v-carousel>
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -45,9 +47,21 @@
 import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
   const isUserLoaded = useIsCurrentUserLoaded()
   const user = ref(null)
+
+  console.log("user.value--->",user.value)
+      console.log('*********************************************************');
+      console.log('*                  index.vue                            *');
+      console.log('*********************************************************');
+      console.log('isUserLoaded->',isUserLoaded.value);
+
   watch(isUserLoaded, () => {
     if (isUserLoaded.value) {
       user.value = useCurrentUser()
+      console.log("user.value--->",user.value)
+      console.log('*********************************************************');
+      console.log('*                  index.vue  dans le watch             *');
+      console.log('*********************************************************');
+      console.log('isUserLoaded->',isUserLoaded.value);
     }
   })
 

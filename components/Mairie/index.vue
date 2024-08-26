@@ -70,7 +70,10 @@
           </v-col>
           <v-col cols="12" md="3">
             <!-- ---------------- BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
-            <DialogReunion :mairieData="user" />
+            <DialogReunion 
+            :userData="user"
+           
+             />
             <!-- ----------------FIN BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
           </v-col>
   
@@ -159,7 +162,7 @@
                   <td style="vertical-align: middle" class="border-sm">
                     <!-- ---------------- BOITE DE DIALOGUE MODIFIER REUNION  --------------------------->
                     <DialogModificationReunions
-                      :mairieData="user"
+                      :userData="user"
                       :reunionData="reunion"
                     />
                     <v-btn
