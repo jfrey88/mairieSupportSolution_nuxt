@@ -105,7 +105,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col cols="12" md="6"><!--      champ email user    -->
+        <v-col v-if="!utilisateurStore.utilisateur.uid" cols="12" md="6"><!--      champ email user    -->
           <v-text-field
             v-model="user.email"
             :counter="50"
@@ -115,10 +115,21 @@
             required
           ></v-text-field>
         </v-col>
+        <v-col v-else cols="12" md="6"><!--      champ email user    -->
+          <v-text-field
+            v-model="user.email"
+            :counter="50"
+            :rules="[rules.emailValid]"
+            label="Pour modifier votre email veuillez nous contacter"
+            readonly
+            
+            required
+          ></v-text-field>
+        </v-col>
       </v-row>
 
       <!-- ---------------- Si c'est une création de mairie ----------------    -->
-      <v-row v-if="!props.userData">
+      <v-row v-if="!utilisateurStore.utilisateur.uid">
         <v-col cols="12" md="6"><!--      champ password    -->
           <v-text-field
             v-model="user.password"
@@ -176,7 +187,7 @@
            
           >
             {{
-              props.userData
+              utilisateurStore.utilisateur.uid
                 ? "Enregistrer les modifications"
                 : "inscrire ma mairie"
             }}</v-btn
@@ -193,19 +204,12 @@
 
 //************************** IMPORTS******************************************* */
 import { useUtilisateurStore } from "@/stores/utilisateur";
-import { ref, defineProps, onMounted, defineEmits } from "vue";
+import { ref,  onMounted, defineEmits } from "vue";
 import { getAuth } from "firebase/auth";
 import { useMairieStore } from "@/stores/mairie";
 
 //************************** INITILISATION******************************************* */
 
-const props = defineProps({
-  userData: {
-    default: {},
-  },
-  mairieData: { default: {} },
-  userInfoData: { default: {} },
-});
 
 const user = ref({
   email: "",
@@ -263,19 +267,19 @@ const submitMairie = async () => {
 
   const auth = getAuth();
 
-  if (props.userData) {
+  if (utilisateurStore.utilisateur.uid) {
     // Si c'est un utilisateur déjà connecté
     // on effectue la mise à jour de l'utilisateur
     await utilisateurStore.update(
-      props.userData.value.uid,
+      utilisateurStore.utilisateur.uid,
       user.value,
       userInfos.value,
       auth
     );
     
-    nouvelleMairie.value.representant_uid = props.userData.value.uid;
+    nouvelleMairie.value.representant_uid = utilisateurStore.utilisateur.uid;
     // on effectue la mise à jour de la mairie
-    await mairieStore.update(nouvelleMairie.value,props.userData.value.uid);
+    await mairieStore.update(nouvelleMairie.value,utilisateurStore.utilisateur.uid);
 
     
     
@@ -295,17 +299,20 @@ const submitMairie = async () => {
 
 onMounted(async () => {
   
-  user.value.email = props.userData.value.email;
-  user.value.password = props.userData.value.password;
+  user.value.email = utilisateurStore.utilisateur.email;
   
-  if (props.mairieData.representant_uid  ) {
-    nouvelleMairie.value = { ...props.mairieData }; // copie par référence
+  
+  if (mairieStore.mairie.representant_uid  ) {
+    nouvelleMairie.value = { ...mairieStore.mairie }; // copie par référence
   }
 
   
-  if (props.userInfoData) {
-    userInfos.value = { ...props.userInfoData };
+  if (utilisateurStore.utilisateur.uid)
+  {
+    userInfos.value = { ...utilisateurStore.utilisateur };
   }
+    
+ 
   
 });
 

@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, query, getDocs,  where, deleteDoc, doc } from "firebase/firestore";
+import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+
 // import {  db } from '../plugins/firebase';
 const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
     state:() => {
@@ -52,6 +54,25 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         
 
             const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
+
+            const ordresDuJour = useOrdresDuJourStore();
+            reunionsData.forEach(async (reunion) => {
+                reunion.ordres="";
+
+                const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
+                reunion.ordres = ordrerecept;
+             /*   ordrerecept.forEach((ordre) => {
+
+                   
+                    
+                    reunion.ordres = reunion.ordres.concat(
+                      ordre.numero + 1,
+                      ". ",
+                      ordre.ordre,
+                      "<br />"
+                    );
+                  });*/
+            })
        
           //  const tabConseiller=[];
            // const conseillerData=data.docs;
@@ -95,12 +116,12 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             // containing all the records
         },
         //Delete
-        async delete(reunion){
-            const uid=reunion.representant_uid;
-            const docRef = doc(db,"reunions",reunion.id);
+        async delete(id){
+            const db=useFirestore();
+            const docRef = doc(db,"reunions",id);
            
             await deleteDoc(docRef);
-            this.fetch(["representant_uid",uid]);
+            
         
             // receive one object as parameter and will perform,
             // the action of delete the object in the database / cache / array

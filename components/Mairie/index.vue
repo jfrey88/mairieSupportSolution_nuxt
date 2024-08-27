@@ -32,11 +32,7 @@
             <p class="mt-2" v-if="mairie.texteOuverture" v-html="formatText"></p>
   
             <!-- ---------------- BOITE DE DIALOGUE MODIF MAIRIE  --------------------------->
-            <DialogModificationMairie
-              :userData="user"
-              :mairieData="mairieStore.mairie"
-              :userInfoData="utilisateurStore.utilisateur"
-            />
+            <DialogModificationMairie/>
           </v-col>
   
           <!-- **************** COLONNE DE DROITE INFO CONSEILLERS **************************-->
@@ -120,11 +116,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="reunion in reunions" :key="reunion.date">
-                  <!--  boucle sur les conseillers-->
+                <tr v-for="reunion in reunionConseilMunicipal.reunions" :key="reunion.date">
+                  <!--  boucle sur les conseillers v-html="reunion.ordres"-->
                   <td class="text-center border-sm">{{ reunion.date }}</td>
                   <td class="text-left border-sm">
-                     <p v-html="reunion.ordres"></p>
+                     <p v-for="ordre in reunion.ordres" :key="ordre.numero" >
+                       {{ ordre.ordre }}</p>
                 
                   </td>
                   <td style="vertical-align: middle" class="border-sm">
@@ -196,7 +193,7 @@
 
   /************************ Initialisation des stors ********************************* */
   const mairieStore = useMairieStore();
-  const utilisateurStore = useUtilisateurStore();
+
   const conseillerMunicipalStore = useConseillerMunicipalStore();
   const reunionConseilMunicipal = useReunionConseilMunicipalStore();
   const ordresDuJour = useOrdresDuJourStore();
@@ -213,21 +210,30 @@
   const props = defineProps({
     user: Object,
   });
+
+
+  const utilisateurStore = useUtilisateurStore();
+  useUtilisateurStore.fetchUtilisateur;
+  let user = utilisateurStore.utilisateur;
+
+
+
   // fonction pour afficher correctement le retour chariot
   const formatText = computed(() => {
     return ["ouverture du secrétariat ", mairie.value.texteOuverture]
       .join("<br />")
       .replace(/\\n/g, "<br />");
   });
-  
-      console.log('*********************************************************');
-      console.log('*                  Mairie index.vue                     *');
-      console.log('*********************************************************');
-      console.log('user->',props);
+
   // function pour supprimer une reunion
   const deleteReunion = async (reunion) => {
-    reunionConseilMunicipal.delete(reunion);
-    reunions.value = reunionConseilMunicipal.withId;
+    useNuxtApp().$myLogger(reunion, 'reunion',"index.vue")
+    // on supprime les ordres du jour de la réunion
+    ordresDuJour.delete(reunion.id);
+    // on supprime la réunion
+   reunionConseilMunicipal.delete(reunion.id);
+   reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
+    //reunions.value = reunionConseilMunicipal.withId;
   };
   
 
@@ -235,32 +241,34 @@
 /******************* ON CHERCHE LES INFOS DE LA PERSONNE ****************************** */
 const fetchUtilisateur = async (user) => {
   
-  userInfo.value = await utilisateurStore.fetchOne(user.value.uid);
+  userInfo.value = await utilisateurStore.fetchOne(user.uid);
 
 }
 
-await fetchUtilisateur(props.user);
+await fetchUtilisateur(user);
 
 /******************* ON CHERCHE LES INFOS DE LA MAIRIE ****************************** */
   const fetchMairie = async (user) => {
-    mairie.value = await mairieStore.fetch(["representant_uid", user.value.uid]);
+    mairie.value = await mairieStore.fetch(["representant_uid", user.uid]);
   };
 
-  await fetchMairie(props.user);
+  await fetchMairie(user);
 
 
   /******************* ON CHERCHE LES CONSEILLERS DE LA MAIRIE ****************************** */
   const fetchConseillers = async(user) => {
-    conseillers.value = await conseillerMunicipalStore.fetch(["representant_uid", user.value.uid]);
+    conseillers.value = await conseillerMunicipalStore.fetch(["representant_uid", user.uid]);
   }
-  await fetchConseillers(props.user);
+  await fetchConseillers(user);
   
 /******************** ON CHERCHE LES REUNIONS DU CONSEIL MUNICIPAL DE LA MAIRIE *********************/
   const fetchReunion = async(user) =>{
-    reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.value.uid]);
+    reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
   }
-  await fetchReunion(props.user)
-  
+  await fetchReunion(user)
+    reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
+    console.log(reunionConseilMunicipal.reunions)
+  /*
   reunions.value.forEach(async (reunion) => {
       reunion.ordres = "";
       // on récupère pour chaque réunion les ordres du jours
@@ -279,7 +287,7 @@ await fetchUtilisateur(props.user);
         );
       });
      // reunions.value.push(reunion);
-    });
+    });*/
 
   
   

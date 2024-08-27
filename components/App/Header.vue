@@ -18,7 +18,6 @@
       <!-- *********************  BOUTON SE DECONNECTER **************************-->
 
       <v-btn
-        v-bind="activatorProps"
         @click="logout"
         prepend-icon="mdi-account"
         text=" Se déconnecter"
@@ -64,10 +63,6 @@ import { getAuth } from "firebase/auth";
 const isUserLoaded = useIsCurrentUserLoaded();
 const user = useCurrentUser();
 
-console.log('*********************************************************');
-console.log('*                  Header                               *');
-console.log('*********************************************************');
-console.log('isUserLoaded->',isUserLoaded.value);
 const utilisateurStore = useUtilisateurStore();
 const auth = getAuth();
 

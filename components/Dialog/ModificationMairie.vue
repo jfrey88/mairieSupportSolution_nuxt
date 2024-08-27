@@ -16,9 +16,7 @@
       <v-card title="Modification des informations de la mairie">
         <v-card-text>
           <FormCreationMairie
-            :userData="props.userData"
-            :mairieData="props.mairieData"
-            :userInfoData="props.userInfoData"
+          
             @update:modelValue = "isActive.value = false"
           />
         </v-card-text>
@@ -32,21 +30,3 @@
     </template>
   </v-dialog>
 </template>
-<script setup>
-import { defineProps} from "vue";
-const props = defineProps({
-  userData: {
-    default: {},
-  },
-  mairieData: {
-    default: {},
-  },
-  userInfoData:{
-    default:{}
-  }
-});
-
-
-
-
-</script>

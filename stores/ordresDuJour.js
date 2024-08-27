@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, query, getDocs,  where, orderBy } from "firebase/firestore";
+import { addDoc, collection, query, getDocs,  where, orderBy,deleteDoc, collectionGroup, doc } from "firebase/firestore";
 // import {  db } from '../plugins/firebase';
 const useOrdresDuJourStore = defineStore('ordresDuJour',{
     state:() => {
@@ -52,8 +52,19 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
             // containing all the records
         },
         //Delete
-        delete(){
-         
+        async delete(id_reunion){
+            const db=useFirestore();
+            const q=query(collectionGroup(db,'ordres'), where ('id_reunion','==',id_reunion));
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(async(docu) => {
+                
+                const docRef = doc(db,"ordres",docu.id);
+           
+            
+                await deleteDoc(docRef);
+            });
+           
+      
             // receive one object as parameter and will perform,
             // the action of delete the object in the database / cache / array
             // containing all the records

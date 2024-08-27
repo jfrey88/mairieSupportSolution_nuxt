@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 // import { useCollection }  from 'vuefire';
 // import { collection, addDoc  } from 'firebase/firestore';
 import { createUserWithEmailAndPassword, updateEmail, signOut, getAuth, signInWithEmailAndPassword } from "firebase/auth";
-
+import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
  import { setDoc, doc, getDoc,updateDoc,deleteDoc } from "firebase/firestore";
 
 
@@ -48,10 +48,16 @@ const useUtilisateurStore = defineStore('utilisateur',{
             
         },
         //Read
-        fetch(){ 
-         
+        fetchUser(){ 
+            
+            const user=useCurrentUser();
+     
+            
+            this.utilisateur ={uid : user.value.uid, email :user.value.email}; 
+
             // will perform the action of fetching all the records
             // from the database / cache / array containing all the records
+
             
         },
         async fetchOne(uid){
@@ -59,9 +65,11 @@ const useUtilisateurStore = defineStore('utilisateur',{
             const docRef = doc(db,"accounts",uid);
            
             const docSnap = await getDoc(docRef);
-       
+            const email = this.utilisateur.email;
             this.utilisateur=docSnap.data();
-           
+            this.utilisateur.uid=uid;
+            this.utilisateur.email=email;
+            
            return docSnap.data();
         },
 
@@ -69,17 +77,23 @@ const useUtilisateurStore = defineStore('utilisateur',{
         
         async update(uid,userData,userInfoData,auth){
            
-
+        
             // onfait la sauvegarde dans la partie authentification
-            updateEmail(auth.currentUser,userData.email)
-           
+           //updateEmail(auth.currentUser,userData.email)
+           // console.log(result);
+            
+            console.log('update email passé');
             const db=useFirestore();
             // on fait la sauvegarde du reste de l'utilisateur
             const docRef = doc(db,"accounts",uid);
            
             
             updateDoc(docRef,userInfoData);
-           
+           // rajouetr ici la mise a jour du state
+            this.utilisateur.nom=userInfoData.nom;
+            this.utilisateur.prenom=userInfoData.prenom;
+            this.utilisateur.telephone=userInfoData.telephone;
+           // this.utilisateur.email=userData.email;
 
             //on fait la sauvegarde de la partie mairie
         },

@@ -17,9 +17,29 @@
 </template>
 <script setup>
 import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
+import { useUtilisateurStore } from "@/stores/utilisateur";
+import { useMairieStore } from "@/stores/mairie";
+
   const isUserLoaded = useIsCurrentUserLoaded()
-  const user = useCurrentUser()
-  console.log('je passe par app.vue');
+
+  const utilisateurStore = useUtilisateurStore();
+  const mairieStore = useMairieStore();
+
+  watch(isUserLoaded, async() => {
+    console.log('isUserLoaded->',isUserLoaded);
+    if (isUserLoaded.value) {
+     
+      await utilisateurStore.fetchUser(); 
+    
+      
+      await mairieStore.fetch(["representant_uid", utilisateurStore.utilisateur.uid]);
+    
+    }
+  })
+
+
+
+
 </script>
 <style>
 #app {

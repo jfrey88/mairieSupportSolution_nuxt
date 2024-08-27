@@ -44,24 +44,13 @@
 
 <script setup>
 import { useCurrentUser, useIsCurrentUserLoaded } from 'vuefire'
+import { useUtilisateurStore } from "@/stores/utilisateur";
+
   const isUserLoaded = useIsCurrentUserLoaded()
-  const user = ref(null)
+
+  const utilisateurStore = useUtilisateurStore();
+  let user = utilisateurStore.utilisateur;
+
 
   
-
-      console.log('*********************************************************');
-      console.log('*                  index.vue                            *');
-      console.log('*********************************************************');
-      console.log('isUserLoaded->',isUserLoaded.value);
-
-  watch(isUserLoaded, () => {
-    if (isUserLoaded.value) {
-      user.value = useCurrentUser()
-      console.log('*********************************************************');
-      console.log('*                  index.vue  dans le watch             *');
-      console.log('*********************************************************');
-      console.log('isUserLoaded->',isUserLoaded.value);
-    }
-  })
-
 </script>
