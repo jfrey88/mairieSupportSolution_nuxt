@@ -33,7 +33,7 @@ const useMairieStore = defineStore('mairie',{
         async fetch(params){ 
       
             // will perform the action of fetching all the records
-        
+            useNuxtApp().$myLogger(params, 'params',"mairie.js fetch")
             const db=useFirestore();
             const mairiesCollections=collection(db, 'mairies')
             const data=await getDocs(query(mairiesCollections, where(params[0],"==",params[1])));

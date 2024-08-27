@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, query, getDocs,  where, deleteDoc, doc } from "firebase/firestore";
+import { addDoc, collection, query, getDocs,getDoc,  where, deleteDoc, doc } from "firebase/firestore";
 import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 // import {  db } from '../plugins/firebase';
@@ -58,7 +58,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const ordresDuJour = useOrdresDuJourStore();
             reunionsData.forEach(async (reunion) => {
                 reunion.ordres="";
-
+                useNuxtApp().$myLogger(reunion.id, 'reunion.id',"reunionConseilMunicipal.js")
                 const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
                 reunion.ordres = ordrerecept;
              /*   ordrerecept.forEach((ordre) => {
@@ -107,7 +107,14 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             return allReunions
             
         },
-
+        async fetchOne(id_reunion){ 
+            const db=useFirestore();
+            const docRef = doc(db,"reunions",id_reunion);
+           
+            const docSnap = await getDoc(docRef);
+            
+           return docSnap.data();
+        },
         //Update
         update(){
            

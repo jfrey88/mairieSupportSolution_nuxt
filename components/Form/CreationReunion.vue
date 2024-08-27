@@ -82,7 +82,7 @@ const props = defineProps({
     default: {},
   },
 });
-
+useNuxtApp().$myLogger(props.userData, 'props.userData',"creation reunion")
 // ********************* règles pour les différens champs ************************
 
 const mairie = ref({});
@@ -112,10 +112,10 @@ const submitReunion = async () => {
   // const { valid } = await formConseiller.value.validate();
   // if (!valid) return; // si ce n'est pas valide on quitte le submit
   const tabOrdreDuJour = reunion.value.ordreDuJour.split("\n");
-
+  useNuxtApp().$myLogger(props.userData, 'props.userData',"creation reunion submit")
   delete reunion.value.ordreDuJour;
-  reunion.value.representant_uid = props.userData.value.uid;
-
+  reunion.value.representant_uid = props.userData.uid;
+  useNuxtApp().$myLogger(reunion.value.representant_uid, 'reunion.value.representant_uid',"creation reunion submit")
   const result = await reunionStore.create(reunion.value);
   const idReunion = result.id;
 

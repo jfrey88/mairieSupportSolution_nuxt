@@ -12,6 +12,9 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@pinia/nuxt": "^0.5.3",
+    "docx": "^8.5.0",
+    "file-saver": "^2.0.5",
+    "file-server": "^2.2.1",
     "firebase": "^10.13.0",
     "nuxt": "^3.12.4",
     "nuxt-vuefire": "^1.0.4",

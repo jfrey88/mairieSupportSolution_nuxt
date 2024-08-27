@@ -10,7 +10,7 @@
   </template>
 
   <template v-slot:default="{ isActive }">
-    <v-card title="Modification d'une réunion conseiller">
+    <v-card title="Modification d'un conseiller">
       <v-card-text>
         <FormCreationConseiller
           :mairieData="props.mairieData"

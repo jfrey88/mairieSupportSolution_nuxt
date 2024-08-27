@@ -125,11 +125,13 @@
                 
                   </td>
                   <td style="vertical-align: middle" class="border-sm">
-                    <v-btn class="my-4">envoyer </v-btn><br />
-                    <v-btn 
-                      class="my-4"
-                      
-                      >imprimer </v-btn>
+                    <v-btn class="my-4"
+                     
+                      :to="`/convocation/${reunion.id}`"
+                     >
+                        
+                        créer 
+                    </v-btn>
                   </td>
                   <td style="vertical-align: middle" class="border-sm">
                     <div v-if="reunion.isConvocationOk">
@@ -266,28 +268,9 @@ await fetchUtilisateur(user);
     reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
   }
   await fetchReunion(user)
-    reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
+   
     console.log(reunionConseilMunicipal.reunions)
-  /*
-  reunions.value.forEach(async (reunion) => {
-      reunion.ordres = "";
-      // on récupère pour chaque réunion les ordres du jours
-
-      const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
-      
-      ordrerecept.forEach((ordre) => {
-
-       
-        ordres.value.push(ordre.ordre);
-        reunion.ordres = reunion.ordres.concat(
-          ordre.numero + 1,
-          ". ",
-          ordre.ordre,
-          "<br />"
-        );
-      });
-     // reunions.value.push(reunion);
-    });*/
+ 
 
   
   
