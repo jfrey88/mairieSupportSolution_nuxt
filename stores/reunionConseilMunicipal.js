@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, query, getDocs,getDoc,  where, deleteDoc, doc } from "firebase/firestore";
+import { addDoc, collection, query, getDocs,getDoc,  where, deleteDoc, doc,updateDoc } from "firebase/firestore";
 import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 // import {  db } from '../plugins/firebase';
@@ -134,7 +134,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
                 console.log("id_reunion",id_reunion)
                // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
                
-                const docRef = doc(db,"reunion",id_reunion);
+                const docRef = doc(db,"reunions",id_reunion);
                 console.log("docRef ",docRef)
 
                 const docSnap = await getDoc(docRef);

@@ -167,5 +167,9 @@ const dateduJourTxt = () => {
 
 
 /******************* On récupère l'ordre du jour de cette réunion *********************************/
-reunionConseilMunicipal.updateisConvocation(id_reunion);
+const updateConvoc = async() => {
+  await reunionConseilMunicipal.updateisConvocation(id_reunion);
+}
+updateConvoc();
+
 </script>

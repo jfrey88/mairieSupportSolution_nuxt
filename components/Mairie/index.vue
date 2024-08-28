@@ -126,20 +126,20 @@
                   </td>
                   <td style="vertical-align: middle" class="border-sm">
                     <v-btn class="my-4"
-                     
+                      color="blue-lighten-4"
                       :to="`/convocation/${reunion.id}`"
                      >
                         
-                        créer 
+                        créer
                     </v-btn>
                   </td>
-                  <td style="vertical-align: middle" class="border-sm">
+                  <td style="vertical-align: middle" class="border-sm text-center">
                     <div v-if="reunion.isConvocationOk">
-                      <v-btn class="my-4">imprimer</v-btn><br />
-                      <v-btn class="my-4"
+                      <v-btn class="my-4" color="blue-lighten-4">imprimer</v-btn><br />
+                      <v-btn class="my-4" color="blue-lighten-4"
                         >ajouter une <br />absence/procuration</v-btn
                       ><br />
-                      <v-btn class="my-4"
+                      <v-btn class="my-4" color="blue-lighten-4"
                         >modifier une <br />absence/procuration</v-btn
                       ><br />
                     </div>
