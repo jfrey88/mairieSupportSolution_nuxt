@@ -55,10 +55,11 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
 
             const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
 
+            useNuxtApp().$myLogger(reunionsData, 'reunionsData',"reunionConseilMunicipal.js")
             const ordresDuJour = useOrdresDuJourStore();
             reunionsData.forEach(async (reunion) => {
                 reunion.ordres="";
-                useNuxtApp().$myLogger(reunion.id, 'reunion.id',"reunionConseilMunicipal.js")
+                
                 const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
                 reunion.ordres = ordrerecept;
              /*   ordrerecept.forEach((ordre) => {
@@ -112,8 +113,14 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const docRef = doc(db,"reunions",id_reunion);
            
             const docSnap = await getDoc(docRef);
-            
-           return docSnap.data();
+            const reunion=docSnap.data();
+            reunion.id=docSnap.id;
+            console.log("reunion ds fetchOne ",reunion)
+            const ordresDuJour = useOrdresDuJourStore();
+            const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
+            reunion.ordres = ordrerecept;
+            console.log("reunion",reunion);
+           return reunion;
         },
         //Update
         update(){
@@ -121,6 +128,30 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records
+        },
+        async updateisConvocation(id_reunion){
+                const db=useFirestore();
+                console.log("id_reunion",id_reunion)
+               // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
+               
+                const docRef = doc(db,"reunion",id_reunion);
+                console.log("docRef ",docRef)
+
+                const docSnap = await getDoc(docRef);
+                const reunion=docSnap.data();
+
+                console.log("reunion ds updateisConvocation ",reunion)
+
+
+                reunion.isConvocationOk=true;
+
+                
+                await updateDoc(docRef,reunion);
+                this.fetch(["representant_uid", reunion.representant_uid]);
+                // receive one object as parameter and will perform,
+                // the action of updating the object in the database / cache / array
+                // containing all the records
+    
         },
         //Delete
         async delete(id){
