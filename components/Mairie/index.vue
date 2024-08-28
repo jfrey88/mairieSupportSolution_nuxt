@@ -75,134 +75,7 @@
   
           <v-col cols="12" md="12">
             <!--  --------------------------- TABLE POUR AFFICHER LES REUNION DU CONSEIL MUNICIPAL --------------------------------->
-            <v-table class="border-md">
-              <thead>
-                <tr>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    Date
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    Ordre du jour
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    convocation
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    procuration
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    feuille présence
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    Procès verbal
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    Extrait registre
-                  </th>
-                  <th
-                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-                  >
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="reunion in reunionConseilMunicipal.reunions" :key="reunion.date">
-                  <!--  boucle sur les conseillers v-html="reunion.ordres"-->
-
-                  <!-- ---------------- DATE --------------------------->
-                  <td class="text-center border-sm">{{ reunion.date }}</td>
-
-                  <!-- ---------------- ORDRE DU JOUR --------------------------->
-                  <td class="text-left border-sm">
-                     <p v-for="ordre in reunion.ordres" :key="ordre.numero" >
-                       {{ ordre.ordre }}</p>
-                
-                  </td>
-
-                  <!-- ---------------- CONVOCATION --------------------------->
-                  <td style="vertical-align: middle" class="border-sm">
-                    <v-btn class="my-4"
-                      color="blue-lighten-4"
-                      :to="`/convocation/${reunion.id}`"
-                     >
-                        
-                        créer
-                    </v-btn>
-                  </td>
-
-                  <!-- ---------------- PROCURATION --------------------------->
-                  <td style="vertical-align: middle" class="border-sm text-center">
-                    <div v-if="reunion.isConvocationOk">
-                      <!-- ---------------- BOITE DE DIALOGUE AJOUTER PROCURATION --------------------------->
-                      <DialogProcuration
-                      :userData="user"
-                      :reunionData="reunion"/>
-                      <v-btn class="my-4" color="blue-lighten-4"
-                        >ajouter une <br />absence/procuration</v-btn
-                      ><br />
-                     
-                    </div>
-                  </td>
-
-                  <!-- ---------------- FEUILLE DE PRESENCE --------------------------->
-                  <td style="vertical-align: middle" class="border-sm text-center">
-                    <div v-if="reunion.isConvocationOk">
-                      <v-btn class="my-4" color="blue-lighten-4">imprimer</v-btn><br />
-                     
-                    </div>
-                  </td>
-
-                  <!-- ---------------- PROCES VERBAL --------------------------->
-                  <td style="vertical-align: middle" class="border-sm">
-                    <div v-if="reunion.isFeuillePresenceOk">
-                      <v-btn class="my-4">Délibérations</v-btn><br />
-                      <v-btn class="my-4"
-                        >Générer imprimer <br />procès verbal </v-btn
-                      ><br />
-                      <v-btn class="my-4">transmis prefecture</v-btn><br />
-                    </div>
-                  </td>
-
-                  <!-- ---------------- EXTRAIT REGISTRE --------------------------->
-                 <td style="vertical-align: middle" class="border-sm">
-                    <div v-if="reunion.isProcesVerbalOk">
-                      <v-btn class="my-4">Imprimer</v-btn><br />
-                    </div>
-                  </td>
-
-                  <!-- ---------------- ACTIONS --------------------------->
-                  <td style="vertical-align: middle" class="border-sm">
-                    <!-- ---------------- BOITE DE DIALOGUE MODIFIER REUNION  --------------------------->
-                    <DialogModificationReunions
-                      :userData="user"
-                      :reunionData="reunion"
-                    />
-                    <v-btn
-                      v-if="!reunion.isTransmisPrefecture"
-                      density="compact"
-                      @click="deleteReunion(reunion)"
-                      icon="mdi-delete"
-                      class="ml-2"
-                    ></v-btn>
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
+            <MairieReunions :mairie="mairieStore.mairie" :user="user"></MairieReunions>
           </v-col>
         </v-row>
       </v-container>
@@ -217,7 +90,6 @@
   import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
   import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
   import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
-  import { getDoc } from "firebase/firestore";
   
   import { ref, computed, onMounted } from "vue";
 
@@ -234,7 +106,6 @@
   const userInfo = ref({});
   const conseillers = ref([]);
   const reunions = ref([]);
-  const ordres = ref([]);
   // const odj = ref([]);
   
   const props = defineProps({
@@ -257,7 +128,6 @@
 
   // function pour supprimer une reunion
   const deleteReunion = async (reunion) => {
-    useNuxtApp().$myLogger(reunion, 'reunion',"index.vue")
     // on supprime les ordres du jour de la réunion
     ordresDuJour.delete(reunion.id);
     // on supprime la réunion
@@ -297,8 +167,6 @@ await fetchUtilisateur(user);
   }
   await fetchReunion(user)
    
-    console.log(reunionConseilMunicipal.reunions)
- 
 
   
   
