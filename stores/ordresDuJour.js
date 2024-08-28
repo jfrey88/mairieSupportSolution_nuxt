@@ -38,7 +38,6 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
           //  const tabConseiller=[];
            // const conseillerData=data.docs;
              this.ordres = ordresData;
-           
             return ordresData;
            
          

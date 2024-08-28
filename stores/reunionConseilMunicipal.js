@@ -55,57 +55,20 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
 
             const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
 
-            useNuxtApp().$myLogger(reunionsData, 'reunionsData',"reunionConseilMunicipal.js")
             const ordresDuJour = useOrdresDuJourStore();
-            reunionsData.forEach(async (reunion) => {
+            reunionsData.forEach(async (reunionData) => {
+                const reunion = ref(reunionData);
                 reunion.ordres="";
                 
-                const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
+                const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunionData.id]);
                 reunion.ordres = ordrerecept;
-             /*   ordrerecept.forEach((ordre) => {
 
-                   
-                    
-                    reunion.ordres = reunion.ordres.concat(
-                      ordre.numero + 1,
-                      ". ",
-                      ordre.ordre,
-                      "<br />"
-                    );
-                  });*/
             })
        
-          //  const tabConseiller=[];
-           // const conseillerData=data.docs;
              this.reunions = reunionsData;
            
             return reunionsData;
 
-
-
-            const queryDocs = await query(collection(db,"reunions"), where (params[0],"==",params[1]));
-            let querySnapShot = await getDocs(queryDocs);
-           
-
-            const allReunions=[];
-            querySnapShot.forEach(async (doc)=>{
-                const reunion=doc.data();
-                reunion.id=doc.id;
-                // const ordres = await getDocs(collection(db,"reunions",doc.id,"ordres"));
-                // reunion.ordreAll =[];
-                // ordres.forEach(ordre=>reunion.ordreAll.push(ordre.data()));
-               
-                allReunions.push(reunion);
-                
-            })
-            
-
-            this.$patch({
-                reunions:allReunions
-            })
-          //  const queryOrdres = query(collection(db,"reunions",querySnapShot.id);
-            
-            return allReunions
             
         },
         async fetchOne(id_reunion){ 
@@ -115,11 +78,10 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const docSnap = await getDoc(docRef);
             const reunion=docSnap.data();
             reunion.id=docSnap.id;
-            console.log("reunion ds fetchOne ",reunion)
             const ordresDuJour = useOrdresDuJourStore();
             const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
+            console.log(ordrerecept);
             reunion.ordres = ordrerecept;
-            console.log("reunion",reunion);
            return reunion;
         },
         //Update
@@ -131,20 +93,13 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         },
         async updateisConvocation(id_reunion){
                 const db=useFirestore();
-                console.log("id_reunion",id_reunion)
-               // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
                
                 const docRef = doc(db,"reunions",id_reunion);
-                console.log("docRef ",docRef)
 
                 const docSnap = await getDoc(docRef);
                 const reunion=docSnap.data();
 
-                console.log("reunion ds updateisConvocation ",reunion)
-
-
                 reunion.isConvocationOk=true;
-
                 
                 await updateDoc(docRef,reunion);
                 this.fetch(["representant_uid", reunion.representant_uid]);
