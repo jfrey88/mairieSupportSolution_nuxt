@@ -7,6 +7,7 @@
 
         <v-col cols="12" md="6">
           <!--      champ date    -->
+          <VDateInput></VDateInput>
           <v-text-field
             v-model="reunion.date"
             :counter="10"
