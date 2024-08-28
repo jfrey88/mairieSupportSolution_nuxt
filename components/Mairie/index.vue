@@ -148,7 +148,7 @@
                   <!-- ---------------- PROCURATION --------------------------->
                   <td style="vertical-align: middle" class="border-sm text-center">
                     <div v-if="reunion.isConvocationOk">
-                      <!-- ---------------- BOITE DE DIALOGUE MODIFIER REUNION  --------------------------->
+                      <!-- ---------------- BOITE DE DIALOGUE AJOUTER PROCURATION --------------------------->
                       <DialogProcuration
                       :userData="user"
                       :reunionData="reunion"/>

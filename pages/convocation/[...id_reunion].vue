@@ -113,6 +113,8 @@ import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
 import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
+
+
 const mairieStore = useMairieStore();
 const conseillerMunicipalStore = useConseillerMunicipalStore();
 
@@ -171,5 +173,7 @@ const updateConvoc = async() => {
   await reunionConseilMunicipal.updateisConvocation(id_reunion);
 }
 updateConvoc();
+
+
 
 </script>
