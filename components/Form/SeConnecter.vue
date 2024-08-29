@@ -87,17 +87,8 @@ const submitConnect = async () => {
   const result = await utilisateurStore.logIn(user.value.email, user.value.password)
 ;
   if (result.error){
-    const hasError = result.error
-  if (hasError) {
-    
     errorMessages.value.push("Email ou mot de passe incorrect")
-    return
   }
-  }else{
-    
-  }
-
-
 };
 
 

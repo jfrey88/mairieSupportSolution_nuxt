@@ -70,9 +70,6 @@ const conseiller = ref({
 
 
 
-
-
-
 //------------------- une fois la page chargée
 onMounted(async () => {
 

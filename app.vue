@@ -3,8 +3,7 @@
   <v-app class="rounded rounded-md">
     <!-- ***********************  barre de navigation ***********************-->
     <AppHeader />
-
-      <!-- ***********************  main  ***********************-->
+    <!-- ***********************  main  ***********************-->
     <v-main class="fill-height">
       <v-container>
         <NuxtPage />
@@ -23,16 +22,16 @@ import { useMairieStore } from "@/stores/mairie";
   const isUserLoaded = useIsCurrentUserLoaded()
 
   const utilisateurStore = useUtilisateurStore();
-  const mairieStore = useMairieStore();
+  // const mairieStore = useMairieStore();
 
   watch(isUserLoaded, async() => {
-    console.log('isUserLoaded->',isUserLoaded);
+  //   console.log('isUserLoaded->',isUserLoaded);
     if (isUserLoaded.value) {
      
       await utilisateurStore.fetchUser(); 
-    
+  //     // if (utilisateurStore.exists)
       
-      await mairieStore.fetch(["representant_uid", utilisateurStore.utilisateur.uid]);
+  //     // await mairieStore.fetch(["representant_uid", utilisateurStore.utilisateur.uid]);
     
     }
   })

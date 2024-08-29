@@ -4,16 +4,15 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="12"><h3>Nouvelle réunion</h3></v-col>
-
+        {{ reunion }}
         <v-col cols="12" md="6">
           <!--      champ date    -->
-          <VDateInput></VDateInput>
-          <v-text-field
+          <VDateInput
             v-model="reunion.date"
-            :counter="10"
-            label="date de la seance"
-            required
-          ></v-text-field>
+            display-value="asfgd"
+            location=""
+          ></VDateInput>
+          
         </v-col>
 
         <v-col cols="12" md="6">
@@ -96,7 +95,7 @@ const formReunion = ref(null);
 const emit = defineEmits(["update:modelValue"]);
 
 const reunion = ref({
-  date: "",
+  date: (new Date()).toISOString(),
   heure: "",
   isConvocationOk: false,
   isFeuillePresenceOk: false,
@@ -142,6 +141,10 @@ const submitReunion = async () => {
 
   emit("update:modelValue");
 };
+
+const dateFormatted = computed(() => {
+  return new Date(reunion.value.date).toLocaleDateString();
+});
 
 //------------------- une fois la page chargée
 onMounted(async () => {
