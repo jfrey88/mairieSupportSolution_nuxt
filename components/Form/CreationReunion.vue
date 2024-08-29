@@ -123,7 +123,7 @@ const submitReunion = async () => {
   tabOrdreDuJour.forEach(async (ordre, index) => {
     const ordreAEcrire = {
       ordre: ordre,
-      numero: index,
+      numero: index+1,
       id_reunion: idReunion,
       nb_membres_en_exercice: 0,
       nb_presents: 0,

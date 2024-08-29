@@ -20,6 +20,11 @@
                   <th
                     class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
                   >
+                    procuration / absence
+                  </th>
+                  <th
+                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
+                  >
                     feuille présence
                   </th>
                   <th
@@ -42,15 +47,22 @@
               <tbody>
                 <tr v-for="reunion in reunions" :key="reunion.date">
                   <!--  boucle sur les conseillers v-html="reunion.ordres"-->
+
+                  <!------------------ Date ------------------------------->
                   <td class="text-center border-sm">{{ reunion.date }}</td>
+
+
+                  <!------------------ Ordre du jour ------------------------------->
                   <td class="text-left border-sm">
                     <v-list>
                       <v-list-item v-for="ordre in ordres[reunion.id]" :key="ordre.id">
-                        {{ ordre }}
+                        {{ ordre.numero }}. {{ ordre.ordre }}
                       </v-list-item>
                     </v-list>
                 
                   </td>
+
+                  <!------------------ Convocation ------------------------------->
                   <td style="vertical-align: middle" class="border-sm">
                     <v-btn class="my-4"
                       color="blue-lighten-4"
@@ -60,17 +72,26 @@
                         créer
                     </v-btn>
                   </td>
+
+                  <!------------------ Procuration ------------------------------->
+                  <td style="vertical-align: middle" class="border-sm text-center">
+                    <div v-if="reunion.isConvocationOk">
+                      <DialogProcuration 
+                        :userData="user"
+                        :mairieData="mairie"
+                        :reunionData="reunion" />
+                      
+                    </div>
+                  </td>
+
+                  <!------------------ Feuille de presence ------------------------------->
                   <td style="vertical-align: middle" class="border-sm text-center">
                     <div v-if="reunion.isConvocationOk">
                       <v-btn class="my-4" color="blue-lighten-4">imprimer</v-btn><br />
-                      <v-btn class="my-4" color="blue-lighten-4"
-                        >ajouter une <br />absence/procuration</v-btn
-                      ><br />
-                      <v-btn class="my-4" color="blue-lighten-4"
-                        >modifier une <br />absence/procuration</v-btn
-                      ><br />
                     </div>
                   </td>
+
+                  <!------------------ Procès verbal ------------------------------->
                   <td style="vertical-align: middle" class="border-sm">
                     <div v-if="reunion.isFeuillePresenceOk">
                       <v-btn class="my-4">Délibérations</v-btn><br />
@@ -80,11 +101,17 @@
                       <v-btn class="my-4">transmis prefecture</v-btn><br />
                     </div>
                   </td>
+
+
+                  <!------------------ Extrait registre ------------------------------->
                   <td style="vertical-align: middle" class="border-sm">
                     <div v-if="reunion.isProcesVerbalOk">
                       <v-btn class="my-4">Imprimer</v-btn><br />
                     </div>
                   </td>
+
+
+                  <!------------------ Actions ------------------------------->
                   <td style="vertical-align: middle" class="border-sm">
                     <!-- ---------------- BOITE DE DIALOGUE MODIFIER REUNION  --------------------------->
                     <DialogModificationReunions
