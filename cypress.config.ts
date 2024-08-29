@@ -1,3 +1,4 @@
+import viteConfig from './vite.config.cypress.component.js'
 import { defineConfig } from "cypress";
 
 export default defineConfig({
@@ -5,6 +6,7 @@ export default defineConfig({
     devServer: {
       framework: "vue",
       bundler: "vite",
+      viteConfig,
     },
   },
 });
