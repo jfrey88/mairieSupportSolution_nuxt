@@ -21,6 +21,7 @@
     "vuefire": "^3.2.0"
   },
   "devDependencies": {
+    "cypress": "^13.14.0",
     "vite-plugin-vuetify": "^2.0.4",
     "vuetify": "^3.6.14"
   },
