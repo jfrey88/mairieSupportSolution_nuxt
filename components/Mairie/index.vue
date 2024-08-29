@@ -32,7 +32,14 @@
             <p class="mt-2" v-if="mairie.texteOuverture" v-html="formatText"></p>
   
             <!-- ---------------- BOITE DE DIALOGUE MODIF MAIRIE  --------------------------->
-            <DialogModificationMairie/>
+            <DialogMairie v-model="dialogStatus" />
+            <v-btn
+              class="mt-4"
+              color="orange-darken-4"
+              prepend-icon="mdi-pencil"
+              text="Modifier les informations"
+              @click="dialogStatus = !dialogStatus"
+            ></v-btn>
           </v-col>
   
           <!-- **************** COLONNE DE DROITE INFO CONSEILLERS **************************-->
@@ -44,15 +51,13 @@
               <v-col cols="12" md="6">
                 <!-- ---------------- BOITE DE DIALOGUE AJOUTER CONSEILLER  --------------------------->
                 <DialogConseillers 
-                  :userData="user"
                   :mairieData="mairie" />
               </v-col>
               <v-col cols="12" md="12">
                 <!--  --------------------------- TABLE POUR AFFICHER LES CONSEILLERS --------------------------------->
   
                 <MairieConseillers 
-                  :conseillers="conseillers" 
-                  :user="user"
+                  :conseillers="mairieStore.conseillers" 
                   />
               </v-col>
             </v-row>
@@ -67,7 +72,6 @@
           <v-col cols="12" md="3">
             <!-- ---------------- BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
             <DialogReunion 
-            :userData="user"
            
              />
             <!-- ----------------FIN BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
@@ -87,35 +91,19 @@
   /********************** On fait les impots ********************************** */
   import { useMairieStore } from "@/stores/mairie";
   import { useUtilisateurStore } from "@/stores/utilisateur";
-  import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
-  import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
-  import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
   
-  import { ref, computed, onMounted } from "vue";
-
-  /************************ Initialisation des stors ********************************* */
   const mairieStore = useMairieStore();
-
-  const conseillerMunicipalStore = useConseillerMunicipalStore();
-  const reunionConseilMunicipal = useReunionConseilMunicipalStore();
-  const ordresDuJour = useOrdresDuJourStore();
-  
+  const dialogStatus = ref(false);
   //initialisation des variables
   // const auth = getAuth();
   const mairie = ref({});
-  const userInfo = ref({});
-  const conseillers = ref([]);
-  const reunions = ref([]);
-  // const odj = ref([]);
   
   const props = defineProps({
     user: Object,
   });
 
 
-  const utilisateurStore = useUtilisateurStore();
   useUtilisateurStore.fetchUtilisateur;
-  let user = utilisateurStore.utilisateur;
 
 
 
@@ -126,46 +114,13 @@
       .replace(/\\n/g, "<br />");
   });
 
-  // function pour supprimer une reunion
-  const deleteReunion = async (reunion) => {
-    // on supprime les ordres du jour de la réunion
-    ordresDuJour.delete(reunion.id);
-    // on supprime la réunion
-   reunionConseilMunicipal.delete(reunion.id);
-   reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
-    //reunions.value = reunionConseilMunicipal.withId;
-  };
-  
-
-  
-/******************* ON CHERCHE LES INFOS DE LA PERSONNE ****************************** */
-const fetchUtilisateur = async (user) => {
-  
-  userInfo.value = await utilisateurStore.fetchOne(user.uid);
-
-}
-
-await fetchUtilisateur(user);
-
-/******************* ON CHERCHE LES INFOS DE LA MAIRIE ****************************** */
-  const fetchMairie = async (user) => {
-    mairie.value = await mairieStore.fetch(["representant_uid", user.uid]);
+  const fetchMairie = async () => {
+    mairie.value = await mairieStore.fetch();
   };
 
-  await fetchMairie(user);
+  await fetchMairie();
 
 
-  /******************* ON CHERCHE LES CONSEILLERS DE LA MAIRIE ****************************** */
-  const fetchConseillers = async(user) => {
-    conseillers.value = await conseillerMunicipalStore.fetch(["representant_uid", user.uid]);
-  }
-  await fetchConseillers(user);
-  
-/******************** ON CHERCHE LES REUNIONS DU CONSEIL MUNICIPAL DE LA MAIRIE *********************/
-  const fetchReunion = async(user) =>{
-    reunions.value = await reunionConseilMunicipal.fetch(["representant_uid", user.uid]);
-  }
-  await fetchReunion(user)
    
 
   

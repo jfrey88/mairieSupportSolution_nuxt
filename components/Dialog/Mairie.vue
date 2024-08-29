@@ -2,19 +2,12 @@
   
 <template>
 <v-dialog max-width="800">
-    <template v-slot:activator="{ props: activatorProps }">
-      <v-btn
-        class="mt-4"
-        v-bind="activatorProps"
-        color="orange-darken-4"
-        prepend-icon="mdi-pencil"
-        text="Modifier les informations"
-      ></v-btn>
-    </template>
+    
 
     <template v-slot:default="{ isActive }">
-      <v-card title="Modification des informations de la mairie">
+      <v-card :title="title">
         <v-card-text>
+          {{  }}
           <FormCreationMairie
           
             @update:modelValue = "isActive.value = false"
@@ -30,3 +23,11 @@
     </template>
   </v-dialog>
 </template>
+<script setup>
+const props = defineProps({
+  isCreate: Boolean,
+});
+const title = computed(() => 
+  props.isCreate ? "Créer une mairie" : "Modifier une mairie"
+);
+</script>

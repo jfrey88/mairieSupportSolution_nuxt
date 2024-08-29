@@ -105,7 +105,7 @@
           ></v-text-field>
         </v-col>
 
-        <v-col v-if="!utilisateurStore.utilisateur.uid" cols="12" md="6"><!--      champ email user    -->
+        <v-col v-if="!utilisateurStore.uid" cols="12" md="6"><!--      champ email user    -->
           <v-text-field
             v-model="user.email"
             :counter="50"
@@ -129,7 +129,7 @@
       </v-row>
 
       <!-- ---------------- Si c'est une création de mairie ----------------    -->
-      <v-row v-if="!utilisateurStore.utilisateur.uid">
+      <v-row v-if="!utilisateurStore.uid">
         <v-col cols="12" md="6"><!--      champ password    -->
           <v-text-field
             v-model="user.password"
@@ -187,7 +187,7 @@
            
           >
             {{
-              utilisateurStore.utilisateur.uid
+              utilisateurStore.uid
                 ? "Enregistrer les modifications"
                 : "inscrire ma mairie"
             }}</v-btn
@@ -235,6 +235,8 @@ const nouvelleMairie = ref({
 const confPassword = ref("");
 const mairieStore = useMairieStore();
 const utilisateurStore = useUtilisateurStore();
+const { uid} = storeToRefs(utilisateurStore)
+console.log(uid)
 const show1 = ref(false);
 const isCGUOk = ref(true);
 const isRepresentant = ref(true);
@@ -299,17 +301,17 @@ const submitMairie = async () => {
 
 onMounted(async () => {
   
-  user.value.email = utilisateurStore.utilisateur.email;
+  user.value.email = utilisateurStore.email;
   
-  
+  console.log(mairieStore.mairie)
   if (mairieStore.mairie.representant_uid  ) {
     nouvelleMairie.value = { ...mairieStore.mairie }; // copie par référence
-  }
+  } 
 
   
-  if (utilisateurStore.utilisateur.uid)
+  if (utilisateurStore.uid)
   {
-    userInfos.value = { ...utilisateurStore.utilisateur };
+    userInfos.value = { ...utilisateurStore.$state };
   }
     
  
