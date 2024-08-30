@@ -7,11 +7,11 @@
         {{ reunion }}
         <v-col cols="12" md="6">
           <!--      champ date    -->
-          <VDateInput
+          <v-date-input
             v-model="reunion.date"
-            display-value="asfgd"
-            location=""
-          ></VDateInput>
+            label="Sélectionner le jour de la réunion"
+            
+          ></v-date-input>
           
         </v-col>
 
@@ -74,15 +74,18 @@ import { ref, defineProps, onMounted } from "vue";
 
 //************************** INITILISATION******************************************* */
 
+
 const props = defineProps({
-  userData: {
+  mairieData: {
     default: {},
   },
-  reunionData: {
-    default: {},
+  reunionData:{
+    default :{},
   },
+ 
 });
-useNuxtApp().$myLogger(props.userData, 'props.userData',"creation reunion")
+
+useNuxtApp().$myLogger(props.mairieData, 'props.mairieData',"creation reunion")
 // ********************* règles pour les différens champs ************************
 
 const mairie = ref({});
@@ -95,7 +98,7 @@ const formReunion = ref(null);
 const emit = defineEmits(["update:modelValue"]);
 
 const reunion = ref({
-  date: (new Date()).toISOString(),
+  date: new Date(),
   heure: "",
   isConvocationOk: false,
   isFeuillePresenceOk: false,
@@ -112,10 +115,27 @@ const submitReunion = async () => {
   // const { valid } = await formConseiller.value.validate();
   // if (!valid) return; // si ce n'est pas valide on quitte le submit
   const tabOrdreDuJour = reunion.value.ordreDuJour.split("\n");
-  useNuxtApp().$myLogger(props.userData, 'props.userData',"creation reunion submit")
+
   delete reunion.value.ordreDuJour;
-  reunion.value.representant_uid = props.userData.uid;
-  useNuxtApp().$myLogger(reunion.value.representant_uid, 'reunion.value.representant_uid',"creation reunion submit")
+  
+  console.log("reunion.value.date",reunion.value.date)
+  //const dateSelectionnee=Date.parse(reunion.value.date);
+  const dateSelectionnee=reunion.value.date;
+ 
+  
+  
+  const jour=dateSelectionnee.getDate()>9 ? dateSelectionnee.getDate() : '0'+dateSelectionnee.getDate();
+  
+  const mois=dateSelectionnee.getMonth()>9 ? dateSelectionnee.getMonth()+1 : '0'+dateSelectionnee.getMonth()+1;
+  
+
+
+  reunion.value.date=jour+'/'+mois+'/'+dateSelectionnee.getFullYear();
+
+  reunion.value.representant_uid = props.mairieData.representant_uid;
+  console.log("props.mairieData.representant_uid",props.mairieData.representant_uid)
+  
+  
   const result = await reunionStore.create(reunion.value);
   const idReunion = result.id;
 
@@ -136,9 +156,7 @@ const submitReunion = async () => {
     };
     await ordresDuJourStore.create(ordreAEcrire);
   });
-  // on récupère l'uid du user et on le mets dans le l'objet conseiller
-  reunion.value.representant_uid = props.userData.uid;
-
+  
   emit("update:modelValue");
 };
 
@@ -153,7 +171,7 @@ onMounted(async () => {
   if (!props.reunionData) {
     mairie.value = await mairieStore.fetch([
       "representant_uid",
-      props.userData.uid,
+      props.mairieData.representant_uid,
     ]);
 
     // si ce n'est pas une création je charge les valeurs du conseiller

@@ -236,7 +236,7 @@ const confPassword = ref("");
 const mairieStore = useMairieStore();
 const utilisateurStore = useUtilisateurStore();
 const { uid} = storeToRefs(utilisateurStore)
-console.log(uid)
+
 const show1 = ref(false);
 const isCGUOk = ref(true);
 const isRepresentant = ref(true);
@@ -302,8 +302,7 @@ const submitMairie = async () => {
 onMounted(async () => {
   
   user.value.email = utilisateurStore.email;
-  
-  console.log(mairieStore.mairie)
+
   if (mairieStore.mairie.representant_uid  ) {
     nouvelleMairie.value = { ...mairieStore.mairie }; // copie par référence
   } 

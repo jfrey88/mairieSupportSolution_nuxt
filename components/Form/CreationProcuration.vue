@@ -5,8 +5,19 @@
       <v-row>
         <v-col cols="12" md="12"><h3>Nouvelle Absence/procuration</h3></v-col>
 
-      
-     
+        <v-select
+            v-model="procuration.absent"
+            :items="conseillersDataForSelect"
+            label="Choisissez le conseiller absent"
+            required
+          ></v-select>
+          <v-select
+            v-model="procuration.recevant"
+            :items="conseillersDataForSelect"
+            label="Choisissez le conseiller qui reçoit la procuration"
+            required
+          ></v-select>
+
         <v-col cols="12" md="12">
           <v-btn
             class="mt-2"
@@ -18,7 +29,6 @@
           </v-btn>
         </v-col>
       </v-row>
-     
     </v-container>
   </v-form>
 </template>
@@ -26,61 +36,37 @@
 //************************** IMPORTS******************************************* */
 import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
+import { useProcurationStore } from "@/stores/procuration";
 import { ref, defineProps, onMounted } from "vue";
 
 
-//************************** INITILISATION******************************************* */
-
 const props = defineProps({
-  mairieData: {
-    default: {},
-  },
-  userData:{
-    default:{}
-  },
-  conseillerData: {
+
+  reunionData: {
     default: {},
   }
 });
 
 
-const mairie = ref({});
+const procuration = ref({
+  absent : "",
+  recevant : "",
+  idReunion : props.reunionData.id,
+})
 
-const mairieStore = useMairieStore();
 const conseillerMunicipalStore = useConseillerMunicipalStore();
-const formConseiller = ref(null);
+const {formatForSelect: conseillersDataForSelect} = storeToRefs(conseillerMunicipalStore);
 
-console.log('je passe par Form.CreationProcuration.vue');
+const procurationStore=useProcurationStore();
+
 const emit = defineEmits(["update:modelValue"])
+//************************** INITILISATION******************************************* */
 
 
-
-
-//************************** SUBMIT DU FORMULAIRE ******************************************* */
 const submitProcuration = async () => {
 
- 
-
-
-  
-  
-
-};
-
-//------------------- une fois la page chargée
-onMounted(async () => {
-
-  useNuxtApp().$myLogger(userData, 'userData',"FormCreationProcuration")
-  useNuxtApp().$myLogger(mairieData, 'mairieData',"FormCreationProcuration")
-  useNuxtApp().$myLogger(reunionData, 'reunionData',"FormCreationProcuration")
-
-
-
-
-      
-    
-      
-  
-});
+  procurationStore.create(procuration.value)
+  emit("update:modelValue");
+}
 //mairieStore.create(mairieTest);
 </script>

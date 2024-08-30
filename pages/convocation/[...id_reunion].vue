@@ -120,7 +120,7 @@ const conseillerMunicipalStore = useConseillerMunicipalStore();
 
 const route = useRoute();
 const id_reunion = route.params["id_reunion"][0];
-console.log(id_reunion);
+
 
 const formatText = computed(() => {
   return ["ouverture du secrétariat ", mairieStore.mairie.texteOuverture]
@@ -133,19 +133,19 @@ const reunionEnCours = ref({});
 //******************* On récupère les données de la réunion en cours *******************************/
 const reunionConseilMunicipal = useReunionConseilMunicipalStore();
 reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
-console.log("reunionEnCours", reunionEnCours);
+
 
 /******************** On récupère les données de la mairie concernée par cette réunion ******************* */
 const id_mairie = ref("");
 id_mairie.value = reunionEnCours.value.representant_uid;
-console.log(id_mairie.value);
+
 
 const fetchMairie = async (id_mairie) => {
   await mairieStore.fetch(["representant_uid", id_mairie]);
 };
 
 await fetchMairie(id_mairie.value);
-console.log("mairieStore.mairie", mairieStore.mairie);
+
 
 /******************* On récupère les conseillers municipaux de cette mairie *********************************/
 const fetchConseillers = async (id_mairie) => {
@@ -153,10 +153,7 @@ const fetchConseillers = async (id_mairie) => {
 };
 await fetchConseillers(id_mairie.value);
 conseillerMunicipalStore.conseillers.push({"nom" : "AFFICHAGE" });
-console.log(
-  "conseillerMunicipalStore.conseillers",
-  conseillerMunicipalStore.conseillers
-);
+
 
 const dateduJourTxt = () => {
   var today = new Date();

@@ -1,13 +1,5 @@
 <template>
-  {{ isUserLoaded }}
-  <hr>
-  {{ utilisateurStore.$state }}
-  <hr>
-  {{ utilisateurStore.exists }}
-  <hr>
-    {{ userExists }}
-  <hr>
-  {{ utilisateur }}
+ 
   <div v-if="isUserLoaded">
     <div v-if="utilisateurStore.exists">
       <Mairie />

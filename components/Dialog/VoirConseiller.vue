@@ -6,7 +6,7 @@
         density="compact"
         v-bind="activatorProps"
         icon="mdi-eye"
-        class="ml-2"
+        class="ma-2"
       ></v-btn>
     </template>
 

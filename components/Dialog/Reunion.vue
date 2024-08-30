@@ -15,7 +15,7 @@
                   <v-card title="Ajout d'une réunion">
                     <v-card-text>
                       <FormCreationReunion 
-                      :userData="props.userData" 
+                      :mairieData="props.mairieData" 
                       
                       />
                     </v-card-text>
@@ -35,14 +35,11 @@
 <script setup>
 import { defineProps} from "vue";
 const props = defineProps({
-  userData: {
+  mairieData: {
     default: {},
   },
-  reunionData: {
-    default: {},
-  },
+ 
 });
 
-
-
+useNuxtApp().$myLogger(props.mairieData,"props.mairieData","DialogReunion.vue")
 </script>

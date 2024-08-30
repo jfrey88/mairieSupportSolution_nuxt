@@ -9,23 +9,13 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
       
     },
     getters : {
-        withId:(state)=>{
-          if(state.conseillers?.docs)
-            {
-                return state.conseillers.docs.map((doc) => {
-
-                    let conseiller=doc.data();
-                    
-                    conseiller.id=doc.id;
-                    return conseiller;
-                    
-                  })
-            } else{
-                return []
-            }
-         
-        }
-
+        formatForSelect:(state)=>{
+            return state.conseillers.map((doc) => ({
+                title: [doc.prenom, doc.nom].join(" "),
+                value: doc.id
+            }));
+        },
+       
     },
     actions : {
         // MVC | Model View Controller

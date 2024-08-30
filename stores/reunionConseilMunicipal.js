@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, query, getDocs,getDoc,  where, deleteDoc, doc,updateDoc } from "firebase/firestore";
+import { addDoc, collection, query, getDocs,getDoc,  where, deleteDoc, doc,updateDoc,orderBy } from "firebase/firestore";
 import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 // import {  db } from '../plugins/firebase';
@@ -50,7 +50,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
 
             const db=useFirestore();
             const reunionsCollections=collection(db, 'reunions')
-            const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1])));
+            const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1]),orderBy("date","desc")));
         
 
             const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
@@ -80,7 +80,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             reunion.id=docSnap.id;
             const ordresDuJour = useOrdresDuJourStore();
             const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
-            console.log(ordrerecept);
+       
             reunion.ordres = ordrerecept;
            return reunion;
         },

@@ -7,7 +7,7 @@
                       v-bind="activatorProps"
                     density="compact"
                     icon="mdi-pencil"
-                    class="ml-2"
+                    class="ma-2"
                   ></v-btn>
                 </template>
 

@@ -72,6 +72,7 @@
           <v-col cols="12" md="3">
             <!-- ---------------- BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
             <DialogReunion 
+              :mairieData="mairieStore.mairie"
            
              />
             <!-- ----------------FIN BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
@@ -79,7 +80,10 @@
   
           <v-col cols="12" md="12">
             <!--  --------------------------- TABLE POUR AFFICHER LES REUNION DU CONSEIL MUNICIPAL --------------------------------->
-            <MairieReunions :mairie="mairieStore.mairie" :user="user"></MairieReunions>
+            <MairieReunions 
+              :mairie="mairieStore.mairie" 
+              :user="user">
+            </MairieReunions>
           </v-col>
         </v-row>
       </v-container>

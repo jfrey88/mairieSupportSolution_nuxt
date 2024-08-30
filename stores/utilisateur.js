@@ -129,7 +129,7 @@ export const useUtilisateurStore = defineStore("utilisateur", {
       try {
         const request = await signInWithEmailAndPassword(auth, email, password);
         const account = await this.fetchOne(request.user.uid);
-        console.log(account);
+      
         this.$patch({
           utilisateur: ref(request.user),
           uid: request.user.uid,

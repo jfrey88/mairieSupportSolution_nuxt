@@ -62,7 +62,7 @@
                           density="compact"
                           icon="mdi-delete"
                           @click="deleteConseiller(conseiller)"
-                          class="ml-2"
+                          class="ma-2"
                         ></v-btn>
                       </td>
                     </tr>
@@ -80,4 +80,6 @@ const conseillerMunicipalStore = useConseillerMunicipalStore();
     conseillerMunicipalStore.delete(conseiller);
     
   };
+
+  console.log("conseillerMunicipalStore.conseillers",conseillerMunicipalStore.conseillers)
 </script>
