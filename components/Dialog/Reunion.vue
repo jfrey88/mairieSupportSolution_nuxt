@@ -1,21 +1,12 @@
 <template>
     <v-dialog max-width="800">
-                <template v-slot:activator="{ props: activatorProps }">
-                  <v-btn
-                    v-bind="activatorProps"
-                    color="orange-darken-4"
-                    prepend-icon="mdi-plus"
-                    text="Ajouter une réunion"
-                    
-                    class="mt-6"
-                  ></v-btn>
-                </template>
+
 
                 <template v-slot:default="{ isActive }">
                   <v-card title="Ajout d'une réunion">
                     <v-card-text>
                       <FormCreationReunion 
-                      :mairieData="props.mairieData" 
+                      :mairieData="mairieData" 
                       
                       />
                     </v-card-text>

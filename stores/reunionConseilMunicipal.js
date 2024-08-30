@@ -38,6 +38,8 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         async create(reunion){
             const db=useFirestore();
 
+            console.log("reunion",reunion)
+
             const result = await addDoc(collection(db,"reunions"),reunion);
             this.reunions.push(reunion)
             // receive one object as parameter and will perform,

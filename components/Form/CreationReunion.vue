@@ -118,19 +118,19 @@ const submitReunion = async () => {
 
   delete reunion.value.ordreDuJour;
   
-  console.log("reunion.value.date",reunion.value.date)
+  //console.log("reunion.value.date",reunion.value.date)
   //const dateSelectionnee=Date.parse(reunion.value.date);
   const dateSelectionnee=reunion.value.date;
  
   
   
-  const jour=dateSelectionnee.getDate()>9 ? dateSelectionnee.getDate() : '0'+dateSelectionnee.getDate();
+  //const jour=dateSelectionnee.getDate()>9 ? dateSelectionnee.getDate() : '0'+dateSelectionnee.getDate();
   
-  const mois=dateSelectionnee.getMonth()>9 ? dateSelectionnee.getMonth()+1 : '0'+dateSelectionnee.getMonth()+1;
+  //const mois=dateSelectionnee.getMonth()>9 ? dateSelectionnee.getMonth()+1 : '0'+dateSelectionnee.getMonth()+1;
   
 
 
-  reunion.value.date=jour+'/'+mois+'/'+dateSelectionnee.getFullYear();
+  //reunion.value.date=jour+'/'+mois+'/'+dateSelectionnee.getFullYear();
 
   reunion.value.representant_uid = props.mairieData.representant_uid;
   console.log("props.mairieData.representant_uid",props.mairieData.representant_uid)

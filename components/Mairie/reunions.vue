@@ -50,7 +50,7 @@
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
           <!------------------ Date ------------------------------->
-          <td class="text-center border-sm">{{ reunion.date }}</td>
+          <td class="text-center border-sm">{{ dateText(reunion.date) }}</td>
 
           <!------------------ Ordre du jour ------------------------------->
           <td class="text-left border-sm">
@@ -74,16 +74,34 @@
 
           <!------------------ Procuration ------------------------------->
           <td style="vertical-align: middle" class="border-sm text-center">
-            <div v-for="procuration in procurations[reunion.id]" :key="procuration.id" class="border-sm text-center my-2 mx-2 rounded-sm elevation-2" >
-              <p v-if="procuration.prenomNomRecevant"> {{ procuration.prenomNomAbsent }} <br> donne procuration à <br> {{ procuration.prenomNomRecevant }} </p>
-              <p v-else> {{ procuration.prenomNomAbsent }} <br> sera absent(e) </p>
-              <v-btn
-              v-if="!reunion.isTransmisPrefecture"
-              density="compact"
-              @click="deleteProcuration(procuration)"
-              icon="mdi-delete"
-              class="ma-2"
-            ></v-btn>
+            <div
+              v-for="procuration in procurations[reunion.id]"
+              :key="procuration.id"
+              
+            >
+              <div  v-if="procuration.prenomNomRecevant" class="border-sm text-center my-2 mx-2 rounded-sm elevation-2  " >
+                <p> {{ procuration.prenomNomAbsent }} <br />donne procuration à <br />{{ procuration.prenomNomRecevant }}</p>
+                <v-btn
+                  v-if="!reunion.isTransmisPrefecture"
+                  density="compact"
+                  @click="deleteProcuration(procuration)"
+                  icon="mdi-delete"
+                  class="ma-2"
+                ></v-btn>
+              </div>
+              <div v-else class="border-sm text-center my-2 mx-2 rounded-sm elevation-2">
+                <p > {{ procuration.prenomNomAbsent }} <br /> sera absent(e) </p>
+                <v-btn
+                  v-if="!reunion.isTransmisPrefecture"
+                  density="compact"
+                  @click="deleteProcuration(procuration)"
+                  icon="mdi-delete"
+                  class="ma-2"
+                ></v-btn>
+              </div>
+              
+              
+              
             </div>
             <div v-if="reunion.isConvocationOk">
               <v-btn
@@ -142,7 +160,6 @@
 </template>
 
 <script setup>
-
 //*************************Import des strores ********************************/
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
 import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
@@ -182,17 +199,14 @@ const fetchReunions = async () => {
   return reunionsData;
 };
 
-
 /************************ fonction pour créer une nouvelle procuration absence ******/
 const createProcuration = (reunion) => {
-  dialogStatus.value=true;
-  dialogReunion.value=reunion;
-}
+  dialogStatus.value = true;
+  dialogReunion.value = reunion;
+};
 
 onMounted(() => {
   fetchReunions();
-  
-
 });
 
 /** ******************** fonction pour récupérer les ordres de cette réunion **********/
@@ -205,19 +219,35 @@ const fetchOrdres = async (reunion) => {
 
 /** ******************** fonction pour récupérer les procurations de cette réunion **********/
 const fetchProcuration = async (reunion) => {
-  const procurationData = await procurationStore.fetch(["idReunion", reunion.id]);
+  const procurationData = await procurationStore.fetch([
+    "idReunion",
+    reunion.id,
+  ]);
   // reunion.ordres = ordres;
   procurations.value[reunion.id] = procurationData;
   return procurations;
 };
 
 /** ******************** fonction pour supprimer une reunion **********/
-const deleteReunion = async (reunion)=>{
-  await reunionConseilMunicipalStore.delete(reunion.id)
-}
+const deleteReunion = async (reunion) => {
+  await reunionConseilMunicipalStore.delete(reunion.id);
+};
 /** ******************** fonction pour supprimer une procuration **********/
-const deleteProcuration = async (procuration)=>{
-  await procurationStore.delete(procuration.id)
-}
+const deleteProcuration = async (procuration) => {
+  await procurationStore.delete(procuration.id);
+};
 
+const dateText = (unix_timestamp) => {
+  const myDate = new Date(unix_timestamp * 1000);
+  const jour = myDate.getDate() > 9 ? myDate.getDate() : "0" + myDate.getDate();
+
+  const mois =
+    Number(myDate.getMonth()) > 8
+      ? String(Number(myDate.getMonth()) + 1)
+      : "0" + String(Number(myDate.getMonth()) + 1);
+
+  const annee = myDate.getFullYear() - 1970 + 1;
+
+  return jour + "/" + mois + "/" + annee;
+};
 </script>

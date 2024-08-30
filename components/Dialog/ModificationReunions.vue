@@ -1,6 +1,6 @@
 <!-- ************************ BOITE DE DIALOGUE POUR LA MODIFICATION D'UNE REUNION *********************-->
 <template>
-    <v-dialog max-width="800">
+    <v-dialog max-width="800" v-model="dialogStatus">
                 <template v-slot:activator="{ props: activatorProps }">
                   <v-btn
                     v-if="!reunionData.isTransmisPrefecture"
@@ -8,6 +8,7 @@
                     density="compact"
                     icon="mdi-pencil"
                     class="ma-2"
+                     @click="dialogStatus = !dialogStatus"
                   ></v-btn>
                 </template>
 
@@ -17,6 +18,7 @@
                       <FormCreationReunion 
                       :mairieData="props.mairieData"
                       :reunionData="props.reunionData"
+                     
                        />
                     </v-card-text>
 
@@ -43,6 +45,8 @@ const props = defineProps({
     default:{}
   }
 });
+
+const dialogStatus=ref(false);
 
 
 

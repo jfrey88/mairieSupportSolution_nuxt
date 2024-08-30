@@ -71,7 +71,15 @@
           </v-col>
           <v-col cols="12" md="3">
             <!-- ---------------- BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
-            <DialogReunion 
+            <v-btn 
+                   
+                    color="orange-darken-4"
+                    prepend-icon="mdi-plus"
+                    text="Ajouter une réunion"
+                    @click="dialogStatusReunion = !dialogStatusReunion"
+                    class="mt-6"
+                  ></v-btn>
+            <DialogReunion v-model="dialogStatusReunion"
               :mairieData="mairieStore.mairie"
            
              />
@@ -98,6 +106,7 @@
   
   const mairieStore = useMairieStore();
   const dialogStatus = ref(false);
+  const dialogStatusReunion = ref(false);
   //initialisation des variables
   // const auth = getAuth();
   const mairie = ref({});
