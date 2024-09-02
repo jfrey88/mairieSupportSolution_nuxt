@@ -46,7 +46,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="reunion in reunions" :key="reunion.date">
+        <tr v-for="reunion in reunionConseilMunicipalStore.reunions" :key="reunion.date">
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
           <!------------------ Date ------------------------------->
@@ -79,7 +79,7 @@
               :key="procuration.id"
               
             >
-              <div  v-if="procuration.prenomNomRecevant" class="border-sm text-center my-2 mx-2 rounded-sm elevation-2  " >
+              <div  v-if="procuration.prenomNomRecevant" class="border-sm text-center my-2 mx-2 rounded-sm elevation-2 bg-purple-lighten-5 " >
                 <p> {{ procuration.prenomNomAbsent }} <br />donne procuration à <br />{{ procuration.prenomNomRecevant }}</p>
                 <v-btn
                   v-if="!reunion.isTransmisPrefecture"
@@ -89,7 +89,7 @@
                   class="ma-2"
                 ></v-btn>
               </div>
-              <div v-else class="border-sm text-center my-2 mx-2 rounded-sm elevation-2">
+              <div v-else class="border-sm text-center my-2 mx-2 rounded-sm elevation-2 bg-pink-lighten-5">
                 <p > {{ procuration.prenomNomAbsent }} <br /> sera absent(e) </p>
                 <v-btn
                   v-if="!reunion.isTransmisPrefecture"
@@ -191,7 +191,7 @@ const fetchReunions = async () => {
     "representant_uid",
     props.mairie.representant_uid,
   ]);
-  reunions.value = reunionsData;
+  reunions.value = await reunionsData;
   reunionsData.forEach((reunion) => {
     fetchOrdres(reunion);
     fetchProcuration(reunion);
@@ -230,7 +230,7 @@ const fetchProcuration = async (reunion) => {
 
 /** ******************** fonction pour supprimer une reunion **********/
 const deleteReunion = async (reunion) => {
-  await reunionConseilMunicipalStore.delete(reunion.id);
+  await reunionConseilMunicipalStore.delete(reunion);
 };
 /** ******************** fonction pour supprimer une procuration **********/
 const deleteProcuration = async (procuration) => {

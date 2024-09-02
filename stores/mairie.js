@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { useUtilisateurStore } from "./utilisateur";
 import { useConseillerMunicipalStore } from "./conseillerMunicipal";
+import { useReunionConseilMunicipalStore } from "./reunionConseilMunicipal";
 
 // utilisateur
 //  -> mairie
@@ -22,6 +23,7 @@ export const useMairieStore = defineStore("mairie", {
     return {
       mairie: {},
       conseillers: [],
+      reunions: [],
     };
   },
   getters: {},
@@ -36,10 +38,13 @@ export const useMairieStore = defineStore("mairie", {
     },
     //Read
     async fetch(params) {
+      // chargement des stores
       const userStore = useUtilisateurStore();
       const conseillerMunicipalStore = useConseillerMunicipalStore();
+      const reunionStore = useReunionConseilMunicipalStore();
+
+      // chargement des données de la mairie
       const uid = userStore.uid;
-      // will perform the action of fetching all the records
       const db = useFirestore();
       const mairiesCollections = collection(db, "mairies");
       const data = await getDocs(
@@ -47,10 +52,20 @@ export const useMairieStore = defineStore("mairie", {
       );
       const mairieData = data.docs[0];
       this.mairie = mairieData.data();
+
+      // on charge ensuite les conseillers
       this.conseillers = await conseillerMunicipalStore.fetch([
         "representant_uid",
         uid,
       ]);
+
+      // on charge ensuite les réunions
+      this.reunions = await reunionStore.fetch([
+        "representant_uid",
+        uid,
+      ]);
+
+
       return mairieData.data();
     },
 

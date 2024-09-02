@@ -122,6 +122,7 @@ const props = defineProps({
 
 useUtilisateurStore.fetchUtilisateur;
 
+
 // fonction pour afficher correctement le retour chariot
 const formatText = computed(() => {
   return ["ouverture du secrétariat ", mairie.value.texteOuverture]
@@ -134,4 +135,5 @@ const fetchMairie = async () => {
 };
 
 await fetchMairie();
+
 </script>

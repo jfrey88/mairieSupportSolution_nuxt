@@ -81,5 +81,4 @@ const conseillerMunicipalStore = useConseillerMunicipalStore();
     
   };
 
-  console.log("conseillerMunicipalStore.conseillers",conseillerMunicipalStore.conseillers)
 </script>

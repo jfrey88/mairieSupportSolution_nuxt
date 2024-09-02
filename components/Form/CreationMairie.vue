@@ -258,8 +258,6 @@ const rules = {
     /^\d{5}$/.test(v) || "le code postal est composé de 5 chiffre",
 };
 
-console.log('***************************** Form creation Mairie ***********************')
-console.log('utilisateurStore.utilisateur.uid dans init',utilisateurStore.utilisateur.uid)
 const formMairie = ref(null);
 
 //************************** SUBMIT DU FORMULAIRE ******************************************* */
@@ -267,7 +265,6 @@ const submitMairie = async () => {
 
   // on valide les réponses données
   const { valid } = await formMairie.value.validate();
-  console.log('utilisateurStore.utilisateur.uid dans submit',utilisateurStore.utilisateur.uid)
   if (!valid) return; // si ce n'est pas valide on quitte le submit
 
   const auth = getAuth();

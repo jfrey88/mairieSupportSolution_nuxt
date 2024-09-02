@@ -38,13 +38,16 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         async create(reunion){
             const db=useFirestore();
 
-            console.log("reunion",reunion)
+            
 
             const result = await addDoc(collection(db,"reunions"),reunion);
             this.reunions.push(reunion)
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array
             // containing all the records
+            console.log('********************************************');
+            console.log('this.reunions dans le storeReunion create',this.reunions);
+            console.log('********************************************');
             return result;
         },
         //Read
@@ -68,7 +71,9 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             })
        
              this.reunions = reunionsData;
-           
+             console.log('********************************************');
+             console.log('this.reunions dans le storeReunion fetch',this.reunions);
+             console.log('********************************************');           
             return reunionsData;
 
             
@@ -111,12 +116,13 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
     
         },
         //Delete
-        async delete(id){
+        async delete(reunion){
             const db=useFirestore();
-            const docRef = doc(db,"reunions",id);
+            const uid=reunion.representant_uid;
+            const docRef = doc(db,"reunions",reunion.id);
            
             await deleteDoc(docRef);
-            
+            this.fetch(["representant_uid",uid]);
         
             // receive one object as parameter and will perform,
             // the action of delete the object in the database / cache / array

@@ -5,7 +5,7 @@
       <v-card title="Ajout d'une réunion">
         <v-card-text>
           <FormCreationReunion  
-            @update:modelValue="isReactive.value = false"
+            @update:modelValue="isActive.value = false"
             :mairieData="mairieData"
           />
         </v-card-text>
