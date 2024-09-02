@@ -157,7 +157,7 @@ const submitReunion = async () => {
     await ordresDuJourStore.create(ordreAEcrire);
   });
   
-  emit("update:modelValue");
+  const emit = defineEmits(["update:modelValue"])
 };
 
 const dateFormatted = computed(() => {

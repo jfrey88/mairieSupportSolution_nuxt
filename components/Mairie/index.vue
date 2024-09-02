@@ -107,6 +107,8 @@
   const mairieStore = useMairieStore();
   const dialogStatus = ref(false);
   const dialogStatusReunion = ref(false);
+
+  
   //initialisation des variables
   // const auth = getAuth();
   const mairie = ref({});
