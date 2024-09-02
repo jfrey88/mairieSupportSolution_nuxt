@@ -60,15 +60,46 @@
 <script setup>
 import { useCurrentUser, useIsCurrentUserLoaded } from "vuefire";
 import { getAuth } from "firebase/auth";
+import { ref, onMounted } from "vue";
+import { useUtilisateurStore } from "@/stores/utilisateur";
+
+console.log('***************************** App Header ***********************')
 const isUserLoaded = useIsCurrentUserLoaded();
+console.log('isUserLoaded dans init',isUserLoaded)
+
 const user = useCurrentUser();
+console.log('user dans init',user)
+
 const dialogStatus = ref(false);
 const utilisateurStore = useUtilisateurStore();
+console.log('utilisateurStore.utilisateur dans init du header',utilisateurStore.utilisateur)
+
 const {exists, utilisateur} = storeToRefs(utilisateurStore)
+
+
+//    telephone: "",
+//    nom: "",
+//    prenom: "",
+
 const auth = getAuth();
+
+
+
+
 
 const logout = async () => {
   await utilisateurStore.logOut(auth);
   navigateTo("/");
 };
+
+onMounted(async () => {
+
+  utilisateurStore.utilisateur = user;
+utilisateurStore.email = user.email;
+utilisateurStore.uid = user.uid;
+console.log('utilisateurStore.utilisateur dans onMounted du header',utilisateurStore.utilisateur)
+console.log('utilisateurStore.email dans onMounted du header',utilisateurStore.email)
+console.log('utilisateurStore.uid dans onMounted du header',utilisateurStore.uid)
+
+});
 </script>

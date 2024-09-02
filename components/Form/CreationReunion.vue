@@ -4,7 +4,7 @@
     <v-container>
       <v-row>
         <v-col cols="12" md="12"><h3>Nouvelle réunion</h3></v-col>
-        {{ reunion }}
+        
         <v-col cols="12" md="6">
           <!--      champ date    -->
           <v-date-input
@@ -85,7 +85,7 @@ const props = defineProps({
  
 });
 
-useNuxtApp().$myLogger(props.mairieData, 'props.mairieData',"creation reunion")
+
 // ********************* règles pour les différens champs ************************
 
 const mairie = ref({});
@@ -95,7 +95,7 @@ const reunionStore = useReunionConseilMunicipalStore();
 const ordresDuJourStore = useOrdresDuJourStore();
 const formReunion = ref(null);
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue"])
 
 const reunion = ref({
   date: new Date(),
@@ -111,30 +111,12 @@ const reunion = ref({
 //************************** SUBMIT DU FORMULAIRE ******************************************* */
 const submitReunion = async () => {
 
-  // on valide les réponses données
-  // const { valid } = await formConseiller.value.validate();
-  // if (!valid) return; // si ce n'est pas valide on quitte le submit
   const tabOrdreDuJour = reunion.value.ordreDuJour.split("\n");
-
   delete reunion.value.ordreDuJour;
   
-  //console.log("reunion.value.date",reunion.value.date)
-  //const dateSelectionnee=Date.parse(reunion.value.date);
   const dateSelectionnee=reunion.value.date;
- 
-  
-  
-  //const jour=dateSelectionnee.getDate()>9 ? dateSelectionnee.getDate() : '0'+dateSelectionnee.getDate();
-  
-  //const mois=dateSelectionnee.getMonth()>9 ? dateSelectionnee.getMonth()+1 : '0'+dateSelectionnee.getMonth()+1;
-  
-
-
-  //reunion.value.date=jour+'/'+mois+'/'+dateSelectionnee.getFullYear();
 
   reunion.value.representant_uid = props.mairieData.representant_uid;
-  console.log("props.mairieData.representant_uid",props.mairieData.representant_uid)
-  
   
   const result = await reunionStore.create(reunion.value);
   const idReunion = result.id;
@@ -157,7 +139,7 @@ const submitReunion = async () => {
     await ordresDuJourStore.create(ordreAEcrire);
   });
   
-  const emit = defineEmits(["update:modelValue"])
+  emit("update:modelValue");
 };
 
 const dateFormatted = computed(() => {

@@ -1,6 +1,4 @@
 import { defineStore } from "pinia";
-// import { useCollection }  from 'vuefire';
-// import { collection, addDoc  } from 'firebase/firestore';
 import {
   createUserWithEmailAndPassword,
   updateEmail,

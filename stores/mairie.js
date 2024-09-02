@@ -31,6 +31,7 @@ export const useMairieStore = defineStore("mairie", {
     // MVC |
     // CRUD | Create, Read, Update, Delete
     async create(mairie) {
+      const db = useFirestore();
       await addDoc(collection(db, "mairies"), mairie);
     },
     //Read

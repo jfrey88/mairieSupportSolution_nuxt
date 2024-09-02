@@ -1,17 +1,10 @@
 <!-- ************************ BOITE DE DIALOGUE POUR LA MODIFICATION D'UNE MAIRIE *********************-->
-  
 <template>
-<v-dialog max-width="800">
-    
-
+  <v-dialog max-width="800">
     <template v-slot:default="{ isActive }">
       <v-card :title="title">
         <v-card-text>
-          {{  }}
-          <FormCreationMairie
-          
-            @update:modelValue = "isActive.value = false"
-          />
+          <FormCreationMairie @update:modelValue="isActive.value = false" />
         </v-card-text>
 
         <v-card-actions>
@@ -24,10 +17,11 @@
   </v-dialog>
 </template>
 <script setup>
+import { defineProps } from "vue";
 const props = defineProps({
   isCreate: Boolean,
 });
-const title = computed(() => 
+const title = computed(() =>
   props.isCreate ? "Créer une mairie" : "Modifier une mairie"
 );
 </script>

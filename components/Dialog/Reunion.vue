@@ -1,11 +1,12 @@
+<!-- ************************ BOITE DE DIALOGUE POUR CREATION D'UNE REUNION *********************-->
 <template>
   <v-dialog max-width="800">
     <template v-slot:default="{ isActive }">
       <v-card title="Ajout d'une réunion">
         <v-card-text>
-          <FormCreationReunion
+          <FormCreationReunion  
+            @update:modelValue="isReactive.value = false"
             :mairieData="mairieData"
-            @update:modelValue="dialogStatusReunion.value = false"
           />
         </v-card-text>
 
@@ -14,7 +15,7 @@
 
           <v-btn
             text="Annuler"
-            @click="dialogStatusReunion.value = false"
+            @click="isActive.value = false"
           ></v-btn>
         </v-card-actions>
       </v-card>
