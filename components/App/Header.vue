@@ -76,6 +76,13 @@ console.log('utilisateurStore.utilisateur dans init du header',utilisateurStore.
 
 const {exists, utilisateur} = storeToRefs(utilisateurStore)
 
+utilisateurStore.$state.utilisateur = user;
+utilisateurStore.$state.email = user.email;
+utilisateurStore.$state.uid = user.uid;
+console.log('utilisateurStore.utilisateur dans onMounted du header',utilisateurStore.$state.utilisateur)
+console.log('utilisateurStore.email dans onMounted du header',utilisateurStore.$state.email)
+console.log('utilisateurStore.uid dans onMounted du header',utilisateurStore.$state.uid)
+console.log('utilisateurStore dans init du Header',utilisateurStore)
 
 //    telephone: "",
 //    nom: "",
@@ -94,12 +101,7 @@ const logout = async () => {
 
 onMounted(async () => {
 
-  utilisateurStore.utilisateur = user;
-utilisateurStore.email = user.email;
-utilisateurStore.uid = user.uid;
-console.log('utilisateurStore.utilisateur dans onMounted du header',utilisateurStore.utilisateur)
-console.log('utilisateurStore.email dans onMounted du header',utilisateurStore.email)
-console.log('utilisateurStore.uid dans onMounted du header',utilisateurStore.uid)
+
 
 });
 </script>
