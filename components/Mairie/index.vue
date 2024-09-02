@@ -92,7 +92,10 @@
 
         <v-col cols="12" md="12">
           <!--  --------------------------- TABLE POUR AFFICHER LES REUNION DU CONSEIL MUNICIPAL --------------------------------->
-          <MairieReunions :mairie="mairieStore.mairie" :user="user">
+          <MairieReunions 
+            :mairie="mairieStore.mairie" 
+            :user="user"
+            :reunions="mairieStore.reunions">
           </MairieReunions>
         </v-col>
       </v-row>

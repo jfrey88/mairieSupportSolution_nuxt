@@ -41,6 +41,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             
 
             const result = await addDoc(collection(db,"reunions"),reunion);
+            console.log("reunion",reunion);
             this.reunions.push(reunion)
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array

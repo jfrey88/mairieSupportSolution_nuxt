@@ -178,10 +178,11 @@ const dialogReunion = ref({});
 const props = defineProps({
   mairie: Object,
   user: Object,
+  reunions: Array
 });
 
 //********************** Initialisation des variables ***********************************/
-const reunions = ref([]);
+//const reunions = ref([]);
 const ordres = ref({});
 const procurations = ref({});
 
@@ -191,7 +192,7 @@ const fetchReunions = async () => {
     "representant_uid",
     props.mairie.representant_uid,
   ]);
-  reunions.value = await reunionsData;
+  props.reunions.value = await reunionsData;
   reunionsData.forEach((reunion) => {
     fetchOrdres(reunion);
     fetchProcuration(reunion);
