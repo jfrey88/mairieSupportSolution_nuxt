@@ -41,14 +41,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             
 
             const result = await addDoc(collection(db,"reunions"),reunion);
-            console.log("reunion",reunion);
-            this.reunions.push(reunion)
-            // receive one object as parameter and will perform,
-            // the action of persisting the object in the database / cache / array
-            // containing all the records
-            console.log('********************************************');
-            console.log('this.reunions dans le storeReunion create',this.reunions);
-            console.log('********************************************');
+ 
             return result;
         },
         //Read
@@ -58,23 +51,15 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const reunionsCollections=collection(db, 'reunions')
             const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1]),orderBy("date","desc")));
         
-
-            const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
-
             const ordresDuJour = useOrdresDuJourStore();
-            reunionsData.forEach(async (reunionData) => {
-                const reunion = ref(reunionData);
-                reunion.ordres="";
-                
-                const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunionData.id]);
-                reunion.ordres = ordrerecept;
+   
+            const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id, ordres :  ordresDuJour.fetch(["id_reunion", doc.id]) }));
 
-            })
+
        
              this.reunions = reunionsData;
-             console.log('********************************************');
-             console.log('this.reunions dans le storeReunion fetch',this.reunions);
-             console.log('********************************************');           
+            
+   
             return reunionsData;
 
             
@@ -128,7 +113,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             // receive one object as parameter and will perform,
             // the action of delete the object in the database / cache / array
             // containing all the records
-        }
+        },
     
 
         //Delete

@@ -71,7 +71,7 @@ const useProcurationStore = defineStore('procuration',{
             });
 
 
-           console.log("procurationsData",procurationsData)
+          
             return procurationsData;
         },
 

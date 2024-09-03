@@ -46,7 +46,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="reunion in reunionConseilMunicipalStore.reunions" :key="reunion.date">
+        <tr v-for="reunion in reunionConseilMunicipalStore.$state.reunions" :key="reunion.date">
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
           <!------------------ Date ------------------------------->
@@ -55,8 +55,11 @@
           <!------------------ Ordre du jour ------------------------------->
           <td class="text-left border-sm">
             <v-list>
-              <v-list-item v-for="ordre in ordres[reunion.id]" :key="ordre.id">
-                {{ ordre.numero }}. {{ ordre.ordre }}
+              <v-list-item>
+                {{ test(reunion,reunion.ordres) }}
+              </v-list-item>
+              <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
+                {{ ordre.numero }}. {{ ordre.ordre }}.{{ test(reunion,ordre) }}
               </v-list-item>
             </v-list>
           </td>
@@ -79,7 +82,7 @@
               :key="procuration.id"
               
             >
-              <div  v-if="procuration.prenomNomRecevant" class="border-sm text-center my-2 mx-2 rounded-sm elevation-2 bg-purple-lighten-5 " >
+              <div  v-if="procuration.prenomNomRecevant" class="border-sm text-center my-2 mx-2 rounded-sm elevation-2 bg-green-lighten-5 " >
                 <p> {{ procuration.prenomNomAbsent }} <br />donne procuration à <br />{{ procuration.prenomNomRecevant }}</p>
                 <v-btn
                   v-if="!reunion.isTransmisPrefecture"
@@ -193,10 +196,12 @@ const fetchReunions = async () => {
     props.mairie.representant_uid,
   ]);
   props.reunions.value = await reunionsData;
-  reunionsData.forEach((reunion) => {
-    fetchOrdres(reunion);
-    fetchProcuration(reunion);
-  });
+  console.log("reunionConseilMunicipalStore.$state",reunionConseilMunicipalStore.$state.reunions)
+
+  // reunionsData.forEach((reunion) => {
+  //   fetchOrdres(reunion);
+  //   fetchProcuration(reunion);
+  // });
   return reunionsData;
 };
 
@@ -250,5 +255,13 @@ const dateText = (unix_timestamp) => {
   const annee = myDate.getFullYear() - 1970 + 1;
 
   return jour + "/" + mois + "/" + annee;
+
 };
+
+
+const test = (reunion,ordre) =>{
+  console.log('******************** boucle vfor ordre *******************')
+  console.log(reunion);
+  console.log(ordre.result);
+}
 </script>

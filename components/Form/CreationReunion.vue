@@ -138,7 +138,7 @@ const submitReunion = async () => {
     };
     await ordresDuJourStore.create(ordreAEcrire);
   });
-  
+  await reunionStore.fetch(["representant_uid",props.mairieData.representant_uid]);
   emit("update:modelValue");
 };
 
