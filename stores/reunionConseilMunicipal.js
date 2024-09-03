@@ -53,7 +53,11 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         
             const ordresDuJour = useOrdresDuJourStore();
    
-            const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id, ordres :  ordresDuJour.fetch(["id_reunion", doc.id]) }));
+            const reunionsData= data.docs.map(async(doc) => {
+                const ordres = await ordresDuJour.fetch(["id_reunion", doc.id]);
+                console.log("ordres dans reunion fetch ",ordres);
+                return {...doc.data(), id: doc.id, ordres :  ordres }
+            });
 
 
        

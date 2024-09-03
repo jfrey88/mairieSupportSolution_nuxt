@@ -50,16 +50,18 @@
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
           <!------------------ Date ------------------------------->
-          <td class="text-center border-sm">{{ dateText(reunion.date) }}</td>
+          <td class="text-center border-sm">{{ cquoi(reunionConseilMunicipalStore.$state.reunions )}}</td>
 
           <!------------------ Ordre du jour ------------------------------->
           <td class="text-left border-sm">
             <v-list>
-              <v-list-item>
-                {{ test(reunion,reunion.ordres) }}
+              <v-list-item >
+                {{ cquoi(reunion) }}
               </v-list-item>
+
+
               <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
-                {{ ordre.numero }}. {{ ordre.ordre }}.{{ test(reunion,ordre) }}
+                {{ ordre.numero }}. {{ ordre.ordre }}
               </v-list-item>
             </v-list>
           </td>
@@ -198,6 +200,7 @@ const fetchReunions = async () => {
   props.reunions.value = await reunionsData;
   console.log("reunionConseilMunicipalStore.$state",reunionConseilMunicipalStore.$state.reunions)
 
+ 
   // reunionsData.forEach((reunion) => {
   //   fetchOrdres(reunion);
   //   fetchProcuration(reunion);
@@ -259,9 +262,9 @@ const dateText = (unix_timestamp) => {
 };
 
 
-const test = (reunion,ordre) =>{
-  console.log('******************** boucle vfor ordre *******************')
-  console.log(reunion);
-  console.log(ordre.result);
+
+const cquoi = (quoi) =>{
+  console.log('********************CQUOI *******************')
+  console.log(quoi);
 }
 </script>
