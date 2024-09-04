@@ -41,8 +41,9 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             
 
             const result = await addDoc(collection(db,"reunions"),reunion);
- 
+            this.fetch(["representant_uid", reunion.representant_uid]);
             return result;
+
         },
         //Read
         async fetch(params){ 
@@ -52,16 +53,26 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1]),orderBy("date","desc")));
         
             const ordresDuJour = useOrdresDuJourStore();
-   
-            const reunionsData= data.docs.map(async(doc) => {
+            ordresDuJour.$subscribe((mutation, state) => {
+                // import { MutationType } from 'pinia'
+                mutation.type // 'direct' | 'patch object' | 'patch function'
+                // same as cartStore.$id
+                mutation.storeId // 'cart'
+                // only available with mutation.type === 'patch object'
+                mutation.payload // patch object passed to cartStore.$patch()
+              
+                // persist the whole state to the local storage whenever it changes
+                localStorage.setItem('cart', JSON.stringify(state))
+              })
+            const reunionsPromises = data.docs.map(async(doc) => {
                 const ordres = await ordresDuJour.fetch(["id_reunion", doc.id]);
-                console.log("ordres dans reunion fetch ",ordres);
                 return {...doc.data(), id: doc.id, ordres :  ordres }
             });
 
-
-       
-             this.reunions = reunionsData;
+            
+            const reunionsData = await Promise.all(reunionsPromises);
+            console.log("reunionsPromises",reunionsData.length);
+            this.reunions = reunionsData;
             
    
             return reunionsData;

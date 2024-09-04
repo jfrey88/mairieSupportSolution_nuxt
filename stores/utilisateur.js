@@ -92,7 +92,6 @@ export const useUtilisateurStore = defineStore("utilisateur", {
     async update(uid, userData, userInfoData, auth) {
       // onfait la sauvegarde dans la partie authentification
       //updateEmail(auth.currentUser,userData.email)
-      // console.log(result);
 
       const db = useFirestore();
       // on fait la sauvegarde du reste de l'utilisateur
