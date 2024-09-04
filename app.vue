@@ -25,7 +25,6 @@ import { useMairieStore } from "@/stores/mairie";
   // const mairieStore = useMairieStore();
 
   watch(isUserLoaded, async() => {
-  //   console.log('isUserLoaded->',isUserLoaded);
     if (isUserLoaded.value) {
      
       await utilisateurStore.fetchUser(); 

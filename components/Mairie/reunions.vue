@@ -23,11 +23,7 @@
           >
             procuration / absence
           </th>
-          <th
-            class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-          >
-            feuille présence
-          </th>
+          
           <th
             class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
           >
@@ -50,31 +46,15 @@
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
           <!------------------ Date ------------------------------->
-          <td class="text-center border-sm">{{ cquoi(reunionConseilMunicipalStore.$state.reunions )}}</td>
+          <td class="text-center border-sm">{{ dateText(reunion.date) }}</td>
 
           <!------------------ Ordre du jour ------------------------------->
           <td class="text-left border-sm">
             <v-list>
-              <v-list-item >
-                {{ cquoi(reunion) }}
-              </v-list-item>
-
-
               <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
                 {{ ordre.numero }}. {{ ordre.ordre }}
               </v-list-item>
             </v-list>
-          </td>
-
-          <!------------------ Convocation ------------------------------->
-          <td style="vertical-align: middle" class="border-sm">
-            <v-btn
-              class="my-4"
-              color="blue-lighten-4"
-              :to="`/convocation/${reunion.id}`"
-            >
-              créer
-            </v-btn>
           </td>
 
           <!------------------ Procuration ------------------------------->
@@ -144,18 +124,32 @@
 
           <!------------------ Actions ------------------------------->
           <td style="vertical-align: middle" class="border-sm">
+            
             <!-- ---------------- BOITE DE DIALOGUE MODIFIER REUNION  --------------------------->
             <DialogModificationReunions
               :userData="user"
               :reunionData="reunion"
             />
-            <v-btn
-              v-if="!reunion.isTransmisPrefecture"
-              density="compact"
-              @click="deleteReunion(reunion)"
-              icon="mdi-delete"
-              class="ma-2"
-            ></v-btn>
+            
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn color="primary" v-bind="props">
+                  Actions
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-if="!reunion.isTransmisPrefecture"  
+                  @click="deleteReunion(reunion)"
+                  icon="mdi-delete" title="Supprimer">
+                </v-list-item>
+                <v-list-item :to="`/convocation/${reunion.id}`" title="Créer Convocations">
+                </v-list-item>
+                <v-list-item  :to="`/convocation/${reunion.id}`" title="Créer Convocations">
+                </v-list-item>
+                
+              </v-list>
+            </v-menu>
           </td>
         </tr>
       </tbody>
@@ -183,7 +177,7 @@ const dialogReunion = ref({});
 const props = defineProps({
   mairie: Object,
   user: Object,
-  reunions: Array
+  reunions: Array,
 });
 
 //********************** Initialisation des variables ***********************************/
@@ -191,32 +185,13 @@ const props = defineProps({
 const ordres = ref({});
 const procurations = ref({});
 
-//********************** fonction pour récupérer les réunions de cette mairie ***********/
-const fetchReunions = async () => {
-  const reunionsData = await reunionConseilMunicipalStore.fetch([
-    "representant_uid",
-    props.mairie.representant_uid,
-  ]);
-  props.reunions.value = await reunionsData;
-  console.log("reunionConseilMunicipalStore.$state",reunionConseilMunicipalStore.$state.reunions)
 
- 
-  // reunionsData.forEach((reunion) => {
-  //   fetchOrdres(reunion);
-  //   fetchProcuration(reunion);
-  // });
-  return reunionsData;
-};
 
 /************************ fonction pour créer une nouvelle procuration absence ******/
 const createProcuration = (reunion) => {
   dialogStatus.value = true;
   dialogReunion.value = reunion;
 };
-
-onMounted(() => {
-  fetchReunions();
-});
 
 /** ******************** fonction pour récupérer les ordres de cette réunion **********/
 const fetchOrdres = async (reunion) => {
@@ -262,9 +237,4 @@ const dateText = (unix_timestamp) => {
 };
 
 
-
-const cquoi = (quoi) =>{
-  console.log('********************CQUOI *******************')
-  console.log(quoi);
-}
 </script>
