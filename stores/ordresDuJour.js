@@ -31,6 +31,7 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
             const ordresDuJourCollections=collection(db, 'ordres')
           
             const data=await getDocs(query(ordresDuJourCollections, where(params[0],"==",params[1]),orderBy("numero")));
+            console.log('data.docs dans fetch ordre',data.docs);
           
 
             const ordresData=data.docs.map((doc) => ({...doc.data(),id : doc.id}));

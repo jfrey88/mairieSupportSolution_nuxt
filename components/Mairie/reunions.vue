@@ -46,22 +46,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="reunion in reunionConseilMunicipalStore.$state.reunions" :key="reunion.date">
+        <tr v-for="reunion in props.reunions.value " :key="reunion.date">
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
           <!------------------ Date ------------------------------->
-          <td class="text-center border-sm">{{ cquoi(reunionConseilMunicipalStore.$state.reunions )}}</td>
+          <td class="text-center border-sm">{{ dateText(reunion.date)}}</td>
 
           <!------------------ Ordre du jour ------------------------------->
           <td class="text-left border-sm">
             <v-list>
-              <v-list-item >
-                {{ cquoi(reunion) }}
-              </v-list-item>
 
 
-              <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
-                {{ ordre.numero }}. {{ ordre.ordre }}
+
+              <v-list-item v-for="ordre in ordres[reunion.id]" :key="ordre.id">
+                {{ ordre.numero }}. {{ordre.ordre }}
               </v-list-item>
             </v-list>
           </td>
@@ -201,10 +199,10 @@ const fetchReunions = async () => {
   console.log("reunionConseilMunicipalStore.$state",reunionConseilMunicipalStore.$state.reunions)
 
  
-  // reunionsData.forEach((reunion) => {
-  //   fetchOrdres(reunion);
-  //   fetchProcuration(reunion);
-  // });
+   reunionsData.forEach((reunion) => {
+     fetchOrdres(reunion);
+     fetchProcuration(reunion);
+   });
   return reunionsData;
 };
 
@@ -214,14 +212,16 @@ const createProcuration = (reunion) => {
   dialogReunion.value = reunion;
 };
 
-onMounted(() => {
-  fetchReunions();
+onMounted(async() => {
+  await fetchReunions();
+
 });
 
 /** ******************** fonction pour récupérer les ordres de cette réunion **********/
 const fetchOrdres = async (reunion) => {
   const ordresData = await ordresDuJourStore.fetch(["id_reunion", reunion.id]);
-  // reunion.ordres = ordres;
+
+   
   ordres.value[reunion.id] = ordresData;
   return ordres;
 };

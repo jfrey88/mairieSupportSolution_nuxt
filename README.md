@@ -73,3 +73,12 @@ bun run preview
 ```
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+
+## PROBLEME NON ENCORE RESOLUS
+1) Ajout d'une réunion ne rafraichit pas les données (je suppose qu'il faut travailler avec le state)
+2) Ajout absence/procuration ne rafraichiet pas les données (même chose)
+3) supprimer absence/procuration ne rafraichit pas les données
+4) Modifier réunion ne fait rien
+5) supprimer réunion ne rafraichit pas les données
+6) Supprimer réunion ne supprime pas les ordres
+7) affichage de la date dans convocation n'est plaus bon

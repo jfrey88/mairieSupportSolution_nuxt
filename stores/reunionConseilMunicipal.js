@@ -51,15 +51,23 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const reunionsCollections=collection(db, 'reunions')
             const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1]),orderBy("date","desc")));
         
-            const ordresDuJour = useOrdresDuJourStore();
+            
    
-            const reunionsData= data.docs.map(async(doc) => {
+            const reunionsData=data.docs.map((doc) => ({...doc.data(), id: doc.id}));
+           
+/*            const reunionsData = data.docs.map(async(doc) => {
                 const ordres = await ordresDuJour.fetch(["id_reunion", doc.id]);
                 console.log("ordres dans reunion fetch ",ordres);
                 return {...doc.data(), id: doc.id, ordres :  ordres }
-            });
-
-
+            });*/
+            /*const ordresDuJour = useOrdresDuJourStore();
+            reunionsData.forEach(async (reunion) => {
+                reunion.ordres="";
+                
+                const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
+                reunion.ordres = ordrerecept;
+             
+            })*/
        
              this.reunions = reunionsData;
             
