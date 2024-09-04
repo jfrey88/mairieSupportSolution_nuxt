@@ -27,16 +27,6 @@
           <th
             class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
           >
-            Procès verbal
-          </th>
-          <th
-            class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-          >
-            Extrait registre
-          </th>
-          <th
-            class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
-          >
             Actions
           </th>
         </tr>
@@ -50,7 +40,7 @@
 
           <!------------------ Ordre du jour ------------------------------->
           <td class="text-left border-sm">
-            <v-list>
+            <v-list density="compact">
               <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
                 {{ ordre.numero }}. {{ ordre.ordre }}
               </v-list-item>
@@ -98,12 +88,6 @@
             </div>
           </td>
 
-          <!------------------ Feuille de presence ------------------------------->
-          <td style="vertical-align: middle" class="border-sm text-center">
-            <div v-if="reunion.isConvocationOk">
-              <v-btn class="my-4" color="blue-lighten-4">imprimer</v-btn><br />
-            </div>
-          </td>
 
           <!------------------ Procès verbal ------------------------------->
           <td style="vertical-align: middle" class="border-sm">
@@ -112,13 +96,6 @@
               <v-btn class="my-4">Générer imprimer <br />procès verbal </v-btn
               ><br />
               <v-btn class="my-4">transmis prefecture</v-btn><br />
-            </div>
-          </td>
-
-          <!------------------ Extrait registre ------------------------------->
-          <td style="vertical-align: middle" class="border-sm">
-            <div v-if="reunion.isProcesVerbalOk">
-              <v-btn class="my-4">Imprimer</v-btn><br />
             </div>
           </td>
 
@@ -141,12 +118,11 @@
                 <v-list-item
                   v-if="!reunion.isTransmisPrefecture"  
                   @click="deleteReunion(reunion)"
-                  icon="mdi-delete" title="Supprimer">
+                  prepend-icon="mdi-delete" title="Supprimer">
                 </v-list-item>
-                <v-list-item :to="`/convocation/${reunion.id}`" title="Créer Convocations">
-                </v-list-item>
-                <v-list-item  :to="`/convocation/${reunion.id}`" title="Créer Convocations">
-                </v-list-item>
+                <v-list-item prepend-icon="mdi-calendar-plus":to="`/convocation/${reunion.id}`" title="Créer Convocations" />
+                <v-list-item prepend-icon="mdi-clipboard-list-outline" :disabled="reunion.isProcesVerbalOk" title="Imprimer PV" />
+                <v-list-item prepend-icon="mdi-clipboard-list-outline" :disabled="reunion.isConvocationOk" title="Imprimer Convocation" />
                 
               </v-list>
             </v-menu>
