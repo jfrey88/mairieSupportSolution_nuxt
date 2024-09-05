@@ -73,7 +73,7 @@ export const useUtilisateurStore = defineStore("utilisateur", {
 
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
-       // console.log("No such document!");
+  
         return;
       }
       const account = docSnap.data();

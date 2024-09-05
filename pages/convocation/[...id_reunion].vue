@@ -135,6 +135,7 @@ const reunionConseilMunicipal = useReunionConseilMunicipalStore();
 reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
 
 
+
 /******************** On récupère les données de la mairie concernée par cette réunion ******************* */
 const id_mairie = ref("");
 id_mairie.value = reunionEnCours.value.representant_uid;
@@ -167,7 +168,9 @@ const dateduJourTxt = () => {
 
 /******************* On récupère l'ordre du jour de cette réunion *********************************/
 const updateConvoc = async() => {
-  await reunionConseilMunicipal.updateisConvocation(id_reunion);
+  const numFeuillet=reunionEnCours.value.date.substr(6);
+  const dateConvoc=new Date();
+  await reunionConseilMunicipal.updateisConvocation(id_reunion,dateConvoc,numFeuillet);
 }
 updateConvoc();
 

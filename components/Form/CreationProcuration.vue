@@ -38,6 +38,7 @@
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
 import { useProcurationStore } from "@/stores/procuration";
 import { ref, defineProps, onMounted } from "vue";
+import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
 
 const props = defineProps({
 
@@ -66,7 +67,8 @@ const emit = defineEmits(["update:modelValue"]);
 const submitProcuration = async () => {
 
   procurationStore.create(procuration.value);
-
+  const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
+  reunionConseilMunicipalStore.fetch(['representant_uid',props.reunionData.representant_uid]);
   emit("update:modelValue");
 }
 //mairieStore.create(mairieTest);

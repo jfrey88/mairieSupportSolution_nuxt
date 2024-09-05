@@ -78,7 +78,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
         });
 
            const reunionsData = await Promise.all(reunionsPromises);
-            console.log("reunionsPromises",reunionsData);
+     
             this.reunions = reunionsData;
   
 
@@ -113,17 +113,19 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const ordresDuJour = useOrdresDuJourStore();
             const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
             reunion.date=this.dateText(reunion.date);
+            reunion.dateConvoc=this.dateText(reunion.dateConvoc);
             reunion.ordres = ordrerecept;
            return reunion;
         },
         //Update
-        update(){
-           
+        update(reunion){
+            
+            
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records
         },
-        async updateisConvocation(id_reunion){
+        async updateisConvocation(id_reunion,dateConvoc,numFeuillet){
                 const db=useFirestore();
                
                 const docRef = doc(db,"reunions",id_reunion);
@@ -132,6 +134,8 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
                 const reunion=docSnap.data();
 
                 reunion.isConvocationOk=true;
+                reunion.dateConvoc = dateConvoc;
+                reunion.numFeuillet = numFeuillet;
                 
                 await updateDoc(docRef,reunion);
                 this.fetch(["representant_uid", reunion.representant_uid]);

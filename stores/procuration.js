@@ -46,7 +46,7 @@ const useProcurationStore = defineStore('procuration',{
             const procurationCollections=collection(db, 'procurations')
             const data=await getDocs(query(procurationCollections, where(params[0],"==",params[1])));
 
-            console.log("data dans procurations store ",data);
+           
             const procurationsData=data.docs.map((doc) => {
                 const data = doc.data();
                 

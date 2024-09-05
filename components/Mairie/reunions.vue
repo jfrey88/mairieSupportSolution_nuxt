@@ -117,7 +117,12 @@
                   <!-- ---------------- FEUILLE DE PRESENCE --------------------------->
                   <td style="vertical-align: middle" class="border-sm text-center">
                     <div v-if="reunion.isConvocationOk">
-                      <v-btn class="my-4" color="blue-lighten-4">imprimer</v-btn><br />
+                      <v-btn 
+                        class="my-4" 
+                        color="blue-lighten-4"
+                        :to="`/presence/${reunion.id}`"
+                        >imprimer
+                    </v-btn>
                      
                     </div>
                   </td>
@@ -183,7 +188,8 @@ const props = defineProps({
   user: Object,
   reunions: Array,
 });
-
+console.log("props.user",props.user)
+console.log("props.mairie",props.mairie)
 //********************** Initialisation des variables ***********************************/
 //const reunions = ref([]);
 // const ordres = ref({});
@@ -223,6 +229,9 @@ const deleteReunion = async (reunion) => {
 /** ******************** fonction pour supprimer une procuration **********/
 const deleteProcuration = async (procuration) => {
   await procurationStore.delete(procuration.id);
+ 
+
+  reunionConseilMunicipalStore.fetch(['representant_uid',props.mairie.representant_uid]);
 };
 
 
