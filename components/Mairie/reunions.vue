@@ -31,6 +31,11 @@
                   <th
                     class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
                   >
+                    Délibérations
+                  </th>
+                  <th
+                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
+                  >
                     Procès verbal
                   </th>
                   <th
@@ -55,6 +60,7 @@
            <!-- ---------------- ORDRE DU JOUR --------------------------->
           <td class="text-left border-sm">
             <v-list density="compact">
+
               <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
                 {{ ordre.numero }}. {{ ordre.ordre }}
               </v-list-item>
@@ -126,11 +132,23 @@
                      
                     </div>
                   </td>
-
+<!-- ---------------- PROCES VERBAL --------------------------->
+<td style="vertical-align: middle" class="border-sm">
+            <div v-if="reunion.isFeuillePresenceOk">
+              <v-btn 
+                class="my-4"
+                color="blue-lighten-4"
+                :to="`/deliberation/${reunion.id}`">
+                Délibérations
+              </v-btn>
+              
+             
+            </div>
+          </td>
            <!-- ---------------- PROCES VERBAL --------------------------->
           <td style="vertical-align: middle" class="border-sm">
             <div v-if="reunion.isFeuillePresenceOk">
-              <v-btn class="my-4">Délibérations</v-btn><br />
+             
               <v-btn class="my-4">Générer imprimer <br />procès verbal </v-btn
               ><br />
               <v-btn class="my-4">transmis prefecture</v-btn><br />
@@ -176,7 +194,8 @@ import { useProcurationStore } from "@/stores/procuration";
 //*************************Initialisation des strores ********************************/
 const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
 // const ordresDuJourStore = useOrdresDuJourStore();
-const procurationStore = useProcurationStore();
+//const procurationStore = useProcurationStore();
+
 
 //************************ Initialisation des status pour boite de dialogues *************/
 const dialogStatus = ref(false);
@@ -188,8 +207,8 @@ const props = defineProps({
   user: Object,
   reunions: Array,
 });
-console.log("props.user",props.user)
-console.log("props.mairie",props.mairie)
+console.log("reunionConseilMunicipalStore.$state.reunions",reunionConseilMunicipalStore.$state.reunions)
+
 //********************** Initialisation des variables ***********************************/
 //const reunions = ref([]);
 // const ordres = ref({});
@@ -203,24 +222,7 @@ const createProcuration = (reunion) => {
   dialogReunion.value = reunion;
 };
 
-/** ******************** fonction pour récupérer les ordres de cette réunion **********/
-// const fetchOrdres = async (reunion) => {
-//   const ordresData = await ordresDuJourStore.fetch(["id_reunion", reunion.id]);
-//   // reunion.ordres = ordres;
-//   ordres.value[reunion.id] = ordresData;
-//   return ordres;
-// };
 
-/** ******************** fonction pour récupérer les procurations de cette réunion **********/
-// const fetchProcuration = async (reunion) => {
-//   const procurationData = await procurationStore.fetch([
-//     "idReunion",
-//     reunion.id,
-//   ]);
-//   // reunion.ordres = ordres;
-//   procurations.value[reunion.id] = procurationData;
-//   return procurations;
-// };
 
 /** ******************** fonction pour supprimer une reunion **********/
 const deleteReunion = async (reunion) => {

@@ -61,7 +61,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const reunionsPromises = data.docs.map(async(doc) => {
                 // const ordres = await ordresDuJourStore.fetch(["id_reunion", doc.id]);
                 // const procurations = await procurationStore.fetch(["idReunion", doc.id]);
-                await ordresDuJourStore.fetch(["id_reunion", doc.id]);
+                const ordresDuJour = await ordresDuJourStore.fetch(["id_reunion", doc.id]);
                 await procurationStore.fetch(["idReunion", doc.id]);
             //    return {...doc.data(), id: doc.id, ordres :  ordresDuJourStore.ordres ,procurations : procurationStore.procurations}
                 return {
@@ -73,7 +73,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
                     isTransmisPrefecture : doc.data().isTransmisPrefecture,
                     representant_uid : doc.data().representant_uid,
                     id: doc.id, 
-                    ordres :  ordresDuJourStore.ordres ,
+                    ordres :  ordresDuJour ,
                     procurations : procurationStore.procurations}
         });
 
@@ -104,18 +104,8 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
           
           },
         async fetchOne(id_reunion){ 
-            const db=useFirestore();
-            const docRef = doc(db,"reunions",id_reunion);
-           
-            const docSnap = await getDoc(docRef);
-            const reunion=docSnap.data();
-            reunion.id=docSnap.id;
-            const ordresDuJour = useOrdresDuJourStore();
-            const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
-            reunion.date=this.dateText(reunion.date);
-            reunion.dateConvoc=this.dateText(reunion.dateConvoc);
-            reunion.ordres = ordrerecept;
-           return reunion;
+            const reunionEnCours=this.reunions.find((reunion) => reunion.id == id_reunion);
+           return reunionEnCours;
         },
         //Update
         update(reunion){
@@ -144,6 +134,23 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
                 // containing all the records
     
         },
+        async updateisFeuillePresence(id_reunion){
+            const db=useFirestore();
+           
+            const docRef = doc(db,"reunions",id_reunion);
+
+            const docSnap = await getDoc(docRef);
+            const reunion=docSnap.data();
+
+            reunion.isFeuillePresenceOk=true;
+            
+            await updateDoc(docRef,reunion);
+            this.fetch(["representant_uid", reunion.representant_uid]);
+            // receive one object as parameter and will perform,
+            // the action of updating the object in the database / cache / array
+            // containing all the records
+
+    },
         //Delete
         async delete(reunion){
             const db=useFirestore();

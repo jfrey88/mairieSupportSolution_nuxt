@@ -1,6 +1,6 @@
 <template>
-  <v-container fluid>
-    <h1 class="text-center text-uppercase">FEUILLE DE PRéSENCE</h1>
+   
+    <h1 class="text-center text-uppercase">ENREGISTREMENT DES Délibérations</h1>
     <div class="text-center my-5">
     <v-btn
        class="ml-2"
@@ -14,53 +14,14 @@
          to="/"
     >Retour</v-btn>
   </div>
-    <v-row class="px-2 py-2 mt-2">
-      
-        
-          <!-- **************** COLONNE DE GAUCHE INFO MAIRIE **************************-->
-
-          <v-col cols="12" md="8" class="mt-2 text-center">
-            <h2 class="text-decoration-underline">Séance du {{ dateLiterale(reunionEnCours.date) }}</h2>
-          </v-col>
-          <v-col cols="12" md="4" class="mt-2 text-center border-md ">
-            <h2 >Feuillet n° {{ (reunionEnCours.numFeuillet) }}</h2>
-          </v-col>
-          <v-col cols="12" md="12" class="mt-2 text-left  ">
-            <h2 class="text-decoration-underline">Convocation du {{ (reunionEnCours.dateConvoc) }}</h2>
-            <h2 class="text-decoration-underline">Ordre du jour :</h2>
-            <p v-for="ordre in reunionEnCours.ordres" :key="ordre.id" class="ms-3"> {{ ordre.numero }}. {{ ordre.ordre }}</p>
-
-          </v-col>
-
-
-          <v-col cols="12" md="12" class="mt-2 text-center">
-            <v-table class="border-md" >
-              <thead>
-                <tr>
-                  <th  class="mt-2 text-center border-md" >Prénom nom, fonction</th>
-                  <th  class="mt-2 text-center border-md">Signature</th>
-                </tr>
-              </thead>
-                <tbody class="mt-2 mx-auto text-center">
-                  <tr v-for="conseiller in conseillerMunicipalStore.conseillers">
-                    <th  class="mt-2 text-center border-md">{{ conseiller.prenom}} {{ conseiller.nom }} , {{conseiller.role}}</th>
-                    <th></th>
-                  </tr>
-                </tbody>
-      
-              
-            </v-table>
-            <br>
-            <p class="text-center">Séance du {{ reunionEnCours.date }}</p>  
-          </v-col>
-
-          
-         
-
-      
-    </v-row>
-  </v-container>
-</template>
+    <v-row class="px-2 py-2 mt-2"></v-row> 
+    <h2 class="text-center text-uppercase my-3">séance du {{ reunionEnCours.date }}</h2>
+    <FormCreationDeliberation 
+        :reunionEnCours="reunionEnCours" 
+        :conseillersMunicipaux="conseillersMunicipaux"
+        />
+    
+  </template>
 
 <script setup>
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
@@ -93,6 +54,8 @@ reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
 
 /******************** On récupère les données de la mairie concernée par cette réunion ******************* */
 const id_mairie = ref("");
+const conseillersMunicipaux = ref([]);
+
 id_mairie.value = reunionEnCours.value.representant_uid;
 
 
@@ -113,6 +76,7 @@ const fetchConseillers = async (id_mairie) => {
   await conseillerMunicipalStore.fetch(["representant_uid", id_mairie]);
 };
 await fetchConseillers(id_mairie.value);
+conseillersMunicipaux.value = conseillerMunicipalStore.conseillers;
 
 const dateLiterale = (myDate) => {
   const nomJour=["dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi"];

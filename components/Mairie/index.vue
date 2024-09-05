@@ -81,11 +81,18 @@
             :mairieData="mairieStore.mairie"
           />
           <v-btn
-            class="mt-4"
+            class="mt-4 mx-2"
             color="orange-darken-4"
-            prepend-icon="mdi-pencil"
+            prepend-icon="mdi-plus"
             text="Ajouter une réunion"
             @click="dialogStatusReunion = !dialogStatusReunion"
+          ></v-btn>
+          <v-btn
+            class="mt-4 mx-2"
+            color="orange-darken-4"
+            prepend-icon="mdi-eye"
+            text="Consulter les anciennes réunions"
+           
           ></v-btn>
           <!-- ----------------FIN BOITE DE DIALOGUE AJOUTER REUNION  --------------------------->
         </v-col>
@@ -138,5 +145,5 @@ const fetchMairie = async () => {
 };
 
 await fetchMairie();
-
+console.log("mairieStore.reunions",mairieStore.reunions)
 </script>
