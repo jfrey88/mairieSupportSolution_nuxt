@@ -20,8 +20,9 @@ const useProcurationStore = defineStore('procuration',{
         //Create
         async create(procuration){
             const db=useFirestore();
-
+            
             await addDoc(collection(db,"procurations"),procuration);
+            this.fetch(["idReunion", procuration.idReunion]);
         },
         //Read
         async fetch(params){ 
@@ -45,7 +46,7 @@ const useProcurationStore = defineStore('procuration',{
             const procurationCollections=collection(db, 'procurations')
             const data=await getDocs(query(procurationCollections, where(params[0],"==",params[1])));
 
-
+            console.log("data dans procurations store ",data);
             const procurationsData=data.docs.map((doc) => {
                 const data = doc.data();
                 
@@ -70,7 +71,7 @@ const useProcurationStore = defineStore('procuration',{
                 nomPrenomAbsent : conseillers.find
             });
 
-
+            this.procurations=procurationsData;
           
             return procurationsData;
         },

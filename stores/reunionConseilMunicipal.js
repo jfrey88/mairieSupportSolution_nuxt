@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, query, getDocs,getDoc,  where, deleteDoc, doc,updateDoc,orderBy } from "firebase/firestore";
 import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+import { useProcurationStore } from "@/stores/procuration";
 
 // import {  db } from '../plugins/firebase';
 const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
@@ -52,33 +53,56 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             const reunionsCollections=collection(db, 'reunions')
             const data=await getDocs(query(reunionsCollections, where(params[0],"==",params[1]),orderBy("date","desc")));
         
-            const ordresDuJour = useOrdresDuJourStore();
-            ordresDuJour.$subscribe((mutation, state) => {
-                // import { MutationType } from 'pinia'
-                mutation.type // 'direct' | 'patch object' | 'patch function'
-                // same as cartStore.$id
-                mutation.storeId // 'cart'
-                // only available with mutation.type === 'patch object'
-                mutation.payload // patch object passed to cartStore.$patch()
-              
-                // persist the whole state to the local storage whenever it changes
-                localStorage.setItem('cart', JSON.stringify(state))
-              })
-            const reunionsPromises = data.docs.map(async(doc) => {
-                const ordres = await ordresDuJour.fetch(["id_reunion", doc.id]);
-                return {...doc.data(), id: doc.id, ordres :  ordres }
-            });
+            const ordresDuJourStore = useOrdresDuJourStore();
+            const procurationStore = useProcurationStore();
 
-            
-            const reunionsData = await Promise.all(reunionsPromises);
-            console.log("reunionsPromises",reunionsData.length);
+
+
+            const reunionsPromises = data.docs.map(async(doc) => {
+                // const ordres = await ordresDuJourStore.fetch(["id_reunion", doc.id]);
+                // const procurations = await procurationStore.fetch(["idReunion", doc.id]);
+                await ordresDuJourStore.fetch(["id_reunion", doc.id]);
+                await procurationStore.fetch(["idReunion", doc.id]);
+            //    return {...doc.data(), id: doc.id, ordres :  ordresDuJourStore.ordres ,procurations : procurationStore.procurations}
+                return {
+                    date : this.dateText(doc.data().date),
+                    heure : doc.data().heure,
+                    isConvocationOk : doc.data().isConvocationOk,
+                    isFeuillePresenceOk : doc.data().isFeuillePresenceOk,
+                    isProcesVerbalOk : doc.data().isProcesVerbalOk,
+                    isTransmisPrefecture : doc.data().isTransmisPrefecture,
+                    representant_uid : doc.data().representant_uid,
+                    id: doc.id, 
+                    ordres :  ordresDuJourStore.ordres ,
+                    procurations : procurationStore.procurations}
+        });
+
+           const reunionsData = await Promise.all(reunionsPromises);
+            console.log("reunionsPromises",reunionsData);
             this.reunions = reunionsData;
-            
+  
+
+
+
    
             return reunionsData;
 
             
         },
+        dateText (unix_timestamp)  {
+            const myDate = new Date(unix_timestamp * 1000);
+            const jour = myDate.getDate() > 9 ? myDate.getDate() : "0" + myDate.getDate();
+          
+            const mois =
+              Number(myDate.getMonth()) > 8
+                ? String(Number(myDate.getMonth()) + 1)
+                : "0" + String(Number(myDate.getMonth()) + 1);
+          
+            const annee = myDate.getFullYear() - 1970 + 1;
+          
+            return jour + "/" + mois + "/" + annee;
+          
+          },
         async fetchOne(id_reunion){ 
             const db=useFirestore();
             const docRef = doc(db,"reunions",id_reunion);
@@ -88,7 +112,7 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             reunion.id=docSnap.id;
             const ordresDuJour = useOrdresDuJourStore();
             const ordrerecept = await ordresDuJour.fetch(["id_reunion", reunion.id]);
-       
+            reunion.date=this.dateText(reunion.date);
             reunion.ordres = ordrerecept;
            return reunion;
         },

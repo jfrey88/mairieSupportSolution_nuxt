@@ -23,7 +23,21 @@
           >
             procuration / absence
           </th>
-          
+          <th
+                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
+                  >
+                    feuille présence
+                  </th>
+                  <th
+                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
+                  >
+                    Procès verbal
+                  </th>
+                  <th
+                    class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
+                  >
+                    Extrait registre
+                  </th>
           <th
             class="text-center border-sm bg-lime-lighten-5 text-uppercase font-weight-bold"
           >
@@ -35,10 +49,10 @@
         <tr v-for="reunion in reunionConseilMunicipalStore.$state.reunions" :key="reunion.date">
           <!--  boucle sur les conseillers v-html="reunion.ordres"-->
 
-          <!------------------ Date ------------------------------->
-          <td class="text-center border-sm">{{ dateText(reunion.date) }}</td>
+              <!-- ---------------- DATE --------------------------->
+          <td class="text-center border-sm">{{ reunion.date }}</td>
 
-          <!------------------ Ordre du jour ------------------------------->
+           <!-- ---------------- ORDRE DU JOUR --------------------------->
           <td class="text-left border-sm">
             <v-list density="compact">
               <v-list-item v-for="ordre in reunion.ordres" :key="ordre.id">
@@ -47,10 +61,21 @@
             </v-list>
           </td>
 
-          <!------------------ Procuration ------------------------------->
+          <!-- ---------------- CONVOCATION --------------------------->
+          <td style="vertical-align: middle" class="border-sm">
+                    <v-btn class="my-4"
+                      color="blue-lighten-4"
+                      :to="`/convocation/${reunion.id}`"
+                     >
+                        
+                        créer
+                    </v-btn>
+                  </td>
+
+                  <!-- ---------------- PROCURATION --------------------------->
           <td style="vertical-align: middle" class="border-sm text-center">
             <div
-              v-for="procuration in procurations[reunion.id]"
+              v-for="procuration in reunion.procurations"
               :key="procuration.id"
               
             >
@@ -89,7 +114,15 @@
           </td>
 
 
-          <!------------------ Procès verbal ------------------------------->
+                  <!-- ---------------- FEUILLE DE PRESENCE --------------------------->
+                  <td style="vertical-align: middle" class="border-sm text-center">
+                    <div v-if="reunion.isConvocationOk">
+                      <v-btn class="my-4" color="blue-lighten-4">imprimer</v-btn><br />
+                     
+                    </div>
+                  </td>
+
+           <!-- ---------------- PROCES VERBAL --------------------------->
           <td style="vertical-align: middle" class="border-sm">
             <div v-if="reunion.isFeuillePresenceOk">
               <v-btn class="my-4">Délibérations</v-btn><br />
@@ -99,7 +132,13 @@
             </div>
           </td>
 
-          <!------------------ Actions ------------------------------->
+                  <!-- ---------------- EXTRAIT REGISTRE --------------------------->
+                  <td style="vertical-align: middle" class="border-sm">
+                    <div v-if="reunion.isProcesVerbalOk">
+                      <v-btn class="my-4">Imprimer</v-btn><br />
+                    </div>
+                  </td>
+           <!-- ---------------- ACTIONS --------------------------->
           <td style="vertical-align: middle" class="border-sm">
             
             <!-- ---------------- BOITE DE DIALOGUE MODIFIER REUNION  --------------------------->
@@ -108,24 +147,13 @@
               :reunionData="reunion"
             />
             
-            <v-menu>
-              <template v-slot:activator="{ props }">
-                <v-btn color="primary" v-bind="props">
-                  Actions
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item
-                  v-if="!reunion.isTransmisPrefecture"  
-                  @click="deleteReunion(reunion)"
-                  prepend-icon="mdi-delete" title="Supprimer">
-                </v-list-item>
-                <v-list-item prepend-icon="mdi-calendar-plus":to="`/convocation/${reunion.id}`" title="Créer Convocations" />
-                <v-list-item prepend-icon="mdi-clipboard-list-outline" :disabled="reunion.isProcesVerbalOk" title="Imprimer PV" />
-                <v-list-item prepend-icon="mdi-clipboard-list-outline" :disabled="reunion.isConvocationOk" title="Imprimer Convocation" />
-                
-              </v-list>
-            </v-menu>
+            <v-btn
+                      v-if="!reunion.isTransmisPrefecture"
+                      density="compact"
+                      @click="deleteReunion(reunion)"
+                      icon="mdi-delete"
+                      class="ml-2"
+                    ></v-btn>
           </td>
         </tr>
       </tbody>
@@ -137,12 +165,12 @@
 <script setup>
 //*************************Import des strores ********************************/
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+// import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 import { useProcurationStore } from "@/stores/procuration";
 
 //*************************Initialisation des strores ********************************/
 const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
-const ordresDuJourStore = useOrdresDuJourStore();
+// const ordresDuJourStore = useOrdresDuJourStore();
 const procurationStore = useProcurationStore();
 
 //************************ Initialisation des status pour boite de dialogues *************/
@@ -158,8 +186,8 @@ const props = defineProps({
 
 //********************** Initialisation des variables ***********************************/
 //const reunions = ref([]);
-const ordres = ref({});
-const procurations = ref({});
+// const ordres = ref({});
+// const procurations = ref({});
 
 
 
@@ -170,23 +198,23 @@ const createProcuration = (reunion) => {
 };
 
 /** ******************** fonction pour récupérer les ordres de cette réunion **********/
-const fetchOrdres = async (reunion) => {
-  const ordresData = await ordresDuJourStore.fetch(["id_reunion", reunion.id]);
-  // reunion.ordres = ordres;
-  ordres.value[reunion.id] = ordresData;
-  return ordres;
-};
+// const fetchOrdres = async (reunion) => {
+//   const ordresData = await ordresDuJourStore.fetch(["id_reunion", reunion.id]);
+//   // reunion.ordres = ordres;
+//   ordres.value[reunion.id] = ordresData;
+//   return ordres;
+// };
 
 /** ******************** fonction pour récupérer les procurations de cette réunion **********/
-const fetchProcuration = async (reunion) => {
-  const procurationData = await procurationStore.fetch([
-    "idReunion",
-    reunion.id,
-  ]);
-  // reunion.ordres = ordres;
-  procurations.value[reunion.id] = procurationData;
-  return procurations;
-};
+// const fetchProcuration = async (reunion) => {
+//   const procurationData = await procurationStore.fetch([
+//     "idReunion",
+//     reunion.id,
+//   ]);
+//   // reunion.ordres = ordres;
+//   procurations.value[reunion.id] = procurationData;
+//   return procurations;
+// };
 
 /** ******************** fonction pour supprimer une reunion **********/
 const deleteReunion = async (reunion) => {
@@ -197,20 +225,7 @@ const deleteProcuration = async (procuration) => {
   await procurationStore.delete(procuration.id);
 };
 
-const dateText = (unix_timestamp) => {
-  const myDate = new Date(unix_timestamp * 1000);
-  const jour = myDate.getDate() > 9 ? myDate.getDate() : "0" + myDate.getDate();
 
-  const mois =
-    Number(myDate.getMonth()) > 8
-      ? String(Number(myDate.getMonth()) + 1)
-      : "0" + String(Number(myDate.getMonth()) + 1);
-
-  const annee = myDate.getFullYear() - 1970 + 1;
-
-  return jour + "/" + mois + "/" + annee;
-
-};
 
 
 </script>

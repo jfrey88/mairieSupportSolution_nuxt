@@ -34,11 +34,10 @@
 </template>
 <script setup>
 //************************** IMPORTS******************************************* */
-import { useMairieStore } from "@/stores/mairie";
+// import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
 import { useProcurationStore } from "@/stores/procuration";
 import { ref, defineProps, onMounted } from "vue";
-
 
 const props = defineProps({
 
@@ -55,17 +54,19 @@ const procuration = ref({
 })
 
 const conseillerMunicipalStore = useConseillerMunicipalStore();
+
 const {formatForSelect: conseillersDataForSelect} = storeToRefs(conseillerMunicipalStore);
 
 const procurationStore=useProcurationStore();
 
-const emit = defineEmits(["update:modelValue"])
+const emit = defineEmits(["update:modelValue"]);
 //************************** INITILISATION******************************************* */
 
 
 const submitProcuration = async () => {
 
-  procurationStore.create(procuration.value)
+  procurationStore.create(procuration.value);
+
   emit("update:modelValue");
 }
 //mairieStore.create(mairieTest);

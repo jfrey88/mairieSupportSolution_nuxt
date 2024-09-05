@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { addDoc, collection, query, getDocs,  where, orderBy,deleteDoc, collectionGroup, doc } from "firebase/firestore";
+import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal.js";
 // import {  db } from '../plugins/firebase';
 const useOrdresDuJourStore = defineStore('ordresDuJour',{
     state:() => {
@@ -18,7 +19,7 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
             const db=useFirestore();
          
             const result = await addDoc(collection(db,"ordres"),ordreDuJour);
-
+            
             // receive one object as parameter and will perform,
             // the action of persisting the object in the database / cache / array
             // containing all the records
