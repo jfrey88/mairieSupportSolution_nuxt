@@ -48,7 +48,7 @@ const reunionEnCours = ref({});
 
 //******************* On récupère les données de la réunion en cours *******************************/
 const reunionConseilMunicipal = useReunionConseilMunicipalStore();
-await reunionConseilMunicipal.updateisFeuillePresence(id_reunion);
+
 reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
 
 

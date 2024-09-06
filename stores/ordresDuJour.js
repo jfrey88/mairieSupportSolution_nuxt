@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, query, getDocs,  where, orderBy,deleteDoc, collectionGroup, doc } from "firebase/firestore";
+import { addDoc, collection, query, getDocs,  where, orderBy,deleteDoc, collectionGroup, doc,updateDoc } from "firebase/firestore";
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal.js";
 // import {  db } from '../plugins/firebase';
 const useOrdresDuJourStore = defineStore('ordresDuJour',{
@@ -45,8 +45,14 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
         },
 
         //Update
-        update(){
-           
+        async update(ordre){
+            const db=useFirestore();
+            // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
+            console.log('je suis dans update pour l ordre ',ordre)
+             const docRef = doc(db,"ordres",ordre.id);
+             console.log('docRef')
+             const result=await updateDoc(docRef,ordre);
+             console.log(result)
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records
