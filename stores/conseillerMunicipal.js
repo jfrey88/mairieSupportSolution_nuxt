@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { addDoc, collection, query, getDocs, doc, deleteDoc, where, updateDoc  } from "firebase/firestore";
+import { addDoc, collection, query, getDocs, doc, deleteDoc, where, updateDoc, orderBy  } from "firebase/firestore";
 
 const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
     state:() => {
@@ -37,7 +37,7 @@ const useConseillerMunicipalStore = defineStore('conseillerMunicipal',{
          
             const db=useFirestore();
             const conseillersCollections=collection(db, 'conseillers')
-            const data=await getDocs(query(conseillersCollections, where(params[0],"==",params[1])));
+            const data=await getDocs(query(conseillersCollections, where(params[0],"==",params[1]),orderBy('nom'),orderBy('prenom')));
 
 
             const conseillersData=data.docs.map((doc) => ({...doc.data(),id : doc.id}));

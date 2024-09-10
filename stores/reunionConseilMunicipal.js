@@ -66,12 +66,17 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             //    return {...doc.data(), id: doc.id, ordres :  ordresDuJourStore.ordres ,procurations : procurationStore.procurations}
                 return {
                     date : this.dateText(doc.data().date),
+                    dateConvoc : this.dateText(doc.data().dateConvoc),
                     heure : doc.data().heure,
                     isConvocationOk : doc.data().isConvocationOk,
                     isFeuillePresenceOk : doc.data().isFeuillePresenceOk,
                     isProcesVerbalOk : doc.data().isProcesVerbalOk,
                     isTransmisPrefecture : doc.data().isTransmisPrefecture,
                     representant_uid : doc.data().representant_uid,
+                    numFeuillet : doc.data().numFeuillet,
+                    president : doc.data().president,
+                    salleDeReunion : doc.data().salleDeReunion,
+                    secretaire : doc.data().secretaire,
                     id: doc.id, 
                     ordres :  ordresDuJour ,
                     procurations : procurationStore.procurations}
@@ -90,9 +95,12 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
             
         },
         dateText (unix_timestamp)  {
-            const myDate = new Date(unix_timestamp * 1000);
-            const jour = myDate.getDate() > 9 ? myDate.getDate() : "0" + myDate.getDate();
-          
+            console.log("unix_timestamp",unix_timestamp)
+            const myDate = new Date(unix_timestamp * 1000 );
+            console.log("myDate",myDate)
+            const jour = myDate.getUTCDate() > 9 ? myDate.getUTCDate() : "0" + myDate.getUTCDate();
+            console.log("jour",jour)
+            
             const mois =
               Number(myDate.getMonth()) > 8
                 ? String(Number(myDate.getMonth()) + 1)
@@ -108,9 +116,11 @@ const useReunionConseilMunicipalStore = defineStore('reunionConseilMunicipal',{
            return reunionEnCours;
         },
         //Update
-        update(reunion){
+        async update(reunion){
+            const db=useFirestore();
             
-            
+            const docRef = doc(db,"reunions",reunion.id);
+            await updateDoc(docRef,reunion);
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records

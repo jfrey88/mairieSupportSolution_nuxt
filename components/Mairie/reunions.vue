@@ -149,9 +149,12 @@
           <td style="vertical-align: middle" class="border-sm">
             <div v-if="reunion.isFeuillePresenceOk">
              
-              <v-btn class="my-4">Générer imprimer <br />procès verbal </v-btn
+              <v-btn class="my-4 text-center" 
+                color="blue-lighten-4"
+                :to="`/procesVerbal/${reunion.id}`">Générer imprimer <br />procès verbal 
+              </v-btn
               ><br />
-              <v-btn class="my-4">transmis prefecture</v-btn><br />
+              <v-btn class="my-4" color="blue-lighten-4">transmis prefecture</v-btn><br />
             </div>
           </td>
 
@@ -194,9 +197,9 @@ import { useProcurationStore } from "@/stores/procuration";
 //*************************Initialisation des strores ********************************/
 const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
 // const ordresDuJourStore = useOrdresDuJourStore();
-//const procurationStore = useProcurationStore();
+const procurationStore = useProcurationStore();
 
-
+console.log(reunionConseilMunicipalStore.$state.reunions)
 //************************ Initialisation des status pour boite de dialogues *************/
 const dialogStatus = ref(false);
 const dialogReunion = ref({});
@@ -207,8 +210,6 @@ const props = defineProps({
   user: Object,
   reunions: Array,
 });
-console.log("reunionConseilMunicipalStore.$state.reunions",reunionConseilMunicipalStore.$state.reunions)
-
 //********************** Initialisation des variables ***********************************/
 //const reunions = ref([]);
 // const ordres = ref({});

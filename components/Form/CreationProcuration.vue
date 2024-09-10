@@ -57,6 +57,15 @@ const procuration = ref({
 const conseillerMunicipalStore = useConseillerMunicipalStore();
 
 const {formatForSelect: conseillersDataForSelect} = storeToRefs(conseillerMunicipalStore);
+// storetorefs retourne un objet contentant les valeurs de l'objet passé en paramètre pour actions getters & state au 1er niveau
+// storeToRefs = {
+  // formatForSelect, 
+  // conseillers, 
+  // create, 
+  // fetch, 
+  // update, 
+  // delete
+// }
 
 const procurationStore=useProcurationStore();
 

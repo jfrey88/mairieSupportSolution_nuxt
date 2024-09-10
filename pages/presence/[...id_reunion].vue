@@ -44,7 +44,10 @@
                 <tbody class="mt-2 mx-auto text-center">
                   <tr v-for="conseiller in conseillerMunicipalStore.conseillers">
                     <th  class="mt-2 text-center border-md">{{ conseiller.prenom}} {{ conseiller.nom }} , {{conseiller.role}}</th>
-                    <th></th>
+                    <th v-if="donneProcuration(conseiller.id)!=false" class="border-md">
+                        Donne procuration à {{ donneProcuration(conseiller.id).prenom }} {{ donneProcuration(conseiller.id).nom}}
+                    </th>
+                    <th v-else class="border-md"> </th>
                   </tr>
                 </tbody>
       
@@ -96,7 +99,18 @@ const id_mairie = ref("");
 id_mairie.value = reunionEnCours.value.representant_uid;
 
 
+const donneProcuration=(conseiller_id)=>{
+  let recherche=false;
 
+  reunionEnCours.value.procurations.forEach((proc)=>{
+    if ((proc.absent == conseiller_id) && (proc.recevant)){
+      recherche=conseillerMunicipalStore.conseillers.find(conseiller => conseiller.id == proc.recevant);
+    }
+  })
+  return recherche
+  //TODO RECHERCHE DE PROC
+  //reunionEnCours.proc
+}
 
 
 const dateduJourTxt = () => {

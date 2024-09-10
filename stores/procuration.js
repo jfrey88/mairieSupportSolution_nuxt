@@ -49,7 +49,7 @@ const useProcurationStore = defineStore('procuration',{
            
             const procurationsData=data.docs.map((doc) => {
                 const data = doc.data();
-                
+               
                 const absent=conseillers.find((conseiller)=>{
                     return conseiller.id==data.absent
                 })

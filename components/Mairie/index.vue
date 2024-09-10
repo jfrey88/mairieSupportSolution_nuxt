@@ -145,5 +145,5 @@ const fetchMairie = async () => {
 };
 
 await fetchMairie();
-console.log("mairieStore.reunions",mairieStore.reunions)
+
 </script>

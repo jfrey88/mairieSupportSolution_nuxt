@@ -72,9 +72,7 @@
             <div v-for="ordre in reunionEnCours.ordres">
               <p>{{ ordre.numero }}.{{ ordre.ordre }}</p>
             </div>
-          <!--  <p v-for="ordre in reunionEnCours.ordres">
-              {{ ordre.numero }}.{{ ordre.ordre }}
-            </p>-->
+
           </v-col>
           <!-- **************** BAS DE LA FEUILLE AVEC POUVOIRS **************************-->
           <v-col cols="12" md="12" class="text-left mt-4 ml-8">
@@ -168,6 +166,7 @@ const dateduJourTxt = () => {
 
 /******************* On récupère l'ordre du jour de cette réunion *********************************/
 const updateConvoc = async() => {
+
   const numFeuillet=reunionEnCours.value.date.substr(6);
   const dateConvoc=new Date();
   await reunionConseilMunicipal.updateisConvocation(id_reunion,dateConvoc,numFeuillet);

@@ -48,11 +48,11 @@ const useOrdresDuJourStore = defineStore('ordresDuJour',{
         async update(ordre){
             const db=useFirestore();
             // const q=query(collection(db,"conseillers"), where ("representant_uid", "==",uid));
-            console.log('je suis dans update pour l ordre ',ordre)
+       
              const docRef = doc(db,"ordres",ordre.id);
-             console.log('docRef')
+       
              const result=await updateDoc(docRef,ordre);
-             console.log(result)
+       
             // receive one object as parameter and will perform,
             // the action of updating the object in the database / cache / array
             // containing all the records

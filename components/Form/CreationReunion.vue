@@ -110,11 +110,15 @@ const reunion = ref({
 
 //************************** SUBMIT DU FORMULAIRE ******************************************* */
 const submitReunion = async () => {
-
+  
   const tabOrdreDuJour = reunion.value.ordreDuJour.split("\n");
   delete reunion.value.ordreDuJour;
   
   const dateSelectionnee=reunion.value.date;
+  console.log("dateSelectionnee dans submit",dateSelectionnee.getDate)
+  console.log("dateSelectionnee dans submit",dateSelectionnee.getMonth)
+  console.log("dateSelectionnee dans submit",dateSelectionnee.getFullYear)
+
 
   reunion.value.representant_uid = props.mairieData.representant_uid;
   

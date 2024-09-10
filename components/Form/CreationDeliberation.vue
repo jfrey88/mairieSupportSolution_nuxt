@@ -37,15 +37,34 @@
 
   <h2 class="text-center text-uppercase my-4">délibérations</h2>
   <v-form ref="formConseiller" @submit.prevent="submitDeliberations">
-    <!-- RAJOUTER LE SECRETAIRE DE SEANCE 
-    <v-select
-            v-model="reunion.secretaire"
+    
+
+    <v-row>
+      <v-col cols="12" md="4" >
+        <v-select
+            v-model="reunionEnCours.secretaire"
             :items="conseillersDataForSelect"
             label="Choisissez le secrétaire de séance"
             required
-          ></v-select>-->
-    <v-row>
-      <v-col cols="12" md="2" class="border-md text-center font-weight-bold">
+      ></v-select>
+      </v-col>
+      <v-col cols="12" md="4" >
+        <v-select
+            v-model="reunionEnCours.president"
+            :items="conseillersDataForSelect"
+            label="Choisissez le président de séance"
+            required
+      ></v-select>
+      </v-col>
+      
+      <v-col cols="12" md="4" >
+        <v-text-field
+            v-model="reunionEnCours.salleDeReunion"
+            label="Salle ou à eu lieu la réunion"
+            required
+          ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="2"  class="border-md text-center font-weight-bold">
         Ordre
       </v-col>
       <v-col cols="12" md="4" class="border-md text-center font-weight-bold">
@@ -186,6 +205,10 @@ import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
 const ordresDuJourStore = useOrdresDuJourStore();
 
+
+const conseillerMunicipalStore = useConseillerMunicipalStore();
+const {formatForSelect: conseillersDataForSelect} = storeToRefs(conseillerMunicipalStore);
+
 //const messageErreurTextDelib=[];
 const messageErreurVote = [];
 
@@ -203,8 +226,7 @@ const test = () => {
 };
 const reunionEnCours = props.reunionEnCours;
 
-console.log("reunionEnCours", reunionEnCours);
-console.log("conseillersMunicipaux", props.conseillersMunicipaux);
+
 
 let nbVotant = props.conseillersMunicipaux.length;
 let nbPresent = props.conseillersMunicipaux.length;
@@ -260,12 +282,12 @@ const rules = {
 //************************** SUBMIT DU FORMULAIRE ******************************************* */
 const submitDeliberations = async () => {
   await reunionEnCours.ordres.forEach(async (ordre, index) => {
+    reunionConseilMunicipalStore.update(reunionEnCours);
     ordre.nb_present = nbPresent;
     ordre.nb_votant = nbVotant;
     ordre.nb_membres_en_exercice = props.conseillersMunicipaux.length;
 
     if (!(ordre.nb_vote_contre + ordre.nb_vote_pour + ordre.nb_vote_nul != nbVotant && ordre.isVote)) {
-      console.log('je suis là')
       if (ordre.numero < 10) {
         ordre.num_delib =
           reunionEnCours.date.substr(6) +
@@ -281,15 +303,9 @@ const submitDeliberations = async () => {
           "-" +
           ordre.numero;
       }
-      console.log('je suis ici',ordre)
       await ordresDuJourStore.update(ordre);
     }else{
-      console.log('je ne suis pas là ou je devrait')
-      console.log(ordre.nb_vote_contre+ordre.nb_vote_pour + ordre.nb_vote_nul)
-      console.log(nbVotant)
-      console.log(ordre.nb_vote_contre + ordre.nb_vote_pour + ordre.nb_vote_nul != nbVotant)
-      console.log(ordre.isVote)
-      console.log((ordre.nb_vote_contre + ordre.nb_vote_pour + ordre.nb_vote_nul != nbVotant && ordre.isVote))
+
     }
   });
 
