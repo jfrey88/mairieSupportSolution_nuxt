@@ -69,7 +69,7 @@
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
 import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+//import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 
 

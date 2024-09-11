@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
-    <h1 class="text-center">Procès-verbal des délibération du Conseil Municipal de {{ mairieStore.mairie.nom }}</h1>
-    <h2 class="text-center mb-3">Séance du {{ jour }}/{{ mois }}/{{ annee }}</h2>
+    <h1 class="text-center">Procès-verbal des délibération du Conseil Municipal de {{ mairieStore.mairie.ville }}</h1>
+    <h2 class="text-center mb-3">Séance du {{ reunionEnCours.date }}</h2>
     <br>
    <p>{{ texteDebutAnnee }}</p>
    <br>
@@ -26,11 +26,13 @@
         {{  ordre.numero }}. {{ ordre.ordre }}
       </li>
     </ul>
+    <br>
     <div v-for="ordre in reunionEnCours.ordres">
       <p class="ml-2"><b>{{ordre.numero}} Délibération {{ ordre.num_delib }}</b></p>
-      <p>{{ ordre.numero }}. Objet : {{ ordre.ordre }}</p>
+      <p><b> Objet </b>: {{ ordre.ordre }}</p>
       <p>{{ ordre.text_deliberation }}</p>
       <p>{{ ordre.text_fin_deliberation }}</p>
+      <br>
     </div>
 
   </v-container>
@@ -40,11 +42,12 @@
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
 import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+//import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 
 
 const mairieStore = useMairieStore();
+console.log("mairieStore.mairie",mairieStore.mairie.ville)
 const conseillerMunicipalStore = useConseillerMunicipalStore();
 
 const route = useRoute();
@@ -63,7 +66,7 @@ const reunionEnCours = ref({});
 const reunionConseilMunicipal = useReunionConseilMunicipalStore();
 
 reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
-
+console.log("reunionEnCours.value ds procesverbal",reunionEnCours.value)
 
 /******************** On récupère les données de la mairie concernée par cette réunion ******************* */
 const id_mairie = ref("");
@@ -75,7 +78,7 @@ id_mairie.value = reunionEnCours.value.representant_uid;
   const tabUnite=['','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatore','quinze','seize'];
   const tabDizaine=['','dix','vingt','trente','quarante','cinquante','soixante','soixante-dix','quatre-vingt','quatre-vingt-dix']
 
-  const nomMois=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","ocobre","novembre","décembre"];
+  const nomMois=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 
   let annee=reunionEnCours.value.date.substr(8);
   let jour=reunionEnCours.value.date.substr(0,2);

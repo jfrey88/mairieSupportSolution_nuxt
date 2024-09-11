@@ -27,7 +27,7 @@
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
 import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+//import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 
 
@@ -50,8 +50,8 @@ const reunionEnCours = ref({});
 const reunionConseilMunicipal = useReunionConseilMunicipalStore();
 
 reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
-
-
+console.log("reunionEnCours.value dans deliberation init vue",reunionEnCours.value)
+console.log("reunionConseilMunicipal.reunions",reunionConseilMunicipal.reunions)
 /******************** On récupère les données de la mairie concernée par cette réunion ******************* */
 const id_mairie = ref("");
 const conseillersMunicipaux = ref([]);

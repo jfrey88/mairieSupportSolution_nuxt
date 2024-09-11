@@ -199,11 +199,11 @@
 
 import { ref, defineProps, onMounted } from "vue";
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+//import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 //************************** INITILISATION******************************************* */
 const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
-const ordresDuJourStore = useOrdresDuJourStore();
+//const ordresDuJourStore = useOrdresDuJourStore();
 
 
 const conseillerMunicipalStore = useConseillerMunicipalStore();
@@ -225,7 +225,7 @@ const test = () => {
   alert("oui");
 };
 const reunionEnCours = props.reunionEnCours;
-
+console.log("reunionEnCours dans init debiberation",reunionEnCours)
 
 
 let nbVotant = props.conseillersMunicipaux.length;
@@ -281,34 +281,31 @@ const rules = {
 
 //************************** SUBMIT DU FORMULAIRE ******************************************* */
 const submitDeliberations = async () => {
+  console.log("reunionEnCours dans le submit des delib",reunionEnCours)
+  let numdelib=1;
   await reunionEnCours.ordres.forEach(async (ordre, index) => {
-    reunionConseilMunicipalStore.update(reunionEnCours);
+    
     ordre.nb_present = nbPresent;
     ordre.nb_votant = nbVotant;
     ordre.nb_membres_en_exercice = props.conseillersMunicipaux.length;
 
-    if (!(ordre.nb_vote_contre + ordre.nb_vote_pour + ordre.nb_vote_nul != nbVotant && ordre.isVote)) {
-      if (ordre.numero < 10) {
-        ordre.num_delib =
-          reunionEnCours.date.substr(6) +
-          "-" +
-          reunionEnCours.date.substr(3, 2) +
-          "-0" +
-          ordre.numero;
-      } else {
-        ordre.num_delib =
-          reunionEnCours.date.substr(6) +
-          "-" +
-          reunionEnCours.date.substr(3, 2) +
-          "-" +
-          ordre.numero;
-      }
+
+
+    if (!(ordre.nb_vote_contre + ordre.nb_vote_pour + ordre.nb_vote_nul != nbVotant) && ordre.isVote) {
+      console.log('je passe ici pour ',ordre.numero,' isVote=',ordre.isVote)
+      ordre.num_delib = reunionEnCours.date.substr(6,4) + "-" +reunionEnCours.date.substr(3, 2);
+      ordre.num_delib +=numdelib < 10 ? "-0" : "-"
+      ordre.num_delib += numdelib
+      numdelib++;
+
       await ordresDuJourStore.update(ordre);
     }else{
-
+      console.log('je passe la pour ',ordre.numero)
+      ordre.num_delib=""
     }
+    
   });
-
+  reunionConseilMunicipalStore.update(reunionEnCours);
   //await ordresDuJourStore.update(reunionEnCours.ordres)
 };
 

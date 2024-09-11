@@ -85,8 +85,8 @@
               Je soussigné(e), {{ conseiller.prenom }}
               {{ conseiller.nom }} donne pouvoir à ........................
             </p>
-            <p class="ml-5">De prendre part à toutes les délibérations</p>
-            <p class="ml-5">D'émettre tous votes et sugner tous documents</p>
+            <p class="ml-5" ><v-icon icon="mdi-checkbox-blank-outline" class="ml-2 mb-2"></v-icon>De prendre part à toutes les délibérations</p>
+            <p class="ml-5"><v-icon icon="mdi-checkbox-blank-outline" class="ml-2 mb-2"></v-icon>D'émettre tous votes et sugner tous documents</p>
             <p>
               Le présent pouvoir conservant ses effets pour tout autre jour
               suivant (1) auquel cette réunion serait reportée pour cause
@@ -109,7 +109,7 @@
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
 import { useMairieStore } from "@/stores/mairie";
 import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+//import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 
 
 
@@ -168,7 +168,16 @@ const dateduJourTxt = () => {
 const updateConvoc = async() => {
 
   const numFeuillet=reunionEnCours.value.date.substr(6);
-  const dateConvoc=new Date();
+  let dateConvoc=new Date();
+  const jour=dateConvoc.getDate() >9 ? dateConvoc.getDate() : '0'+dateConvoc.getDate();
+  console.log(jour)
+  const mois=(1+dateConvoc.getMonth()) >9 ? (1+dateConvoc.getMonth()) : '0'+(1+dateConvoc.getMonth());
+  console.log(mois)
+  const annee=dateConvoc.getFullYear();
+  console.log(annee)
+  dateConvoc=jour+'/'+mois+'/'+annee;
+
+  console.log("dateConvoc",dateConvoc) 
   await reunionConseilMunicipal.updateisConvocation(id_reunion,dateConvoc,numFeuillet);
 }
 updateConvoc();

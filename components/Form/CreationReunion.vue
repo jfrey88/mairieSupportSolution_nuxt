@@ -5,25 +5,22 @@
       <v-row>
         <v-col cols="12" md="12"><h3>Nouvelle réunion</h3></v-col>
         
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" >
           <!--      champ date    -->
-          <v-date-input
+         <!--     <v-date-input
             v-model="reunion.date"
             label="Sélectionner le jour de la réunion"
             
-          ></v-date-input>
-          
+          ></v-date-input>-->
+          <v-text-field
+            v-model="reunion.date"
+            label="Sélectionner le jour et l'heure de la réunion"
+            prepend-icon="event"
+            type="datetime-local"
+          />
         </v-col>
 
-        <v-col cols="12" md="6">
-          <!--      champ heure    -->
-          <v-text-field
-            v-model="reunion.heure"
-            :counter="5"
-            label="heure de la seance"
-            required
-          ></v-text-field>
-        </v-col>
+       
 
         <v-col cols="12" md="12">
           <!--      champ texteOuverture    -->
@@ -69,7 +66,7 @@
 //************************** IMPORTS******************************************* */
 import { useMairieStore } from "@/stores/mairie";
 import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipal";
-import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
+//import { useOrdresDuJourStore } from "@/stores/ordresDuJour";
 import { ref, defineProps, onMounted } from "vue";
 
 //************************** INITILISATION******************************************* */
@@ -125,6 +122,8 @@ const submitReunion = async () => {
   const result = await reunionStore.create(reunion.value);
   const idReunion = result.id;
 
+  const tabOrdre=[];
+
   tabOrdreDuJour.forEach(async (ordre, index) => {
     const ordreAEcrire = {
       ordre: ordre,
@@ -140,8 +139,10 @@ const submitReunion = async () => {
       text_fin_deliberation: "",
       num_delib: "0000-00-00",
     };
-    await ordresDuJourStore.create(ordreAEcrire);
+    //await ordresDuJourStore.create(ordreAEcrire);
+    tabOrdre.push(ordreAEcrire);
   });
+  await reunionStore.ajouteOrdre(idReunion,tabOrdre);
   await reunionStore.fetch(["representant_uid",props.mairieData.representant_uid]);
   emit("update:modelValue");
 };
