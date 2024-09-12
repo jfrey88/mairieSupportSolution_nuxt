@@ -40,7 +40,7 @@
     
 
     <v-row>
-      <v-col cols="12" md="4" >
+      <v-col cols="12" md="3" >
         <v-select
             v-model="reunionEnCours.secretaire"
             :items="conseillersDataForSelect"
@@ -48,7 +48,7 @@
             required
       ></v-select>
       </v-col>
-      <v-col cols="12" md="4" >
+      <v-col cols="12" md="3" >
         <v-select
             v-model="reunionEnCours.president"
             :items="conseillersDataForSelect"
@@ -57,10 +57,17 @@
       ></v-select>
       </v-col>
       
-      <v-col cols="12" md="4" >
+      <v-col cols="12" md="3" >
         <v-text-field
             v-model="reunionEnCours.salleDeReunion"
             label="Salle ou à eu lieu la réunion"
+            required
+          ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="3" >
+        <v-text-field
+            v-model="reunionEnCours.heureLeveeSeance"
+            label="heure fin de séance"
             required
           ></v-text-field>
       </v-col>
@@ -298,7 +305,7 @@ const submitDeliberations = async () => {
       ordre.num_delib += numdelib
       numdelib++;
 
-      await ordresDuJourStore.update(ordre);
+      
     }else{
       console.log('je passe la pour ',ordre.numero)
       ordre.num_delib=""

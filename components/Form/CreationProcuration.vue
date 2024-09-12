@@ -74,9 +74,12 @@ const emit = defineEmits(["update:modelValue"]);
 
 
 const submitProcuration = async () => {
-
-  procurationStore.create(procuration.value);
+  console.log("props.reunionData dans creation procuration submit",props.reunionData)
   const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
+  reunionConseilMunicipalStore.ajouteProcuration(props.reunionData.id,procuration.value)
+
+ // procurationStore.create(procuration.value);
+  
   reunionConseilMunicipalStore.fetch(['representant_uid',props.reunionData.representant_uid]);
   emit("update:modelValue");
 }

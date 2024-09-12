@@ -89,7 +89,7 @@ const mairie = ref({});
 
 const mairieStore = useMairieStore();
 const reunionStore = useReunionConseilMunicipalStore();
-const ordresDuJourStore = useOrdresDuJourStore();
+
 const formReunion = ref(null);
 
 const emit = defineEmits(["update:modelValue"])

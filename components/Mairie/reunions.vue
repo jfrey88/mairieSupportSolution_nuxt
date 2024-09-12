@@ -76,6 +76,7 @@
                         
                         créer
                     </v-btn>
+                    {{ explore(reunion) }}
                   </td>
 
                   <!-- ---------------- PROCURATION --------------------------->
@@ -132,7 +133,7 @@
                      
                     </div>
                   </td>
-<!-- ---------------- PROCES VERBAL --------------------------->
+<!-- ---------------- DELIBERATIONS --------------------------->
 <td style="vertical-align: middle" class="border-sm">
             <div v-if="reunion.isFeuillePresenceOk">
               <v-btn 
@@ -161,7 +162,12 @@
                   <!-- ---------------- EXTRAIT REGISTRE --------------------------->
                   <td style="vertical-align: middle" class="border-sm">
                     <div v-if="reunion.isProcesVerbalOk">
-                      <v-btn class="my-4">Imprimer</v-btn><br />
+                      <v-btn 
+                        class="my-4"
+                        color="blue-lighten-4"
+                        :to="`/extraits/${reunion.id}`"
+                        >Imprimer
+                      </v-btn><br />
                     </div>
                   </td>
            <!-- ---------------- ACTIONS --------------------------->
@@ -185,6 +191,7 @@
       </tbody>
     </v-table>
     <DialogProcuration v-model="dialogStatus" :reunionData="dialogReunion" />
+
   </div>
 </template>
 
@@ -214,7 +221,9 @@ const props = defineProps({
 //const reunions = ref([]);
 // const ordres = ref({});
 // const procurations = ref({});
-
+const explore=(reunion)=>{
+  console.log("reunion dans explore reunion",reunion)
+}
 
 
 /************************ fonction pour créer une nouvelle procuration absence ******/

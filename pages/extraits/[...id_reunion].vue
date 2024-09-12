@@ -1,47 +1,56 @@
 <template>
   <v-container fluid>
-    <h1 class="text-center">Procès-verbal des délibération du Conseil Municipal de {{ mairieStore.mairie.ville }}</h1>
+    <h1 class="text-center">EXTRAITS DU REGSITRE</h1>
     <v-btn
        class="ml-2"
         color="orange-darken-4"
         prepend-icon="mdi-arrow-left"
          to="/"
     >Retour</v-btn>
-    <h2 class="text-center mb-3">Séance du {{ reunionEnCours.date }}</h2>
     <br>
-   <p>{{ texteDebutAnnee }}</p>
-   <br>
-   <p><b>Date de la convocation : {{ reunionEnCours.dateConvoc}}</b></p>
-   <br>
-   <p><b><u>Etaient présents : </u></b>{{ listePresents }}</p>
-   <br>
-   <p><b><u>Etaient absents : </u></b>{{ listeAbsents }}</p>
-   <br>
-   <p><b><u>Procurations : </u></b>{{ listProc }}</p>
-   <br>
-   <p>{{ secretaire }} a été nommé(e) secrétaire de séance</p>
-   <p>Nombre de membre : {{ nbMembres }}</p>
-   <p>En exercice : {{ nbenExercice }}</p>
-   <p>Présents : {{ nbPresents }}</p>
-   <p>Votants : {{ nbVotants }}</p>
-   <p>Date de transmssion en Préfecture :</p>
-   <br>
-   <p><b><u>ORDRE DU JOUR : </u></b></p>
-    <ul>
-      <li v-for="ordre in reunionEnCours.ordres">
-        {{  ordre.numero }}. {{ ordre.ordre }}
-      </li>
-    </ul>
-    <br>
-    <div v-for="ordre in reunionEnCours.ordres">
-      <p class="ml-2"><b>{{ordre.numero}} Délibération {{ ordre.num_delib }}</b></p>
-      <p><b> Objet </b>: {{ ordre.ordre }}</p>
-      <p>{{ ordre.text_deliberation }}</p>
+    <template v-for="ordre in reunionEnCours.ordres">
+    <div class="border-sm pa-2 ma-2" v-if="ordre.num_delib" >
+
+      <h2 class="text-center text-uppercase border-sm">extrait du registre <br> des délibérations du conseil municipal<br>de la commune de {{ mairieStore.mairie.ville }}</h2>
+      <p class="text-center"><b>Séance du {{ reunionEnCours.date }}</b></p>
+      <v-row>
+        <v-col cols="12" md="3" >
+          <p>Nombres de membres :</p>
+          <p>En exercice : {{ ordre.nb_membres_en_exercice }}</p>
+          <p>Présents : {{ ordre.nb_present }}</p>
+          <p>Votants : {{ ordre.nb_votant }}</p>
+          <p>Date de la convocation</p>
+          <p>{{ reunionEnCours.dateConvoc}}</p>
+          <p>Date d'affichage</p>
+          <p>{{ reunionEnCours.dateConvoc }}</p>
+        </v-col>
+        <v-col cols="12" md="9" >
+          <p>{{texteDebutAnnee}}</p>
+          <br>
+          <p><b><u>Etaient présents : </u></b>{{ listePresents }}</p>
+          <br>
+          <p><b><u>Etaient absents : </u></b>{{ listeAbsents }}</p>
+          <br>
+          <p><b><u>Procurations : </u></b>{{ listProc }}</p>
+          <br>
+          <p>{{ secretaire }} a été nommé(e) secrétaire de séance</p>
+        </v-col>        
+      </v-row>
+      <hr>
+      <h3>Délibération {{ ordre.num_delib }}</h3>
+      <p><b>Objet : {{ ordre.ordre }}</b></p>
+      <br>
+      <p>{{ordre.text_deliberation}}</p>
       <p>{{ ordre.text_fin_deliberation }}</p>
       <br>
+      <p>Fait en séance les jours, mois et an que dessus</p>
+      <p>Pour, extrait conforme conformément aux dispositions des articles L.2131-1 et 2131-2 du CGCT, cette délibération ne sera exécutoire qu'a compter de sa publication et sa transmission en Sous Prefecture.</p>
+      <br>
+      <p>date de transmission en préfecture:</p>
+     
     </div>
-    <div>Séance levée à {{ reunionEnCours.heureLeveeSeance }}</div>
-  </v-container>
+  </template>
+     </v-container>
 </template>
 
 <script setup>
@@ -53,7 +62,7 @@ import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
 
 
 const mairieStore = useMairieStore();
-console.log("mairieStore.mairie",mairieStore.mairie.ville)
+
 const conseillerMunicipalStore = useConseillerMunicipalStore();
 
 const route = useRoute();
@@ -72,7 +81,7 @@ const reunionEnCours = ref({});
 const reunionConseilMunicipal = useReunionConseilMunicipalStore();
 
 reunionEnCours.value = await reunionConseilMunicipal.fetchOne(id_reunion);
-console.log("reunionEnCours.value ds procesverbal",reunionEnCours.value)
+console.log("reunionEnCours.value ds extraits",reunionEnCours.value)
 
 /******************** On récupère les données de la mairie concernée par cette réunion ******************* */
 const id_mairie = ref("");
@@ -131,7 +140,7 @@ id_mairie.value = reunionEnCours.value.representant_uid;
   }
   
   const president=conseillerMunicipalStore.conseillers.find(({id})=> id == reunionEnCours.value.president);
-  texteDebutAnnee += 'le Conseil Municipal de cette commune, régulièrement convoqué, s\'est réuni au nombre prescrit par la loi, dans le lieu habituel de ses séances, '+reunionEnCours.value.salleDeReunion+' de '+mairieStore.mairie.ville+' sous la présidence de '+president.prenom+' '+president.nom+', '+president.role; 
+  texteDebutAnnee += 'le Conseil Municipal de cette commune, régulièrement convoqué, s\'est réuni au nombre prescrit par la loi, dans le lieu habituel de ses séances, '+reunionEnCours.value.salleDeReunion+' de '+mairieStore.mairie.ville+' sous la présidence de '+president.prenom+' '+president.nom+', '+president.role+'.'; 
 
 
   let listePresents="";
@@ -184,15 +193,12 @@ reunionEnCours.value.procurations.forEach((proc)=>{
     }
   })
 
-  // ------------------- on rempli la secretaire --------------------------
-let secretaire= conseillerMunicipalStore.conseillers.find(({id})=> id == reunionEnCours.value.secretaire);
+
+
+  let secretaire= conseillerMunicipalStore.conseillers.find(({id})=> id == reunionEnCours.value.secretaire);
 
 
 secretaire = secretaire.prenom+' '+secretaire.nom;
-console.log("reunionEnCours",reunionEnCours)
-await reunionConseilMunicipal.updateisProcesVerbalOk(reunionEnCours.value.id);
-
-  // ------------------- on rempli les nombres --------------------------
 
 
 
