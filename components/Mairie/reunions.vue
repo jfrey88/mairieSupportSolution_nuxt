@@ -191,7 +191,7 @@
       </tbody>
     </v-table>
     <DialogProcuration v-model="dialogStatus" :reunionData="dialogReunion" />
-
+    <DialogSupprimeReunion v-model="dialogStatusSupprimeReunion" :reunionData="dialogReunion" />
   </div>
 </template>
 
@@ -209,6 +209,7 @@ const procurationStore = useProcurationStore();
 console.log(reunionConseilMunicipalStore.$state.reunions)
 //************************ Initialisation des status pour boite de dialogues *************/
 const dialogStatus = ref(false);
+const dialogStatusSupprimeReunion = ref(false);
 const dialogReunion = ref({});
 
 //*********************** Initialisation des props **********************************/
@@ -228,6 +229,7 @@ const explore=(reunion)=>{
 
 /************************ fonction pour créer une nouvelle procuration absence ******/
 const createProcuration = (reunion) => {
+  
   dialogStatus.value = true;
   dialogReunion.value = reunion;
 };
@@ -236,7 +238,10 @@ const createProcuration = (reunion) => {
 
 /** ******************** fonction pour supprimer une reunion **********/
 const deleteReunion = async (reunion) => {
-  await reunionConseilMunicipalStore.delete(reunion);
+  console.log("reunion",reunion);
+  dialogStatusSupprimeReunion.value = true;
+  dialogReunion.value = reunion;
+  //await reunionConseilMunicipalStore.delete(reunion);
 };
 /** ******************** fonction pour supprimer une procuration **********/
 const deleteProcuration = async (procuration) => {
