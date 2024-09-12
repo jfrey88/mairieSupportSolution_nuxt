@@ -6,7 +6,7 @@
   
         <v-card-actions>
   
-          <v-btn text="Non" @click="isActive.value = false"></v-btn>
+          <v-btn text="Non" @click="emit('update:modelValue', false)"></v-btn>
           <v-btn text="Oui" @click="deleteReunion(reunionData)"></v-btn>
           
         </v-card-actions>
@@ -25,10 +25,11 @@ import { useReunionConseilMunicipalStore } from "@/stores/reunionConseilMunicipa
   });
   const emit = defineEmits(["update:modelValue"]);
   const deleteReunion = async (reunion) => {
+      console.log(props)
     const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
-  await reunionConseilMunicipalStore.delete(reunion);
+  // await reunionConseilMunicipalStore.delete(reunion);
 
-  emit("update:modelValue");
+  emit("update:modelValue", false);
 };
 
 

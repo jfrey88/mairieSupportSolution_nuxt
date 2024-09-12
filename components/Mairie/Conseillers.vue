@@ -68,17 +68,33 @@
                     </tr>
                   </tbody>
                 </v-table>
+    <DialogSupprimeConseiller 
+      v-model="dialogStatusSupprimeConseiller" 
+      :conseillerData="dialogConseiller"
+      @update:model-value="dialogStatusSupprimeConseiller = false" /> 
 </template>
 <script setup>
   import { useConseillerMunicipalStore } from "@/stores/conseillerMunicipal";
 
 defineProps(["conseillers", "user"]);
 
+const dialogStatusSupprimeConseiller = ref(false);
+const dialogConseiller = ref({});
+
 const conseillerMunicipalStore = useConseillerMunicipalStore();
   // function pour supprimer un conseiller municipal
-  const deleteConseiller = async (conseiller) => {
-    conseillerMunicipalStore.delete(conseiller);
-    
-  };
 
+
+
+/** ******************** fonction pour supprimer une reunion **********/
+const deleteConseiller = async (conseiller) => {
+  console.log("conseiller dans delete conseiller",conseiller)
+  dialogConseiller.value = conseiller;
+  console.log("dialogConseiller.value dans delete conseiller",dialogConseiller.value)
+  dialogStatusSupprimeConseiller.value = !dialogStatusSupprimeConseiller.value;
+
+
+;
+  //await reunionConseilMunicipalStore.delete(reunion);
+};
 </script>

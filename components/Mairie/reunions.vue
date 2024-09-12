@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ dialogStatusSupprimeReunion }}
     <v-table class="border-md">
       <thead>
         <tr>
@@ -191,7 +192,11 @@
       </tbody>
     </v-table>
     <DialogProcuration v-model="dialogStatus" :reunionData="dialogReunion" />
-    <DialogSupprimeReunion v-model="dialogStatusSupprimeReunion" :reunionData="dialogReunion" />
+    <DialogSupprimeReunion 
+      v-model="dialogStatusSupprimeReunion" 
+      :reunionData="dialogReunion"
+      @update:model-value="dialogStatusSupprimeReunion = false" /> 
+  
   </div>
 </template>
 
@@ -206,7 +211,7 @@ const reunionConseilMunicipalStore = useReunionConseilMunicipalStore();
 // const ordresDuJourStore = useOrdresDuJourStore();
 const procurationStore = useProcurationStore();
 
-console.log(reunionConseilMunicipalStore.$state.reunions)
+
 //************************ Initialisation des status pour boite de dialogues *************/
 const dialogStatus = ref(false);
 const dialogStatusSupprimeReunion = ref(false);
@@ -239,7 +244,9 @@ const createProcuration = (reunion) => {
 /** ******************** fonction pour supprimer une reunion **********/
 const deleteReunion = async (reunion) => {
   console.log("reunion",reunion);
-  dialogStatusSupprimeReunion.value = true;
+   dialogStatusSupprimeReunion.value = !dialogStatusSupprimeReunion.value;
+
+
   dialogReunion.value = reunion;
   //await reunionConseilMunicipalStore.delete(reunion);
 };
